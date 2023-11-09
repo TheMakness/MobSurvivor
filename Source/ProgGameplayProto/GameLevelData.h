@@ -27,4 +27,20 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	TArray<UBonusData*> Bonuses;
+
+	// Time-limit duration of the level in minutes
+	UPROPERTY(EditAnywhere)
+	float Duration;
+
+    // God mode
+	UPROPERTY(EditAnywhere)
+	bool Invincible = false;
+
+    // The amount of experience given for each orb of experience
+	UPROPERTY(EditAnywhere)
+	int GainedExperiencePerOrb;
+
+	// Enable the spawn of bosses during the game
+	UPROPERTY(EditAnywhere)
+	bool SpawnBosses = false;
 };

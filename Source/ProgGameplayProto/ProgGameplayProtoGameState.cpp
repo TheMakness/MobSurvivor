@@ -18,7 +18,7 @@ void AProgGameplayProtoGameState::Tick(float DeltaSeconds)
 	GEngine->AddOnScreenDebugMessage(-1, 0, FColor::Green, "Game Time: " + FString::SanitizeFloat(GameTime));
 }
 
-void AProgGameplayProtoGameState::StartGame()
+void AProgGameplayProtoGameState::SetGameStarted(const bool HasGameStarted)
 {
-	bHasGameStarted = true;
+	bHasGameStarted = HasGameStarted;
 }

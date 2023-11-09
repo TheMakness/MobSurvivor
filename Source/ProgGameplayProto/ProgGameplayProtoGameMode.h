@@ -20,14 +20,17 @@ public:
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UGameLevelData* GameLevelData;
+	UGameLevelData* GameLevelData = nullptr;
 
 	UPROPERTY(BlueprintReadOnly)
-	AEnemySpawnerManager* EnemySpawnerManager;
+	AEnemySpawnerManager* EnemySpawnerManager = nullptr;
 
 	UPROPERTY(BlueprintReadOnly)
-	ABonusManager* BonusManager;
+	ABonusManager* BonusManager = nullptr;
 
 protected:
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
+
+	UFUNCTION(BlueprintCallable)
+	virtual void StartGame();
 };

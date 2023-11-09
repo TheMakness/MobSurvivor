@@ -28,6 +28,5 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetGameTime() { return GameTime; }
 
-	UFUNCTION(BlueprintCallable)
-	virtual void StartGame();
+	void SetGameStarted(bool HasGameStarted);
 };

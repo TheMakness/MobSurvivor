@@ -5,6 +5,7 @@
 #include "BonusManager.h"
 #include "EnemySpawnerManager.h"
 #include "ProgGameplayProtoCharacter.h"
+#include "ProgGameplayProtoGameState.h"
 #include "UObject/ConstructorHelpers.h"
 
 AProgGameplayProtoGameMode::AProgGameplayProtoGameMode()
@@ -20,7 +21,13 @@ AProgGameplayProtoGameMode::AProgGameplayProtoGameMode()
 void AProgGameplayProtoGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
 {
 	Super::InitGame(MapName, Options, ErrorMessage);
+}
 
+
+void AProgGameplayProtoGameMode::StartGame()
+{
 	EnemySpawnerManager = GetWorld()->SpawnActor<AEnemySpawnerManager>();
 	BonusManager = GetWorld()->SpawnActor<ABonusManager>();
+	
+	GetGameState<AProgGameplayProtoGameState>()->SetGameStarted(true);
 }
