@@ -13,6 +13,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "../ExperienceComponent.h"
 #include "../Health.h"
+#include "../GameUtils.h"
 #include "InputActionValue.h"
 #include "../Bonuses/BonusData.h"
 #include "Components/SphereComponent.h"
@@ -21,6 +22,8 @@
 #include "Logging/StructuredLog.h"
 #include "../Weapons/WeaponData.h"
 #include "../Weapons/WeaponProjectile.h"
+#include "../Powers/Power.h"
+#include "../Powers/PowerComponent.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -71,6 +74,8 @@ APlayerCharacter::APlayerCharacter()
 
 	Experience = CreateDefaultSubobject<UExperienceComponent>("Experience");
 
+	Power = CreateDefaultSubobject<UPowerComponent>("Power");
+
 	DropsCollector = CreateDefaultSubobject<USphereComponent>("Drops Collector");
 	DropsCollector->SetupAttachment(GetCapsuleComponent());
 
@@ -114,6 +119,10 @@ void APlayerCharacter::BeginPlay()
 	//Setup Weapon
 	SetupDefaultWeapon();
 
+	//Setup Power
+	FActorSpawnParameters SpawnInfo;
+	PowerInstance = GetWorld()->SpawnActor<APower>(Power->CurrentPower,UGameUtils::GetMainCharacter()->GetActorLocation(), UGameUtils::GetMainCharacter()->GetActorRotation(),SpawnInfo);
+	PowerInstance->AttachToActor(UGameUtils::GetMainCharacter(), FAttachmentTransformRules::KeepRelativeTransform,NAME_Actor);
 	DropsCollector->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnDropsCollectorBeginOverlap);
 }
 
@@ -146,8 +155,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
 
 		// Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &APlayerCharacter::UsePower);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &APlayerCharacter::StopJumping);
 
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
@@ -194,6 +203,12 @@ void APlayerCharacter::Shoot(const FInputActionValue& Value)
 void APlayerCharacter::StopShoot(const FInputActionValue& Value)
 {
 	bIsHoldingShoot = false;
+}
+
+void APlayerCharacter::UsePower(const FInputActionValue& Value)
+{
+	if(PowerInstance != nullptr)
+		PowerInstance->Use();
 }
 
 void APlayerCharacter::AutoFire(const FInputActionValue& Value)

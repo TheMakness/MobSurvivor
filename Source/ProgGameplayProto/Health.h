@@ -37,6 +37,7 @@ public:
 	FOnHealthChanged OnHealthChanged;
 
 	virtual void HitByProjectile(AWeaponProjectile* Projectile) override;
+	UFUNCTION(BlueprintCallable)
 	virtual void HitByAttack(float Damages, AActor* Attacker);
 	virtual void AddHealth(float Amount);
 	virtual void Die();
