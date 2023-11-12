@@ -6,7 +6,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "GameUtils.generated.h"
 
-class AProgGameplayProtoCharacter;
+class APlayerCharacter;
 
 /**
  *
@@ -20,5 +20,5 @@ class PROGGAMEPLAYPROTO_API UGameUtils : public UBlueprintFunctionLibrary
 
 public:
 	UFUNCTION(BlueprintPure, Category = "Manager")
-	static AProgGameplayProtoCharacter* GetMainCharacter();
+	static APlayerCharacter* GetMainCharacter();
 };

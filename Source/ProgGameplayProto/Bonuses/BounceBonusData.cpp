@@ -5,7 +5,7 @@
 #include "ProgGameplayProto/Effects/BounceEffect.h"
 #include "ProgGameplayProto/Weapons/WeaponComponent.h"
 
-void UBounceBonusData::Apply(AProgGameplayProtoCharacter* Character, UWeaponComponent* Weapon)
+void UBounceBonusData::Apply(APlayerCharacter* Character, UWeaponComponent* Weapon)
 {
 	Super::Apply(Character, Weapon);
 

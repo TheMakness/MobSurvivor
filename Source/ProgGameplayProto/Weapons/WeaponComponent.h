@@ -8,7 +8,7 @@
 
 class UProjectileEffect;
 class UWeaponData;
-class AProgGameplayProtoCharacter;
+class APlayerCharacter;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PROGGAMEPLAYPROTO_API UWeaponComponent : public UActorComponent
@@ -24,7 +24,7 @@ protected:
 	TObjectPtr<UWeaponData> WeaponData;
 
 	UPROPERTY()
-	TObjectPtr<AProgGameplayProtoCharacter> Character;
+	TObjectPtr<APlayerCharacter> Character;
 
 	UPROPERTY()
 	TArray<UProjectileEffect*> Effects;
@@ -57,7 +57,7 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	virtual void InitializeWeapon(AProgGameplayProtoCharacter* NewCharacter);
+	virtual void InitializeWeapon(APlayerCharacter* NewCharacter);
 
 	virtual void TryShooting(float DeltaTime);
 

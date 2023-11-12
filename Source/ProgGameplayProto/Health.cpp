@@ -51,3 +51,16 @@ float UHealth::GetCurrentHealthPercentage()
 
 	return output;
 }
+
+void UHealth::SetMaxHealth(const float NewMaxHealth)
+{
+	if (CurrentHealth >= MaxHealth)
+	{
+		MaxHealth = NewMaxHealth;
+		CurrentHealth = MaxHealth;
+	}
+	else
+	{
+		MaxHealth = NewMaxHealth;
+	}
+}

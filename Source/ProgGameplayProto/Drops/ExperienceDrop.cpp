@@ -6,13 +6,13 @@
 #include "DropperComponent.h"
 #include "ProgGameplayProto/ExperienceComponent.h"
 #include "ProgGameplayProto/GameUtils.h"
-#include "ProgGameplayProto/ProgGameplayProtoCharacter.h"
+#include "ProgGameplayProto/Player/PlayerCharacter.h"
 
 void AExperienceDrop::Collect()
 {
 	Super::Collect();
 
-	AProgGameplayProtoCharacter* mainCharacter = UGameUtils::GetMainCharacter();
+	APlayerCharacter* mainCharacter = UGameUtils::GetMainCharacter();
 
 	if (IsValid(mainCharacter))
 	{

@@ -4,13 +4,13 @@
 #include "BonusData.h"
 
 #include "ProgGameplayProto/GameUtils.h"
-#include "ProgGameplayProto/ProgGameplayProtoCharacter.h"
+#include "ProgGameplayProto/Player/PlayerCharacter.h"
 #include "ProgGameplayProto/Effects/ProjectileEffect.h"
 #include "ProgGameplayProto/Weapons/WeaponComponent.h"
 
 void UBonusData::ApplyOnMainCharacter()
 {
-	AProgGameplayProtoCharacter* mainCharacter = UGameUtils::GetMainCharacter();
+	APlayerCharacter* mainCharacter = UGameUtils::GetMainCharacter();
 	if (!IsValid(mainCharacter)) return;
 
 	UWeaponComponent* weapon = mainCharacter->GetWeapon();
@@ -19,7 +19,7 @@ void UBonusData::ApplyOnMainCharacter()
 	Apply(mainCharacter, weapon);
 }
 
-void UBonusData::Apply(AProgGameplayProtoCharacter* Character, UWeaponComponent* Weapon)
+void UBonusData::Apply(APlayerCharacter* Character, UWeaponComponent* Weapon)
 {
 	ApplyEffects(Character, Weapon);
 
@@ -44,7 +44,7 @@ void UBonusData::Apply(AProgGameplayProtoCharacter* Character, UWeaponComponent*
 	Weapon->BonusCriticalHitDamageMultiplier += BonusCriticalHitDamageMultiplier;
 }
 
-void UBonusData::ApplyEffects(AProgGameplayProtoCharacter* Character, UWeaponComponent* Weapon)
+void UBonusData::ApplyEffects(APlayerCharacter* Character, UWeaponComponent* Weapon)
 {
 	for (int32 i = 0; i < Effects.Num(); i++)
 	{

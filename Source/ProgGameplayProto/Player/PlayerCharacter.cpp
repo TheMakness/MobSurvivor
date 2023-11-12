@@ -1,6 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "ProgGameplayProtoCharacter.h"
+#include "PlayerCharacter.h"
 
 #include "DiffUtils.h"
 #include "Engine/LocalPlayer.h"
@@ -11,24 +11,24 @@
 #include "GameFramework/Controller.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "ExperienceComponent.h"
-#include "Health.h"
+#include "../ExperienceComponent.h"
+#include "../Health.h"
 #include "InputActionValue.h"
-#include "Bonuses/BonusData.h"
+#include "../Bonuses/BonusData.h"
 #include "Components/SphereComponent.h"
-#include "Drops/Drop.h"
-#include "Weapons/WeaponComponent.h"
+#include "../Drops/Drop.h"
+#include "../Weapons/WeaponComponent.h"
 #include "Logging/StructuredLog.h"
-#include "Weapons/WeaponData.h"
-#include "Weapons/WeaponProjectile.h"
+#include "../Weapons/WeaponData.h"
+#include "../Weapons/WeaponProjectile.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 //////////////////////////////////////////////////////////////////////////
 // AProgGameplayProtoCharacter
 
-AProgGameplayProtoCharacter* AProgGameplayProtoCharacter::Instance = nullptr;
-AProgGameplayProtoCharacter::AProgGameplayProtoCharacter()
+APlayerCharacter* APlayerCharacter::Instance = nullptr;
+APlayerCharacter::APlayerCharacter()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -73,14 +73,16 @@ AProgGameplayProtoCharacter::AProgGameplayProtoCharacter()
 
 	DropsCollector = CreateDefaultSubobject<USphereComponent>("Drops Collector");
 	DropsCollector->SetupAttachment(GetCapsuleComponent());
+
+	PermanentUpgrade = CreateDefaultSubobject<UPermanentUpgradeComponent>("Permanent Upgrade");
 }
 
-bool AProgGameplayProtoCharacter::WantsToShoot()
+bool APlayerCharacter::WantsToShoot()
 {
 	return bIsHoldingShoot || bIsAutoFire;
 }
 
-void AProgGameplayProtoCharacter::SetupDefaultWeapon()
+void APlayerCharacter::SetupDefaultWeapon()
 {
 	Weapon->InitializeWeapon(this);
 	Weapon->SetData(DefaultWeaponData);
@@ -91,7 +93,9 @@ void AProgGameplayProtoCharacter::SetupDefaultWeapon()
 	}
 }
 
-void AProgGameplayProtoCharacter::BeginPlay()
+
+
+void APlayerCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
@@ -110,20 +114,20 @@ void AProgGameplayProtoCharacter::BeginPlay()
 	//Setup Weapon
 	SetupDefaultWeapon();
 
-	DropsCollector->OnComponentBeginOverlap.AddDynamic(this, &AProgGameplayProtoCharacter::OnDropsCollectorBeginOverlap);
+	DropsCollector->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnDropsCollectorBeginOverlap);
 }
 
-void AProgGameplayProtoCharacter::Tick(float DeltaTime)
+void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-void AProgGameplayProtoCharacter::RegisterInstance()
+void APlayerCharacter::RegisterInstance()
 {
 	Instance = this;
 }
 
-void AProgGameplayProtoCharacter::OnDropsCollectorBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+void APlayerCharacter::OnDropsCollectorBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ADrop* drop = Cast<ADrop>(OtherActor);
@@ -136,7 +140,7 @@ void AProgGameplayProtoCharacter::OnDropsCollectorBeginOverlap(UPrimitiveCompone
 //////////////////////////////////////////////////////////////////////////
 // Input
 
-void AProgGameplayProtoCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
@@ -146,12 +150,12 @@ void AProgGameplayProtoCharacter::SetupPlayerInputComponent(UInputComponent* Pla
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		// Moving
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AProgGameplayProtoCharacter::Move);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
 
 		//Shooting
-		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &AProgGameplayProtoCharacter::Shoot);
-		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Completed, this, &AProgGameplayProtoCharacter::StopShoot);
-		EnhancedInputComponent->BindAction(AutoFireAction, ETriggerEvent::Started, this, &AProgGameplayProtoCharacter::AutoFire);
+		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &APlayerCharacter::Shoot);
+		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Completed, this, &APlayerCharacter::StopShoot);
+		EnhancedInputComponent->BindAction(AutoFireAction, ETriggerEvent::Started, this, &APlayerCharacter::AutoFire);
 	}
 	else
 	{
@@ -159,7 +163,7 @@ void AProgGameplayProtoCharacter::SetupPlayerInputComponent(UInputComponent* Pla
 	}
 }
 
-void AProgGameplayProtoCharacter::Move(const FInputActionValue& Value)
+void APlayerCharacter::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D
 	const FVector2D MovementVector = Value.Get<FVector2D>();
@@ -182,17 +186,17 @@ void AProgGameplayProtoCharacter::Move(const FInputActionValue& Value)
 	}
 }
 
-void AProgGameplayProtoCharacter::Shoot(const FInputActionValue& Value)
+void APlayerCharacter::Shoot(const FInputActionValue& Value)
 {
 	bIsHoldingShoot = true;
 }
 
-void AProgGameplayProtoCharacter::StopShoot(const FInputActionValue& Value)
+void APlayerCharacter::StopShoot(const FInputActionValue& Value)
 {
 	bIsHoldingShoot = false;
 }
 
-void AProgGameplayProtoCharacter::AutoFire(const FInputActionValue& Value)
+void APlayerCharacter::AutoFire(const FInputActionValue& Value)
 {
 	bIsAutoFire = !bIsAutoFire;
 }

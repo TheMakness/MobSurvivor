@@ -3,9 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PermanentUpgradeComponent.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
-#include "ProgGameplayProtoCharacter.generated.h"
+#include "PlayerCharacter.generated.h"
 
 class USphereComponent;
 class UExperienceComponent;
@@ -23,7 +24,7 @@ struct FInputActionValue;
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 UCLASS(config = Game)
-class AProgGameplayProtoCharacter : public ACharacter
+class APlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
@@ -58,15 +59,16 @@ class AProgGameplayProtoCharacter : public ACharacter
 	UInputAction* AutoFireAction;
 
 public:
-	AProgGameplayProtoCharacter();
+	APlayerCharacter();
 
-	static AProgGameplayProtoCharacter* Instance;
+	static APlayerCharacter* Instance;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Weapon)
 	TSubclassOf<AWeaponProjectile> WeaponProjectileToSpawn;
 
 	virtual bool WantsToShoot();
 	void SetupDefaultWeapon();
+	
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = WeaponData)
@@ -86,6 +88,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UWeaponComponent* Weapon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPermanentUpgradeComponent* PermanentUpgrade;
 
 	bool bIsHoldingShoot = false;
 	bool bIsAutoFire = false;
@@ -124,5 +129,7 @@ public:
 
 	FORCEINLINE UExperienceComponent* GetExperience() const { return Experience; }
 	FORCEINLINE UWeaponComponent* GetWeapon() const { return Weapon; }
+
+	FORCEINLINE UHealth* GetHealth() const { return Health; }
 };
 

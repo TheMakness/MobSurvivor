@@ -4,7 +4,6 @@
 
 #include "BonusManager.h"
 #include "EnemySpawnerManager.h"
-#include "ProgGameplayProtoCharacter.h"
 #include "ProgGameplayProtoGameState.h"
 #include "UObject/ConstructorHelpers.h"
 

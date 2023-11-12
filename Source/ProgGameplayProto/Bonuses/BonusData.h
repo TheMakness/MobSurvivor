@@ -7,7 +7,7 @@
 #include "BonusData.generated.h"
 
 class UProjectileEffect;
-class AProgGameplayProtoCharacter;
+class APlayerCharacter;
 class UWeaponComponent;
 /**
  *
@@ -86,7 +86,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void ApplyOnMainCharacter();
 
-	virtual void Apply(AProgGameplayProtoCharacter* Character, UWeaponComponent* Weapon);
+	virtual void Apply(APlayerCharacter* Character, UWeaponComponent* Weapon);
 
-	virtual void ApplyEffects(AProgGameplayProtoCharacter* Character, UWeaponComponent* Weapon);
+	virtual void ApplyEffects(APlayerCharacter* Character, UWeaponComponent* Weapon);
 };

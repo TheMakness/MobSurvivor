@@ -36,7 +36,6 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
 
-public:
 	virtual void HitByProjectile(AWeaponProjectile* Projectile) override;
 	virtual void HitByAttack(float Damages, AActor* Attacker);
 	virtual void AddHealth(float Amount);
@@ -47,4 +46,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	virtual float GetCurrentHealthPercentage();
+
+	void SetMaxHealth(float NewMaxHealth);
 };

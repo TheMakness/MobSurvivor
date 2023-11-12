@@ -3,7 +3,7 @@
 
 #include "WeaponComponent.h"
 #include "ProgGameplayProto/Weapons/WeaponData.h"
-#include "ProgGameplayProto/ProgGameplayProtoCharacter.h"
+#include "ProgGameplayProto/Player/PlayerCharacter.h"
 #include "ProgGameplayProto/Weapons/WeaponProjectile.h"
 #include "Kismet/GameplayStatics.h"
 #include "ProgGameplayProto/Effects/ProjectileEffect.h"
@@ -37,7 +37,7 @@ void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	TryShooting(DeltaTime);
 }
 
-void UWeaponComponent::InitializeWeapon(AProgGameplayProtoCharacter* NewCharacter)
+void UWeaponComponent::InitializeWeapon(APlayerCharacter* NewCharacter)
 {
 	Character = NewCharacter;
 }

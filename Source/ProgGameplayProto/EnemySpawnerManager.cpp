@@ -6,7 +6,7 @@
 #include "EnemySpawnRule.h"
 #include "GameLevelData.h"
 #include "GameUtils.h"
-#include "ProgGameplayProtoCharacter.h"
+#include "Player/PlayerCharacter.h"
 #include "ProgGameplayProtoGameMode.h"
 #include "ProgGameplayProtoGameState.h"
 #include "Kismet/GameplayStatics.h"

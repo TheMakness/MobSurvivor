@@ -6,7 +6,7 @@
 #include "Components/CapsuleComponent.h"
 #include "ProgGameplayProto/GameUtils.h"
 #include "ProgGameplayProto/Health.h"
-#include "ProgGameplayProto/ProgGameplayProtoCharacter.h"
+#include "ProgGameplayProto/Player/PlayerCharacter.h"
 #include "ProgGameplayProto/Drops/EnemyDropperComponent.h"
 
 // Sets default values
@@ -34,7 +34,7 @@ void AEnemy::BeginPlay()
 
 void AEnemy::MoveTowardPlayer(float DeltaTime)
 {
-	const AProgGameplayProtoCharacter* player = UGameUtils::GetMainCharacter();
+	const APlayerCharacter* player = UGameUtils::GetMainCharacter();
 
 	if (!IsValid(player)) return;
 
@@ -69,7 +69,7 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AEnemy::TryAttacking(AActor* Target)
 {
-	if (!Target->IsA(AProgGameplayProtoCharacter::StaticClass())) return;
+	if (!Target->IsA(APlayerCharacter::StaticClass())) return;
 
 	UHealth* targetHealth = Target->FindComponentByClass<UHealth>();
 

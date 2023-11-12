@@ -3,9 +3,9 @@
 
 #include "GameUtils.h"
 
-#include "ProgGameplayProtoCharacter.h"
+#include "Player/PlayerCharacter.h"
 
-AProgGameplayProtoCharacter* UGameUtils::GetMainCharacter()
+APlayerCharacter* UGameUtils::GetMainCharacter()
 {
-	return AProgGameplayProtoCharacter::Instance;
+	return APlayerCharacter::Instance;
 }
