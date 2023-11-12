@@ -10,6 +10,8 @@
 class USphereComponent;
 class UExperienceComponent;
 class UHealth;
+class UPowerComponent;
+class APower;
 class UBonusData;
 class USpringArmComponent;
 class UCameraComponent;
@@ -39,7 +41,7 @@ class AProgGameplayProtoCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;
 
-	/** Jump Input Action */
+	/** UsePower Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* JumpAction;
 
@@ -87,8 +89,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UWeaponComponent* Weapon;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPowerComponent* Power;
+
 	bool bIsHoldingShoot = false;
 	bool bIsAutoFire = false;
+
+private:
+	APower* PowerInstance;
 
 protected:
 
@@ -101,6 +109,7 @@ protected:
 
 	void AutoFire(const FInputActionValue& Value);
 
+	void UsePower(const FInputActionValue& Value);
 
 protected:
 	// APawn interface

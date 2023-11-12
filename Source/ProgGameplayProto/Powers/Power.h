@@ -14,13 +14,13 @@ class PROGGAMEPLAYPROTO_API APower : public AActor
 public:	
 	// Sets default values for this actor's properties
 	APower();
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Use();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UFUNCTION(BlueprintCallable)
-	virtual void Use();
 
 private:
 	void Cooldown(float DeltaTime);
@@ -34,8 +34,10 @@ public:
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	float CountdownStartValue;
-
+	
 protected:
-	float Countdown;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		float Countdown;
+	UPROPERTY(BlueprintReadOnly)
 	bool IsCountdownStart;
 };

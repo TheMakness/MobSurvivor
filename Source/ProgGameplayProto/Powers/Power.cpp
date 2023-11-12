@@ -6,22 +6,21 @@
 // Sets default values
 APower::APower()
 {
-
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	IsCountdownStart = false;
-	CountdownStartValue = 1;
+	CountdownStartValue = 10;
 	Countdown = CountdownStartValue;
-
 }
 
 // Called when the game starts or when spawned
 void APower::BeginPlay()
 {
 	Super::BeginPlay();
+	Countdown = CountdownStartValue;
 }
 
-void APower::Use()
+void APower::Use_Implementation()
 {
 	//Cannot Use if Cooldown is not finish
 	if (IsCountdownStart) 
