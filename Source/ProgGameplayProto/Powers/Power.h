@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Power.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class PROGGAMEPLAYPROTO_API APower : public AActor
 {
 	GENERATED_BODY()
