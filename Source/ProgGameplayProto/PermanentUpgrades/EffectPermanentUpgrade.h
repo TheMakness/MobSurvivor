@@ -8,14 +8,28 @@
 
 class APlayerCharacter;
 /**
- * Permanent Upgrade that are just effect modified applied to the player character when a new game is started
+ * Permanent Upgrade that affect player stats and effects like health, shield, etc.
  */
-UCLASS(BlueprintType)
+UCLASS(Abstract, Blueprintable, BlueprintType)
 class PROGGAMEPLAYPROTO_API UEffectPermanentUpgrade : public UBasePermanentUpgrade
 {
 	GENERATED_BODY()
 
+protected:
+	UpgradeType Type = UpgradeType::Effect;
+	
 public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void ApplyUpgrade(APlayerCharacter* Player);
+
+	friend bool operator==(const UEffectPermanentUpgrade& Lhs, const UEffectPermanentUpgrade& RHS)
+	{
+		return static_cast<const UBasePermanentUpgrade&>(Lhs) == static_cast<const UBasePermanentUpgrade&>(RHS)
+			&& Lhs.Type == RHS.Type;
+	}
+
+	friend bool operator!=(const UEffectPermanentUpgrade& Lhs, const UEffectPermanentUpgrade& RHS)
+	{
+		return !(Lhs == RHS);
+	}
 };

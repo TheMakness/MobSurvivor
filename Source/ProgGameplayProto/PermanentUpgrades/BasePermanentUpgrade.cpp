@@ -2,3 +2,13 @@
 
 
 #include "BasePermanentUpgrade.h"
+
+bool UBasePermanentUpgrade::IsPurchasable() const
+{
+	return bIsPurchasable;
+}
+
+bool UBasePermanentUpgrade::IsPurchased() const
+{
+	return bIsPurchased;
+}
