@@ -105,8 +105,7 @@ protected:
 	bool bIsAutoFire = false;
 
 private:
-	UPROPERTY()
-	APower* PowerInstance;
+	TObjectPtr<APower> PowerInstance;
 
 protected:
 

@@ -10,10 +10,16 @@ class UProjectileEffect;
 class USphereComponent;
 class UStaticMeshComponent;
 
+enum ProjectileOwner
+{
+	Enemy,
+	Player,
+};
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FProjectileHitDelegate, AWeaponProjectile*, Projectile, FVector, HitLocation, FVector, OriginLocation);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProjectileDestroyDelegate, AWeaponProjectile*, Projectile);
 
-UCLASS()
+UCLASS(Abstract)
 class PROGGAMEPLAYPROTO_API AWeaponProjectile : public AActor
 {
 	GENERATED_BODY()
@@ -21,7 +27,7 @@ class PROGGAMEPLAYPROTO_API AWeaponProjectile : public AActor
 public:
 	// Sets default values for this actor's properties
 	AWeaponProjectile();
-
+	ProjectileOwner Owner;
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USphereComponent* Collision;
@@ -65,7 +71,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void SetParameters(float NewSize, float NewRange, float NewSpeed, float NewBaseDamages, float NewCriticalHitChance, float NewCriticalHitMultiplier);
+	virtual void SetParameters(ProjectileOwner NewOwner, float NewSize, float NewRange, float NewSpeed, float NewBaseDamages, float NewCriticalHitChance, float NewCriticalHitMultiplier);
 
 	virtual void MoveProjectile(float DeltaTime);
 

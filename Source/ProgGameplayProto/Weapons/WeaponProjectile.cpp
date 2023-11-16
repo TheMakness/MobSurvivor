@@ -4,7 +4,9 @@
 #include "WeaponProjectile.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "GameFramework/Character.h"
 #include "ProgGameplayProto/ProjectileInteraction.h"
+#include "ProgGameplayProto/Enemies/Enemy.h"
 
 // Sets default values
 AWeaponProjectile::AWeaponProjectile()
@@ -34,8 +36,9 @@ void AWeaponProjectile::Tick(float DeltaTime)
 	MoveProjectile(DeltaTime);
 }
 
-void AWeaponProjectile::SetParameters(float NewSize, float NewRange, float NewSpeed, float NewBaseDamages, float NewCriticalHitChance, float NewCriticalHitMultiplier)
+void AWeaponProjectile::SetParameters(ProjectileOwner NewOwner,float NewSize, float NewRange, float NewSpeed, float NewBaseDamages, float NewCriticalHitChance, float NewCriticalHitMultiplier)
 {
+	Owner = NewOwner;
 	Size = NewSize;
 	Range = NewRange;
 	Speed = NewSpeed;
@@ -69,6 +72,7 @@ void AWeaponProjectile::CheckForCollisionsAfterMovement(const FVector OriginLoca
 	const FCollisionShape shape = FCollisionShape::MakeSphere(Collision->GetScaledSphereRadius());
 	FCollisionQueryParams params;
 	params.AddIgnoredActor(this);
+	
 	GetWorld()->SweepMultiByChannel(outHits, OriginLocation, GetActorLocation(), FQuat::Identity, ECollisionChannel::ECC_Visibility, shape, params);
 
 	for (int i = 0; i < outHits.Num(); i++)
@@ -76,6 +80,18 @@ void AWeaponProjectile::CheckForCollisionsAfterMovement(const FVector OriginLoca
 		if (IsValid(LastActorHit))
 		{
 			if (LastActorHit == outHits[i].GetActor()) continue;
+
+		}
+
+		switch (Owner)
+		{
+		case Enemy:
+			if (Cast<AEnemy>(outHits[i].GetActor())) continue;
+			break;
+		case Player:
+			if (Cast<ACharacter>(outHits[i].GetActor())) continue;
+			break;
+		default:;
 		}
 
 		HitSomething(outHits[i].GetActor(), outHits[i].Location, OriginLocation);
