@@ -127,6 +127,7 @@ float UWeaponComponentEnemy::GetProjectileRange()
 	return output;
 }
 
+
 float UWeaponComponentEnemy::GetProjectileSpeed()
 {
 	if (!IsValid(WeaponDataEnemy)) return 0.0f;
@@ -177,7 +178,7 @@ float UWeaponComponentEnemy::GetPlayerDistanceSquared()
 
 bool UWeaponComponentEnemy::CheckDistance()
 {
-	return GetPlayerDistanceSquared() < (WeaponDataEnemy->MaxShootDistance) * (WeaponDataEnemy->MaxShootDistance);
+	return GetPlayerDistanceSquared() < (WeaponDataEnemy->MaxShootDistance) * (WeaponDataEnemy->MaxShootDistance) - GetRandomDistanceOffset() * GetRandomDistanceOffset();
 }
 
 float UWeaponComponentEnemy::GetCriticalHitChance()
@@ -195,6 +196,16 @@ float UWeaponComponentEnemy::GetCriticalHitDamagesMultiplier()
 	output = FMath::Max(1, output);
 
 	return output;
+}
+
+float UWeaponComponentEnemy::GetRandomShootDelay()
+{
+	return FMath::RandRange(WeaponDataEnemy->RandomOffsetDelay.X, WeaponDataEnemy->RandomOffsetDelay.Y);
+}
+
+float UWeaponComponentEnemy::GetRandomDistanceOffset()
+{
+	return FMath::RandRange(WeaponDataEnemy->RandomOffsetDistance.X, WeaponDataEnemy->RandomOffsetDistance.Y);
 }
 
 
@@ -218,7 +229,7 @@ void UWeaponComponentEnemy::TryShooting(float DeltaTime)
 	TimeElapsedSinceLastShoot += DeltaTime;
 	if(!WeaponDataEnemy) return;
 	if(!CheckDistance()) return;
-	if (TimeElapsedSinceLastShoot >= GetShootDelay())
+	if (TimeElapsedSinceLastShoot >= GetShootDelay() + GetRandomShootDelay())
 	{
 		Shoot();
 	}

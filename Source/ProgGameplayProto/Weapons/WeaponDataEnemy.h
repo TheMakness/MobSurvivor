@@ -16,5 +16,9 @@ class PROGGAMEPLAYPROTO_API UWeaponDataEnemy : public UWeaponData
 public:
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon Data|ShooterParameter")
 		float MaxShootDistance = 2;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon Data|ShooterParameter")
+		FVector2f RandomOffsetDelay = FVector2f(0,1);
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon Data|ShooterParameter")
+		FVector2f RandomOffsetDistance = FVector2f(0,1);
 
 };

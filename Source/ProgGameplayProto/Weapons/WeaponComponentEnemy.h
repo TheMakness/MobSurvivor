@@ -51,6 +51,8 @@ protected:
 	virtual bool CheckDistance();
 	virtual float GetCriticalHitChance();
 	virtual float GetCriticalHitDamagesMultiplier();
+	virtual float GetRandomShootDelay();
+	virtual float GetRandomDistanceOffset();
 
 public:	
 	// Called every frame
@@ -63,7 +65,6 @@ public:
 	virtual void SetData(UWeaponDataEnemy* Data) { WeaponDataEnemy = Data; }
 
 public:
-	float MaxShootDistance = 0;
 	float BonusFireRate = 0;
 	float BonusFireRateMultiplier = 0;
 	float BonusNumberOfShots = 0;
