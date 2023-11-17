@@ -4,7 +4,6 @@
 #include "MobSurvivorPlayerState.h"
 
 #include "ProgGameplayProto/PermanentUpgrades/EffectPermanentUpgrade.h"
-#include "ProgGameplayProto/PermanentUpgrades/PowerPermanentUpgrade.h"
 #include "ProgGameplayProto/PermanentUpgrades/WeaponPermanentUpgrade.h"
 #include "ProgGameplayProto/Powers/Power.h"
 
