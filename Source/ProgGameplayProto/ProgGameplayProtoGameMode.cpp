@@ -15,6 +15,7 @@ AProgGameplayProtoGameMode::AProgGameplayProtoGameMode()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
+
 }
 
 void AProgGameplayProtoGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
