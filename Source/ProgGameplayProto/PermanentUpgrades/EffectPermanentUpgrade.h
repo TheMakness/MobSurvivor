@@ -14,9 +14,6 @@ UCLASS(Abstract, Blueprintable, BlueprintType)
 class PROGGAMEPLAYPROTO_API UEffectPermanentUpgrade : public UBasePermanentUpgrade
 {
 	GENERATED_BODY()
-
-protected:
-	UpgradeType Type = UpgradeType::Effect;
 	
 public:
 	UFUNCTION(BlueprintImplementableEvent)

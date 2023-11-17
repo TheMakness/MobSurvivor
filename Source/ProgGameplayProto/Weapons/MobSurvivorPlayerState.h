@@ -32,6 +32,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetPower(const TSubclassOf<APower> NewPower);
 
+	UFUNCTION(BlueprintCallable)
+	bool IsWeaponEquipped(UWeaponData* WeaponToCheck) const;
+
+	UFUNCTION(BlueprintCallable)
+	bool IsPowerEquipped(const TSubclassOf<APower> PowerToCheck) const;
+
+	UFUNCTION(BlueprintCallable)
+	bool IsStatUpgradeEquipped(UEffectPermanentUpgrade* Upgrade) const;
+
 protected:
 	TArray<UEffectPermanentUpgrade*> EnabledStatUpgrades;
 

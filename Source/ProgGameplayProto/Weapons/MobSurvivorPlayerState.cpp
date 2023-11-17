@@ -6,6 +6,7 @@
 #include "ProgGameplayProto/PermanentUpgrades/EffectPermanentUpgrade.h"
 #include "ProgGameplayProto/PermanentUpgrades/PowerPermanentUpgrade.h"
 #include "ProgGameplayProto/PermanentUpgrades/WeaponPermanentUpgrade.h"
+#include "ProgGameplayProto/Powers/Power.h"
 
 void AMobSurvivorPlayerState::AddStatUpgrade(UEffectPermanentUpgrade* Upgrade)
 {
@@ -25,4 +26,16 @@ void AMobSurvivorPlayerState::SetWeapon(UWeaponData* NewWeapon)
 void AMobSurvivorPlayerState::SetPower(const TSubclassOf<APower> NewPower)
 {
 	Power = NewPower;
+}
+bool AMobSurvivorPlayerState::IsWeaponEquipped(UWeaponData *WeaponToCheck) const
+{
+	return Weapon == WeaponToCheck;
+}
+bool AMobSurvivorPlayerState::IsPowerEquipped(const TSubclassOf<APower> PowerToCheck) const
+{
+	return Power == PowerToCheck;
+}
+bool AMobSurvivorPlayerState::IsStatUpgradeEquipped(UEffectPermanentUpgrade* Upgrade) const
+{
+	return EnabledStatUpgrades.Contains(Upgrade);
 }
