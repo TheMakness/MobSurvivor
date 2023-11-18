@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "ProgGameplayProto/ProjectileInteraction.h"
 #include "ProgGameplayProto/Enemies/Enemy.h"
+#define COLLISION_WEAPON ECC_GameTraceChannel2
 
 // Sets default values
 AWeaponProjectile::AWeaponProjectile()
@@ -73,7 +74,7 @@ void AWeaponProjectile::CheckForCollisionsAfterMovement(const FVector OriginLoca
 	FCollisionQueryParams params;
 	params.AddIgnoredActor(this);
 	
-	GetWorld()->SweepMultiByChannel(outHits, OriginLocation, GetActorLocation(), FQuat::Identity, ECollisionChannel::ECC_Visibility, shape, params);
+	GetWorld()->SweepMultiByChannel(outHits, OriginLocation, GetActorLocation(), FQuat::Identity, COLLISION_WEAPON, shape, params);
 
 	for (int i = 0; i < outHits.Num(); i++)
 	{
