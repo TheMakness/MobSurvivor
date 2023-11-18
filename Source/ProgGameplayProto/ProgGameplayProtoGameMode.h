@@ -33,4 +33,10 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	virtual void StartGame();
+
+	UFUNCTION(BlueprintCallable)
+	virtual void ReturnToMainMenu();
+public:
+	UFUNCTION()
+	virtual void GameOver();
 };

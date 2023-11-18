@@ -5,6 +5,7 @@
 #include "BonusManager.h"
 #include "EnemySpawnerManager.h"
 #include "ProgGameplayProtoGameState.h"
+#include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
 AProgGameplayProtoGameMode::AProgGameplayProtoGameMode()
@@ -30,4 +31,14 @@ void AProgGameplayProtoGameMode::StartGame()
 	BonusManager = GetWorld()->SpawnActor<ABonusManager>();
 	
 	GetGameState<AProgGameplayProtoGameState>()->SetGameStarted(true);
+}
+
+void AProgGameplayProtoGameMode::ReturnToMainMenu()
+{
+	UGameplayStatics::OpenLevel(GetWorld(), "MainLevel");
+}
+
+void AProgGameplayProtoGameMode::GameOver()
+{
+	ReturnToMainMenu();
 }

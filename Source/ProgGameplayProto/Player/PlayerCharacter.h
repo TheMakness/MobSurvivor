@@ -116,6 +116,8 @@ protected:
 
 	void UsePower(const FInputActionValue& Value);
 
+	void Die();
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

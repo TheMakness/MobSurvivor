@@ -24,6 +24,8 @@
 #include "../Weapons/WeaponProjectile.h"
 #include "../Powers/Power.h"
 #include "../Powers/PowerComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "ProgGameplayProto/ProgGameplayProtoGameMode.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -124,6 +126,8 @@ void APlayerCharacter::BeginPlay()
 	PowerInstance = GetWorld()->SpawnActor<APower>(Power->CurrentPower,UGameUtils::GetMainCharacter()->GetActorLocation(), UGameUtils::GetMainCharacter()->GetActorRotation(),SpawnInfo);
 	PowerInstance->AttachToActor(UGameUtils::GetMainCharacter(), FAttachmentTransformRules::KeepRelativeTransform,NAME_Actor);
 	DropsCollector->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnDropsCollectorBeginOverlap);
+
+	Health->OnHealthDie.AddDynamic(this,&APlayerCharacter::Die);
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
@@ -214,4 +218,9 @@ void APlayerCharacter::UsePower(const FInputActionValue& Value)
 void APlayerCharacter::AutoFire(const FInputActionValue& Value)
 {
 	bIsAutoFire = !bIsAutoFire;
+}
+
+void APlayerCharacter::Die()
+{
+	Cast<AProgGameplayProtoGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->GameOver();
 }
