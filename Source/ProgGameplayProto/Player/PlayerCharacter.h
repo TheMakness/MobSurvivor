@@ -116,6 +116,7 @@ protected:
 
 	void UsePower(const FInputActionValue& Value);
 
+	UFUNCTION()
 	void Die();
 
 protected:
