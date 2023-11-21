@@ -8,6 +8,7 @@
 #include "Logging/LogMacros.h"
 #include "PlayerCharacter.generated.h"
 
+class UGoldComponent;
 class USphereComponent;
 class UExperienceComponent;
 class UHealth;
@@ -97,10 +98,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UPermanentUpgradeComponent* PermanentUpgrade;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UGoldComponent* Gold;
+
 	bool bIsHoldingShoot = false;
 	bool bIsAutoFire = false;
 
 private:
+	UPROPERTY()
 	APower* PowerInstance;
 
 protected:
@@ -143,5 +148,6 @@ public:
 	FORCEINLINE UWeaponComponent* GetWeapon() const { return Weapon; }
 
 	FORCEINLINE UHealth* GetHealth() const { return Health; }
+	FORCEINLINE UGoldComponent* GetGold() const { return Gold; }
 };
 

@@ -25,6 +25,7 @@
 #include "../Powers/Power.h"
 #include "../Powers/PowerComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "ProgGameplayProto/GoldComponent.h"
 #include "ProgGameplayProto/ProgGameplayProtoGameMode.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -82,6 +83,8 @@ APlayerCharacter::APlayerCharacter()
 	DropsCollector->SetupAttachment(GetCapsuleComponent());
 
 	PermanentUpgrade = CreateDefaultSubobject<UPermanentUpgradeComponent>("Permanent Upgrade");
+
+	Gold = CreateDefaultSubobject<UGoldComponent>("Gold");
 }
 
 bool APlayerCharacter::WantsToShoot()
