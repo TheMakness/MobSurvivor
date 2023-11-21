@@ -8,7 +8,7 @@
 #include "WeaponPermanentUpgrade.generated.h"
 
 /**
- * 
+ * Type of Permanent Upgrade that hold a Weapon
  */
 UCLASS(Abstract, Blueprintable)
 class PROGGAMEPLAYPROTO_API UWeaponPermanentUpgrade : public UBasePermanentUpgrade

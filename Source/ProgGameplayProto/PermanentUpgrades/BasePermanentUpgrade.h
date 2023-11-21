@@ -8,16 +8,8 @@
 
 class UPermanentUpgradeData;
 
-enum class UpgradeType
-{
-	Base,
-	Effect,
-	Power,
-	Weapon,
-};
-
 /**
- * 
+ * Base class of permanent upgrades, hold data relevant to every upgrades
  */
 UCLASS(Abstract, Blueprintable)
 class PROGGAMEPLAYPROTO_API UBasePermanentUpgrade : public UObject
@@ -28,13 +20,21 @@ public:
 	bool IsPurchasable() const;
 	bool IsPurchased() const;
 
+	int GetBaseCost() const;
+
+	/**
+	 * Calculate the cost according to current level of the upgrade and its cost multiplier
+	 * @return Calculated cost
+	 */
+	virtual int CalculateCost() const;
+
 protected:
-	UpgradeType Type = UpgradeType::Base;
 	
 	// Display name of the permanent upgrade, displayed in the shop menu
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString Name;
-	
+
+	// Logo to display in the Shop UI
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UTexture2D* Logo;
 
@@ -42,7 +42,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Cost;
 
-	// TODO add multiplier of the cost per level
+	// Multiply the base cost of the upgrade according to its level
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int CostMultiplierPerLevel = 1;
+
+	// Current level of the upgrade
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Level = 1; 
 	
 	// Maximum level for the upgrade
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -56,8 +62,7 @@ protected:
 
 	friend bool operator==(const UBasePermanentUpgrade& Lhs, const UBasePermanentUpgrade& RHS)
 	{
-		return Lhs.Type == RHS.Type
-			&& Lhs.Name == RHS.Name
+		return Lhs.Name == RHS.Name
 			&& Lhs.Logo == RHS.Logo
 			&& Lhs.Cost == RHS.Cost
 			&& Lhs.MaxLevel == RHS.MaxLevel

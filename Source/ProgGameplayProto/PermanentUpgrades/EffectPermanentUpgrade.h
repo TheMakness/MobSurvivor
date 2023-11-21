@@ -16,13 +16,16 @@ class PROGGAMEPLAYPROTO_API UEffectPermanentUpgrade : public UBasePermanentUpgra
 	GENERATED_BODY()
 	
 public:
+	/**
+	 * Apply an upgrade on player
+	 * @param Player The player to apply the upgrade on
+	 */
 	UFUNCTION(BlueprintImplementableEvent)
 	void ApplyUpgrade(APlayerCharacter* Player);
 
 	friend bool operator==(const UEffectPermanentUpgrade& Lhs, const UEffectPermanentUpgrade& RHS)
 	{
-		return static_cast<const UBasePermanentUpgrade&>(Lhs) == static_cast<const UBasePermanentUpgrade&>(RHS)
-			&& Lhs.Type == RHS.Type;
+		return static_cast<const UBasePermanentUpgrade&>(Lhs) == static_cast<const UBasePermanentUpgrade&>(RHS);
 	}
 
 	friend bool operator!=(const UEffectPermanentUpgrade& Lhs, const UEffectPermanentUpgrade& RHS)

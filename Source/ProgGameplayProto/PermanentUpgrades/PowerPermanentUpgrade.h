@@ -8,7 +8,7 @@
 
 class APower;
 /**
- * 
+ * Type of Permanent Upgrade that holds a Power
  */
 UCLASS(Abstract, Blueprintable)
 class PROGGAMEPLAYPROTO_API UPowerPermanentUpgrade : public UBasePermanentUpgrade

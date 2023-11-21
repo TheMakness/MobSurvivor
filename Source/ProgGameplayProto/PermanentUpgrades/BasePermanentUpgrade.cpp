@@ -12,3 +12,12 @@ bool UBasePermanentUpgrade::IsPurchased() const
 {
 	return bIsPurchased;
 }
+int UBasePermanentUpgrade::GetBaseCost() const
+{
+	return Cost;
+}
+
+int UBasePermanentUpgrade::CalculateCost() const
+{
+	return Level * (Cost * CostMultiplierPerLevel);
+}
