@@ -25,7 +25,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	TArray<FRangeEnemySpawnRule> RangeSpawnRules;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TArray<UBonusData*> Bonuses;
 
 	// Time-limit duration of the level in minutes

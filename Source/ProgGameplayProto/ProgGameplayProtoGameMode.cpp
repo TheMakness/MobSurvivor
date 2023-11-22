@@ -40,5 +40,6 @@ void AProgGameplayProtoGameMode::ReturnToMainMenu()
 
 void AProgGameplayProtoGameMode::GameOver()
 {
+	OnBeforeGameOver.Broadcast();
 	ReturnToMainMenu();
 }

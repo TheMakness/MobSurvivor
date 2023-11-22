@@ -10,6 +10,8 @@ class ABonusManager;
 class AEnemySpawnerManager;
 class UGameLevelData;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBeforeGameOver);
+
 UCLASS(minimalapi)
 class AProgGameplayProtoGameMode : public AGameModeBase
 {
@@ -36,7 +38,11 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	virtual void ReturnToMainMenu();
+
+	
 public:
 	UFUNCTION()
 	virtual void GameOver();
+	UPROPERTY()
+		FOnBeforeGameOver OnBeforeGameOver;
 };

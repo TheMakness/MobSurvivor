@@ -18,4 +18,15 @@ class PROGGAMEPLAYPROTO_API UMobSurvivorInstance : public 	UGameInstance
 public:
 	UPROPERTY(BlueprintReadWrite)
 	UGameLevelData* DA_Level;
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE int GetGoldAmount() const { return GoldAmount; };
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void AddGold(int NewGold);
+
+private:
+	int GoldAmount;
+	
+	
 };

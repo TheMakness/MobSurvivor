@@ -25,7 +25,9 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-	
+	//Save gold amount into game instance
+	UFUNCTION()
+	virtual void SaveGold();
 private:
 		int GoldAmount;
 

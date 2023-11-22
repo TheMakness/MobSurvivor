@@ -2,3 +2,9 @@
 
 
 #include "MobSurvivorInstance.h"
+
+
+void UMobSurvivorInstance::AddGold(int NewGold)
+{
+	GoldAmount += NewGold;
+}
