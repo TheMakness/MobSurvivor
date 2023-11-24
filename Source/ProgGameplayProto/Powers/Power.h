@@ -14,6 +14,7 @@ class PROGGAMEPLAYPROTO_API APower : public AActor
 public:	
 	// Sets default values for this actor's properties
 	APower();
+	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Use();
 

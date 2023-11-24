@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "PermanentUpgradeComponent.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 #include "PlayerCharacter.generated.h"
@@ -94,9 +93,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UPowerComponent* Power;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UPermanentUpgradeComponent* PermanentUpgrade;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UGoldComponent* Gold;

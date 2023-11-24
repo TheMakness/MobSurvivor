@@ -4,17 +4,25 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "ProgGameplayProto/PermanentUpgrades/PermanentUpgradeData.h"
 #include "WeaponData.generated.h"
+
+class UPermanentUpgradeData;
 
 /**
  *
  */
 UCLASS()
-class PROGGAMEPLAYPROTO_API UWeaponData : public UDataAsset
+class PROGGAMEPLAYPROTO_API UWeaponData : public UPermanentUpgradeData
 {
 	GENERATED_BODY()
 
 public:
+	FORCEINLINE virtual EType GetType() const override
+	{
+		return Type;
+	}
+	
 	//number of shots / seconds
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon Data|General")
 	float FireRate = 1;
@@ -76,4 +84,37 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon Data|Criticals")
 	float CriticalHitDamageMultiplier = 2;
+
+private:
+	UPROPERTY(VisibleAnywhere)
+	TEnumAsByte<EType> Type = EType::Weapon;
+
+	friend bool operator==(const UWeaponData& Lhs, const UWeaponData& RHS)
+	{
+		return static_cast<const UPermanentUpgradeData&>(Lhs) == static_cast<const UPermanentUpgradeData&>(RHS)
+			&& Lhs.FireRate == RHS.FireRate
+			&& Lhs.FireRateMultiplier == RHS.FireRateMultiplier
+			&& Lhs.NumberOfShots == RHS.NumberOfShots
+			&& Lhs.NumberOfShotsMultiplier == RHS.NumberOfShotsMultiplier
+			&& Lhs.Precision == RHS.Precision
+			&& Lhs.PrecisionMultiplier == RHS.PrecisionMultiplier
+			&& Lhs.Spread == RHS.Spread
+			&& Lhs.SpreadMultiplier == RHS.SpreadMultiplier
+			&& Lhs.Damages == RHS.Damages
+			&& Lhs.DamagesMultiplier == RHS.DamagesMultiplier
+			&& Lhs.ProjectileSize == RHS.ProjectileSize
+			&& Lhs.ProjectileSizeMultiplier == RHS.ProjectileSizeMultiplier
+			&& Lhs.Range == RHS.Range
+			&& Lhs.RangeMultiplier == RHS.RangeMultiplier
+			&& Lhs.ProjectileSpeed == RHS.ProjectileSpeed
+			&& Lhs.ProjectileSpeedMultiplier == RHS.ProjectileSpeedMultiplier
+			&& Lhs.CriticalHitChance == RHS.CriticalHitChance
+			&& Lhs.CriticalHitChanceMultiplier == RHS.CriticalHitChanceMultiplier
+			&& Lhs.CriticalHitDamageMultiplier == RHS.CriticalHitDamageMultiplier;
+	}
+
+	friend bool operator!=(const UWeaponData& Lhs, const UWeaponData& RHS)
+	{
+		return !(Lhs == RHS);
+	}
 };

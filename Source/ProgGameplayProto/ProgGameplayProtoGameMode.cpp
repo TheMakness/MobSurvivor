@@ -5,6 +5,7 @@
 #include "BonusManager.h"
 #include "EnemySpawnerManager.h"
 #include "ProgGameplayProtoGameState.h"
+#include "UpgradesManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 

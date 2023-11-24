@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "ProgGameplayProtoGameMode.generated.h"
 
+class AUpgradesManager;
 class ABonusManager;
 class AEnemySpawnerManager;
 class UGameLevelData;
@@ -29,6 +30,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	ABonusManager* BonusManager = nullptr;
+
+	UPROPERTY(BlueprintReadOnly)
+	AUpgradesManager* UpgradesManager = nullptr;
 
 protected:
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;

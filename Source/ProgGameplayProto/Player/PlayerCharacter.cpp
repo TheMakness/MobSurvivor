@@ -82,8 +82,6 @@ APlayerCharacter::APlayerCharacter()
 	DropsCollector = CreateDefaultSubobject<USphereComponent>("Drops Collector");
 	DropsCollector->SetupAttachment(GetCapsuleComponent());
 
-	PermanentUpgrade = CreateDefaultSubobject<UPermanentUpgradeComponent>("Permanent Upgrade");
-
 	Gold = CreateDefaultSubobject<UGoldComponent>("Gold");
 }
 
