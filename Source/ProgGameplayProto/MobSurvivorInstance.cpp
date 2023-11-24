@@ -8,3 +8,8 @@ void UMobSurvivorInstance::AddGold(int NewGold)
 {
 	GoldAmount += NewGold;
 }
+
+void UMobSurvivorInstance::SwitchAreadyLoadState()
+{
+	bHasAlreadyLoadSave = true;
+}

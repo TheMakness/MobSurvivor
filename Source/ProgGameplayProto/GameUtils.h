@@ -21,4 +21,9 @@ class PROGGAMEPLAYPROTO_API UGameUtils : public UBlueprintFunctionLibrary
 public:
 	UFUNCTION(BlueprintPure, Category = "Manager")
 	static APlayerCharacter* GetMainCharacter();
+
+	UFUNCTION(BlueprintCallable)
+	static  void SaveGame(UObject* WorldContext);
+	UFUNCTION(BlueprintCallable)
+	static  bool LoadGame(UObject* WorldContext);
 };

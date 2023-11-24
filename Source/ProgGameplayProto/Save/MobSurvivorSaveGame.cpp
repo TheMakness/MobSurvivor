@@ -3,3 +3,9 @@
 
 #include "MobSurvivorSaveGame.h"
 
+UMobSurvivorSaveGame::UMobSurvivorSaveGame()
+{
+	GoldAmount = 0;
+	SaveSlotName = TEXT("InstanceSave");
+	Index = 0;
+}

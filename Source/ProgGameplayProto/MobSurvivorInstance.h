@@ -18,15 +18,25 @@ class PROGGAMEPLAYPROTO_API UMobSurvivorInstance : public 	UGameInstance
 public:
 	UPROPERTY(BlueprintReadWrite)
 	UGameLevelData* DA_Level;
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE int GetGoldAmount() const { return GoldAmount; };
+	
+
+	
 
 public:
 	UFUNCTION(BlueprintCallable)
 	void AddGold(int NewGold);
 
+	//True if save has been already loaded in this session
+	UFUNCTION(BlueprintCallable)
+	void SwitchAreadyLoadState();
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE bool GetAlreadyLoad() const { return bHasAlreadyLoadSave; }
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE int GetGoldAmount() const { return GoldAmount; }
 private:
 	int GoldAmount;
-	
+	bool bHasAlreadyLoadSave = false;
 	
 };
