@@ -3,14 +3,40 @@
 
 #include "UpgradesManager.h"
 
+#include "MobSurvivorInstance.h"
+#include "Kismet/GameplayStatics.h"
 #include "PermanentUpgrades/PermanentUpgrade.h"
+#include "PermanentUpgrades/PermanentUpgradeDataList.h"
 #include "PermanentUpgrades/PlayerStatsPUData.h"
 #include "PermanentUpgrades/PowerPUData.h"
 #include "Weapons/WeaponData.h"
 
-TArray<FPermanentUpgrade> AUpgradesManager::GetAllUpgrades() const
+AUpgradesManager::AUpgradesManager()
+{
+	static ConstructorHelpers::FObjectFinder<UPermanentUpgradeDataList> PermanentUpgradeList(TEXT("/Game/Data/PermanentUpgrades/DA_PermanentUpgradeList"));
+	if (PermanentUpgradeList.Succeeded())
+	{
+		DefaultsUpgrades = PermanentUpgradeList.Object;
+	}
+	SetAllUpgrades();
+}
+
+void AUpgradesManager::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}
+
+
+
+const TArray<FPermanentUpgrade>& AUpgradesManager::GetAllUpgrades() const
 {
 	return Upgrades;
+}
+
+void AUpgradesManager::SetAllUpgrades()
+{
+	Upgrades = DefaultsUpgrades->Upgrades;
 }
 
 void AUpgradesManager::EquipUpgrade(UPermanentUpgradeData* UpgradeToEquip)
@@ -71,6 +97,13 @@ void AUpgradesManager::BuyUpgrade(UPermanentUpgradeData* UpgradeToBuy)
 	{
 		return Item.Data == UpgradeToBuy;
 	});
-	
-	FoundUpgrade->bPurchased = true;
+
+	UMobSurvivorInstance* GI = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	if(IsValid(GI) && GI->GetGoldAmount() > UpgradeToBuy->Cost)
+	{
+		GI->AddGold(-UpgradeToBuy->Cost);
+		FoundUpgrade->bPurchased = true;
+	}
+		
 }

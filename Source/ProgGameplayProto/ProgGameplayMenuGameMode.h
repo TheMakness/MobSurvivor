@@ -13,4 +13,6 @@ UCLASS()
 class PROGGAMEPLAYPROTO_API AProgGameplayMenuGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
+	AProgGameplayMenuGameMode();
+	
 };

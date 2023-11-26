@@ -7,6 +7,7 @@
 void UMobSurvivorInstance::AddGold(int NewGold)
 {
 	GoldAmount += NewGold;
+	OnGoldChange.Broadcast();
 }
 
 void UMobSurvivorInstance::SwitchAreadyLoadState()

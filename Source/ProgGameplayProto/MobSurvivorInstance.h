@@ -6,6 +6,8 @@
 #include "UObject/Object.h"
 #include "MobSurvivorInstance.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGoldChange);
+
 class UGameLevelData;
 /**
  * 
@@ -18,7 +20,8 @@ class PROGGAMEPLAYPROTO_API UMobSurvivorInstance : public 	UGameInstance
 public:
 	UPROPERTY(BlueprintReadWrite)
 	UGameLevelData* DA_Level;
-	
+	UPROPERTY(BlueprintAssignable)
+	FOnGoldChange OnGoldChange;
 
 	
 
@@ -35,8 +38,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE int GetGoldAmount() const { return GoldAmount; }
+
 private:
 	int GoldAmount;
 	bool bHasAlreadyLoadSave = false;
-	
+
+
 };

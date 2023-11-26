@@ -6,6 +6,7 @@
 #include "GameFramework/SaveGame.h"
 #include "MobSurvivorSaveGame.generated.h"
 
+struct FPermanentUpgrade;
 class UMobSurvivorInstance;
 /**
  * 
@@ -19,6 +20,7 @@ public:
 	UPROPERTY()
 	int GoldAmount;
 	FString SaveSlotName;
+	TArray<FPermanentUpgrade>* PermanentUpgrades;
 
 protected:
 	int Index;

@@ -19,6 +19,7 @@ class AProgGameplayProtoGameMode : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	virtual void BeginPlay() override;
 	AProgGameplayProtoGameMode();
 
 public:

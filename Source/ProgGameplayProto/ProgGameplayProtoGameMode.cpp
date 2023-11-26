@@ -9,6 +9,11 @@
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
+void AProgGameplayProtoGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
 AProgGameplayProtoGameMode::AProgGameplayProtoGameMode()
 {
 	// set default pawn class to our Blueprinted character

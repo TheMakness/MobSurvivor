@@ -14,11 +14,11 @@ struct FPermanentUpgrade
 {
 	GENERATED_BODY()
 	
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UPermanentUpgradeData* Data; 
 
 	// Purchase state of the upgrade
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool bPurchased = false;
 
 	int CurrentLevel = 1;
