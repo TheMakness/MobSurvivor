@@ -18,7 +18,7 @@ AUpgradesManager::AUpgradesManager()
 	{
 		DefaultsUpgrades = PermanentUpgradeList.Object;
 	}
-	SetAllUpgrades();
+	LoadDefaultUpgrades();
 }
 
 void AUpgradesManager::BeginPlay()
@@ -34,9 +34,31 @@ const TArray<FPermanentUpgrade>& AUpgradesManager::GetAllUpgrades() const
 	return Upgrades;
 }
 
-void AUpgradesManager::SetAllUpgrades()
+
+void AUpgradesManager::LoadDefaultUpgrades()
 {
 	Upgrades = DefaultsUpgrades->Upgrades;
+}
+
+
+
+ void AUpgradesManager::LoadUpgradesFromSave(const TArray<FPermanentUpgrade>& LoadedUpgrades)
+{
+	
+	for (FPermanentUpgrade LoadUpgrade : LoadedUpgrades)
+	{
+		FPermanentUpgrade* FindUpgrade = Upgrades.FindByPredicate([&LoadUpgrade](const FPermanentUpgrade& Item) -> bool
+		{
+				return LoadUpgrade.Data == Item.Data
+			&& LoadUpgrade.bPurchased;
+		});
+
+		if (FindUpgrade != nullptr)
+		{
+			FindUpgrade->bPurchased = LoadUpgrade.bPurchased;
+		}
+	}
+	
 }
 
 void AUpgradesManager::EquipUpgrade(UPermanentUpgradeData* UpgradeToEquip)
@@ -90,6 +112,13 @@ TObjectPtr<UWeaponData> AUpgradesManager::GetEquippedWeapon() const
 {
 	return EquippedWeapon;
 }
+
+TObjectPtr<UPowerPUData> AUpgradesManager::GetEquippedPower() const
+{
+	return EquippedPower;
+}
+
+
 
 void AUpgradesManager::BuyUpgrade(UPermanentUpgradeData* UpgradeToBuy)
 {

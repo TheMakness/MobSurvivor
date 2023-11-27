@@ -6,6 +6,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "GameUtils.generated.h"
 
+
 class APlayerCharacter;
 
 /**
@@ -26,4 +27,8 @@ public:
 	static  void SaveGame(UObject* WorldContext);
 	UFUNCTION(BlueprintCallable)
 	static  bool LoadGame(UObject* WorldContext);
+	UFUNCTION(BlueprintCallable)
+	static  void DeleteSave();
+
+	
 };

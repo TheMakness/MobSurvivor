@@ -3,6 +3,7 @@
 
 #include "MobSurvivorSaveGame.h"
 
+
 UMobSurvivorSaveGame::UMobSurvivorSaveGame()
 {
 	GoldAmount = 0;

@@ -49,8 +49,10 @@ public:
 
 	TObjectPtr<UPowerPUData> GetEquippedPower() const;
 
+	void LoadUpgradesFromSave(const TArray<FPermanentUpgrade>& Upgrades);
+
 private:
-	void SetAllUpgrades();
+	void LoadDefaultUpgrades();
 	
 private:
 	// List of all available upgrades in the game. This array MUST be automatically populated
@@ -66,6 +68,6 @@ private:
 
 	
 	//Data assets that contains list of all upgrades in game.
-	
+	UPROPERTY()
 	TObjectPtr<UPermanentUpgradeDataList> DefaultsUpgrades;
 };

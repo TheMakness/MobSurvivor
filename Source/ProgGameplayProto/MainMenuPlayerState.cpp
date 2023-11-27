@@ -3,6 +3,7 @@
 
 #include "MainMenuPlayerState.h"
 
+#include "GameUtils.h"
 #include "UpgradesManager.h"
 #include "PermanentUpgrades/PlayerStatsPUData.h"
 
@@ -16,4 +17,5 @@ void AMainMenuPlayerState::BeginPlay()
 	Super::BeginPlay();
 	
 	UpgradesManager = GetWorld()->SpawnActor<AUpgradesManager>();
+	UGameUtils::LoadGame(GetWorld());
 }

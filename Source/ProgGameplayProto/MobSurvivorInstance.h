@@ -39,6 +39,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE int GetGoldAmount() const { return GoldAmount; }
 
+	UFUNCTION(BlueprintCallable)
+	void RemoveGold();
 private:
 	int GoldAmount;
 	bool bHasAlreadyLoadSave = false;

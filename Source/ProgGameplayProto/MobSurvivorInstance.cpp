@@ -14,3 +14,9 @@ void UMobSurvivorInstance::SwitchAreadyLoadState()
 {
 	bHasAlreadyLoadSave = true;
 }
+
+void UMobSurvivorInstance::RemoveGold()
+{
+	GoldAmount = 0;
+	OnGoldChange.Broadcast();
+}
