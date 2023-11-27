@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
 #include "PowerComponent.generated.h"
 
+class UPowerPUData;
 class APower;
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class PROGGAMEPLAYPROTO_API UPowerComponent : public UActorComponent
+UCLASS( Abstract, Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class PROGGAMEPLAYPROTO_API UPowerComponent : public USceneComponent
 {
 	GENERATED_BODY()
 
@@ -19,16 +19,37 @@ public:
 	UPowerComponent();
 
 protected:
-	// Called when the game starts
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	/**
+	 * Call the Behaviour implementation of the power only if the cooldown is finished
+	 */
+	UFUNCTION(BlueprintCallable)
+	void Use();
 
-public:
-	UPROPERTY(BlueprintReadWrite,EditAnywhere)
-	TSubclassOf<APower> CurrentPower;
-		
+protected:
+	/**
+	 * Actual behaviour implementation of the power. Override this method to give behaviour to the Power
+	 */
+	UFUNCTION(BlueprintNativeEvent)
+	void UseBehaviour();
+	
+	// Reference to the Power Data Asset class
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TObjectPtr<UPowerPUData> PowerData;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float Countdown;
+	
+	UPROPERTY(BlueprintReadOnly)
+	bool bHasCountdownStarted;
+
+private:
+	void Cooldown(float DeltaTime);
+
+	UPROPERTY(VisibleAnywhere)
+	float CountdownStartValue;
 };

@@ -2,7 +2,6 @@
 
 #include "PlayerCharacter.h"
 
-#include "DiffUtils.h"
 #include "Engine/LocalPlayer.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -27,6 +26,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "ProgGameplayProto/GoldComponent.h"
 #include "ProgGameplayProto/ProgGameplayProtoGameMode.h"
+#include "ProgGameplayProto/PermanentUpgrades/PowerPUData.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -77,8 +77,6 @@ APlayerCharacter::APlayerCharacter()
 
 	Experience = CreateDefaultSubobject<UExperienceComponent>("Experience");
 
-	Power = CreateDefaultSubobject<UPowerComponent>("Power");
-
 	DropsCollector = CreateDefaultSubobject<USphereComponent>("Drops Collector");
 	DropsCollector->SetupAttachment(GetCapsuleComponent());
 
@@ -101,7 +99,10 @@ void APlayerCharacter::SetupDefaultWeapon()
 	}
 }
 
-
+void APlayerCharacter::SetupDefaultPower()
+{
+	Power = Cast<UPowerComponent>(AddComponentByClass(DefaultPowerData->GetComponent(), false, this->GetTransform(), false));
+}
 
 void APlayerCharacter::BeginPlay()
 {
@@ -123,9 +124,11 @@ void APlayerCharacter::BeginPlay()
 	SetupDefaultWeapon();
 
 	//Setup Power
+	SetupDefaultPower();
+	
 	FActorSpawnParameters SpawnInfo;
-	PowerInstance = GetWorld()->SpawnActor<APower>(Power->CurrentPower,UGameUtils::GetMainCharacter()->GetActorLocation(), UGameUtils::GetMainCharacter()->GetActorRotation(),SpawnInfo);
-	PowerInstance->AttachToActor(UGameUtils::GetMainCharacter(), FAttachmentTransformRules::KeepRelativeTransform,NAME_Actor);
+//	PowerInstance = GetWorld()->SpawnActor<APower>(Power->CurrentPower,UGameUtils::GetMainCharacter()->GetActorLocation(), UGameUtils::GetMainCharacter()->GetActorRotation(),SpawnInfo);
+//	PowerInstance->AttachToActor(UGameUtils::GetMainCharacter(), FAttachmentTransformRules::KeepRelativeTransform,NAME_Actor);
 	DropsCollector->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnDropsCollectorBeginOverlap);
 
 	Health->OnHealthDie.AddDynamic(this,&APlayerCharacter::Die);
@@ -210,10 +213,13 @@ void APlayerCharacter::StopShoot(const FInputActionValue& Value)
 	bIsHoldingShoot = false;
 }
 
+// ReSharper disable once CppMemberFunctionMayBeConst
 void APlayerCharacter::UsePower(const FInputActionValue& Value)
 {
-	if(PowerInstance != nullptr)
-		PowerInstance->Use();
+	if (IsValid(Power))
+	{
+		Power->Use();
+	}
 }
 
 void APlayerCharacter::AutoFire(const FInputActionValue& Value)

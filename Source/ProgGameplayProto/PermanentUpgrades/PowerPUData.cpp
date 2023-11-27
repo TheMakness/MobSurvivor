@@ -2,3 +2,8 @@
 
 
 #include "PowerPUData.h"
+
+const TSubclassOf<UPowerComponent>& UPowerPUData::GetComponent() const
+{
+	return PowerComponent;
+}

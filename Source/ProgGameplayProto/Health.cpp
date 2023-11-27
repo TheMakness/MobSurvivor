@@ -23,6 +23,9 @@ void UHealth::HitByProjectile(AWeaponProjectile* Projectile)
 
 void UHealth::HitByAttack(float Damages, AActor* Attacker)
 {
+	// We don't want the attacker to deal damage to itself
+	if (Attacker == GetOwner()) return;
+	
 	AddHealth(-Damages);
 }
 

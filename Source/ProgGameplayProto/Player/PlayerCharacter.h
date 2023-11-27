@@ -7,6 +7,7 @@
 #include "Logging/LogMacros.h"
 #include "PlayerCharacter.generated.h"
 
+class UPowerPUData;
 class UGoldComponent;
 class USphereComponent;
 class UExperienceComponent;
@@ -70,7 +71,8 @@ public:
 
 	virtual bool WantsToShoot();
 	void SetupDefaultWeapon();
-	
+
+	void SetupDefaultPower();
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = WeaponData)
@@ -86,22 +88,22 @@ protected:
 	UWeaponData* DefaultWeaponData;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = WeaponData)
+	UPowerPUData* DefaultPowerData;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = WeaponData)
 	TArray<UBonusData*> DefaultBonuses;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UWeaponComponent* Weapon;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly)
 	UPowerComponent* Power;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UGoldComponent* Gold;
-
+	
 	bool bIsHoldingShoot = false;
 	bool bIsAutoFire = false;
-
-private:
-	TObjectPtr<APower> PowerInstance;
 
 protected:
 

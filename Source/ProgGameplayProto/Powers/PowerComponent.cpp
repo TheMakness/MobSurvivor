@@ -3,17 +3,12 @@
 
 #include "PowerComponent.h"
 
-#include "K2Node_SpawnActorFromClass.h"
-#include "Power.h"
+#include "ProgGameplayProto/PermanentUpgrades/PowerPUData.h"
 
 // Sets default values for this component's properties
-UPowerComponent::UPowerComponent()
+UPowerComponent::UPowerComponent() : Countdown(CountdownStartValue), bHasCountdownStarted(false), CountdownStartValue(0)
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-	CurrentPower = nullptr;
-	// ...
 }
 
 
@@ -22,8 +17,11 @@ void UPowerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	if (ensureAlwaysMsgf(PowerData != nullptr, TEXT("The DataAsset linked to this PowerComponent has not been set.")))
+	{
+		CountdownStartValue = PowerData->CooldownTime;
+		Countdown = CountdownStartValue;
+	}
 }
 
 
@@ -32,6 +30,38 @@ void UPowerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	Cooldown(DeltaTime);
+}
+
+void UPowerComponent::Use()
+{
+	// Can't Use() if Cooldown is not finished
+	if (bHasCountdownStarted) return;
+
+	bHasCountdownStarted = true;
+
+	UseBehaviour();
+}
+
+void UPowerComponent::UseBehaviour_Implementation()
+{
+	// Must be implemented in children BP class
+}
+
+void UPowerComponent::Cooldown(const float DeltaTime)
+{
+	
+	if (bHasCountdownStarted && Countdown > 0)
+	{
+		Countdown -= DeltaTime;
+	}
+	else
+	{
+		if (bHasCountdownStarted)
+		{
+			Countdown = CountdownStartValue;
+			bHasCountdownStarted = false;
+		}
+	}
 }
 

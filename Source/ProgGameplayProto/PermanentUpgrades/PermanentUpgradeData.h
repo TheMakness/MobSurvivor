@@ -31,22 +31,22 @@ public:
 	}
 	
 	// Display name of the permanent upgrade, displayed in the shop menu
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Metadata")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Metadata")
 	FString Name;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Metadata", meta = (MultiLine = true))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Metadata", meta = (MultiLine = true))
 	FString Description;
 
 	// Logo to display in the Shop UI
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Metadata")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Metadata")
 	UTexture2D* Image;
 
 	// Cost in coins of the upgrade
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Metadata")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Metadata")
 	int Cost;
 
 	// If this upgrade is purchased by default when starting a new game (which means that it is a default upgrade)
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Metadata")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Metadata")
 	bool bIsDefaultPurchased = false;
 	
 private:

@@ -23,7 +23,7 @@ class PROGGAMEPLAYPROTO_API AMainMenuPlayerState : public APlayerState
 public:
 	UFUNCTION(BlueprintCallable)
 	AUpgradesManager* GetUpgradesManager() const;
-
+	
 protected:
 	virtual void BeginPlay() override;
 

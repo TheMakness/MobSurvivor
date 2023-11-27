@@ -15,7 +15,7 @@ TArray<FPermanentUpgrade> AUpgradesManager::GetAllUpgrades() const
 
 void AUpgradesManager::EquipUpgrade(UPermanentUpgradeData* UpgradeToEquip)
 {
-	const FPermanentUpgrade* FoundUpgrade = Upgrades.FindByPredicate([UpgradeToEquip](const FPermanentUpgrade& Item) -> bool
+	const FPermanentUpgrade* FoundUpgrade = Upgrades.FindByPredicate([&UpgradeToEquip](const FPermanentUpgrade& Item) -> bool
 	{
 		return Item.Data == UpgradeToEquip;
 	});
