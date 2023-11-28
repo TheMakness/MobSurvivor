@@ -102,6 +102,7 @@ void APlayerCharacter::SetupDefaultWeapon()
 void APlayerCharacter::SetupDefaultPower()
 {
 	Power = Cast<UPowerComponent>(AddComponentByClass(DefaultPowerData->GetComponent(), false, this->GetTransform(), false));
+	Power->Initialise(this);
 }
 
 void APlayerCharacter::BeginPlay()

@@ -11,6 +11,16 @@ UPowerComponent::UPowerComponent() : Countdown(CountdownStartValue), bHasCountdo
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
+void UPowerComponent::Initialise(APlayerCharacter* Player)
+{
+	PlayerOwner = Player;
+}
+
+const APlayerCharacter* UPowerComponent::GetPlayerOwner() const
+{
+	return PlayerOwner;
+}
+
 
 // Called when the game starts
 void UPowerComponent::BeginPlay()

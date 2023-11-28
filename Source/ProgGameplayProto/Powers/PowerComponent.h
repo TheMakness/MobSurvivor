@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "PowerComponent.generated.h"
 
+class APlayerCharacter;
 class UPowerPUData;
 class APower;
 
@@ -17,6 +18,11 @@ class PROGGAMEPLAYPROTO_API UPowerComponent : public USceneComponent
 public:	
 	// Sets default values for this component's properties
 	UPowerComponent();
+
+	void Initialise(APlayerCharacter* Player);
+
+	UFUNCTION(BlueprintCallable)
+	const APlayerCharacter* GetPlayerOwner() const;
 
 protected:
 	virtual void BeginPlay() override;
@@ -52,4 +58,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	float CountdownStartValue;
+
+	TObjectPtr<APlayerCharacter> PlayerOwner;
 };
