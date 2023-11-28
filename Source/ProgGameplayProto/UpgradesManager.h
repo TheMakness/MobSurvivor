@@ -51,13 +51,17 @@ public:
 
 	void LoadUpgradesFromSave(const TArray<FPermanentUpgrade>& Upgrades);
 
+	UFUNCTION(BlueprintCallable)
+	void LoadInGameInstance();
+
+	UFUNCTION(BlueprintCallable)
+	void LoadFromGameInstance();
 
 private:
 	void LoadDefaultUpgrades();
 	//Save equiped Upgrade to pass true level
 
-	UFUNCTION()
-	void LoadInGameInstance();
+	
 	
 private:
 	// List of all available upgrades in the game. This array MUST be automatically populated

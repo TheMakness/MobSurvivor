@@ -35,6 +35,7 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	void Use();
+	virtual void SetData(UPowerPUData* Data) { PowerData = Data; }
 
 protected:
 	/**

@@ -7,6 +7,7 @@
 #include "Logging/LogMacros.h"
 #include "PlayerCharacter.generated.h"
 
+class UStatsUpgradeComponent;
 class UPowerPUData;
 class UGoldComponent;
 class USphereComponent;
@@ -74,6 +75,8 @@ public:
 
 	void SetupDefaultPower();
 
+	void SetupDefaultStatsUpgrades();
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = WeaponData)
 	USphereComponent* DropsCollector;
@@ -101,7 +104,10 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UGoldComponent* Gold;
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UStatsUpgradeComponent* StatsUpgrade;
+
 	bool bIsHoldingShoot = false;
 	bool bIsAutoFire = false;
 

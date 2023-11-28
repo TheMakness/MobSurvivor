@@ -8,6 +8,9 @@
 #include "MobSurvivorSaveGame.generated.h"
 
 
+class UPlayerStatsPUData;
+class UWeaponData;
+class UPowerPUData;
 class UMobSurvivorInstance;
 /**
  * 
@@ -21,8 +24,18 @@ public:
 	UPROPERTY()
 	int GoldAmount;
 	FString SaveSlotName;
+
 	UPROPERTY()
 	TArray<FPermanentUpgrade> PermanentUpgrades;
+
+	UPROPERTY()
+	TArray<TObjectPtr<UPlayerStatsPUData>> EquippedStatsUpgrades;
+
+	UPROPERTY()
+	TObjectPtr<UWeaponData> EquippedWeapon;
+
+	UPROPERTY()
+	TObjectPtr<UPowerPUData> EquippedPower;
 
 protected:
 	int Index;

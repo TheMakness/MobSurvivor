@@ -20,11 +20,16 @@ void UGameUtils::SaveGame(UObject* WorldContext)
 {
 	UMobSurvivorSaveGame* SaveGameInstance = Cast<UMobSurvivorSaveGame>(UGameplayStatics::CreateSaveGameObject(UMobSurvivorSaveGame::StaticClass()));
 	AMainMenuPlayerState* PlayerState = Cast<AMainMenuPlayerState>(UGameplayStatics::GetPlayerState(WorldContext,0));
+	UMobSurvivorInstance* GI = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(WorldContext));
 
-	if (IsValid(SaveGameInstance) && IsValid(PlayerState))
+	if (IsValid(SaveGameInstance) && IsValid(PlayerState) && IsValid(GI))
 	{
-		SaveGameInstance->GoldAmount = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(WorldContext))->GetGoldAmount();
+		SaveGameInstance->GoldAmount = GI->GetGoldAmount();
 		SaveGameInstance->PermanentUpgrades = PlayerState->GetUpgradesManager()->GetAllUpgrades();
+		SaveGameInstance->EquippedWeapon = GI->GetEquippedWeapon();
+		SaveGameInstance->EquippedPower = GI->GetEquippedPower();
+		SaveGameInstance->EquippedStatsUpgrades = GI->GetEquippedStatsUpgrades();
+
 		UGameplayStatics::SaveGameToSlot(SaveGameInstance, SaveGameInstance->SaveSlotName, 0);
 	}
 }
@@ -39,15 +44,23 @@ bool UGameUtils::LoadGame(UObject* WorldContext)
 	if (!IsValid(PlayerState))
 		return false;
 
-	if(GameInstance->GetAlreadyLoad())
-		return false;
 
 	UMobSurvivorSaveGame* LoadedGame = Cast<UMobSurvivorSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("InstanceSave"), 0));
-	GameInstance->SwitchAreadyLoadState();
+	
 	if (IsValid(LoadedGame))
 	{
-		GameInstance->AddGold(LoadedGame->GoldAmount);
+		if (!GameInstance->GetAlreadyLoad())
+		{
+			GameInstance->AddGold(LoadedGame->GoldAmount);
+			GameInstance->SetEquipedWeapon(LoadedGame->EquippedWeapon);
+			GameInstance->SetEquippedPower(LoadedGame->EquippedPower);
+			GameInstance->SetEquippedStatsUpgrades(LoadedGame->EquippedStatsUpgrades);
+			GameInstance->SwitchAreadyLoadState();
+
+		}
+			
 		PlayerState->GetUpgradesManager()->LoadUpgradesFromSave(LoadedGame->PermanentUpgrades);
+		
 		return true;
 	}
 		return false;
@@ -61,8 +74,10 @@ void UGameUtils::DeleteSave()
 
 void UGameUtils::ChangeLevel(UObject* WorldContext, FName LevelName)
 {
+	
 	FOnLevelChange Event = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(WorldContext))->OnLevelChange;
 	Event.Broadcast();
+	SaveGame(WorldContext);
 	UGameplayStatics::OpenLevel(WorldContext, LevelName);
 }
 

@@ -45,7 +45,7 @@ public:
 	FORCEINLINE int GetGoldAmount() const { return GoldAmount; }
 
 	
-	TObjectPtr<UWeaponData> GetEquipedWeapon() const;
+	TObjectPtr<UWeaponData> GetEquippedWeapon() const;
 	TObjectPtr<UPowerPUData> GetEquippedPower() const;
 	TArray<TObjectPtr<UPlayerStatsPUData>> GetEquippedStatsUpgrades() const;
 		

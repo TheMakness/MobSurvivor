@@ -42,7 +42,20 @@ const TArray<FPermanentUpgrade>& AUpgradesManager::GetAllUpgrades() const
 
 void AUpgradesManager::LoadDefaultUpgrades()
 {
+	
 	Upgrades = DefaultsUpgrades->Upgrades;
+	for (FPermanentUpgrade &Upgrade : Upgrades)
+	{
+		
+		if (Upgrade.Data->bIsDefaultPurchased)
+		{
+			Upgrade.bPurchased = true;
+			EquipUpgrade(Upgrade.Data);
+			LoadInGameInstance();
+		}
+	}
+
+	
 }
 
 void AUpgradesManager::LoadInGameInstance()
@@ -53,6 +66,21 @@ void AUpgradesManager::LoadInGameInstance()
 		GI->SetEquipedWeapon(GetEquippedWeapon());
 		GI->SetEquippedPower(GetEquippedPower());
 		GI->SetEquippedStatsUpgrades(GetEquippedStatsUpgrades());
+	}
+}
+
+void AUpgradesManager::LoadFromGameInstance()
+{
+	UMobSurvivorInstance* GI = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (IsValid(GI))
+	{
+		if (GetEquippedWeapon() != nullptr)
+			EquippedWeapon = GI->GetEquippedWeapon();
+		if (GetEquippedPower() != nullptr)
+			EquippedPower = GI->GetEquippedPower();
+		if (!GetEquippedStatsUpgrades().IsEmpty())
+			EquippedStatsUpgrades = GI->GetEquippedStatsUpgrades();
+
 	}
 }
 

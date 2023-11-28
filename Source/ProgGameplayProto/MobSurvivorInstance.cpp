@@ -15,7 +15,7 @@ void UMobSurvivorInstance::SwitchAreadyLoadState()
 	bHasAlreadyLoadSave = true;
 }
 
-TObjectPtr<UWeaponData> UMobSurvivorInstance::GetEquipedWeapon() const
+TObjectPtr<UWeaponData> UMobSurvivorInstance::GetEquippedWeapon() const
 {
 	return EquippedWeapon;
 }

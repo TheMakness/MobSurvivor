@@ -25,7 +25,9 @@
 #include "../Powers/PowerComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "ProgGameplayProto/GoldComponent.h"
+#include "ProgGameplayProto/MobSurvivorInstance.h"
 #include "ProgGameplayProto/ProgGameplayProtoGameMode.h"
+#include "ProgGameplayProto/StatsUpgradeComponent.h"
 #include "ProgGameplayProto/PermanentUpgrades/PowerPUData.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -81,6 +83,8 @@ APlayerCharacter::APlayerCharacter()
 	DropsCollector->SetupAttachment(GetCapsuleComponent());
 
 	Gold = CreateDefaultSubobject<UGoldComponent>("Gold");
+
+	StatsUpgrade = CreateDefaultSubobject<UStatsUpgradeComponent>("StatsComponent");
 }
 
 bool APlayerCharacter::WantsToShoot()
@@ -91,7 +95,14 @@ bool APlayerCharacter::WantsToShoot()
 void APlayerCharacter::SetupDefaultWeapon()
 {
 	Weapon->InitializeWeapon(this);
-	Weapon->SetData(DefaultWeaponData);
+
+	UMobSurvivorInstance* GI = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	if(IsValid(GI))
+		Weapon->SetData(GI->GetEquippedWeapon());
+	
+	
+	
 
 	for (int32 i = 0; i < DefaultBonuses.Num(); i++)
 	{
@@ -101,8 +112,17 @@ void APlayerCharacter::SetupDefaultWeapon()
 
 void APlayerCharacter::SetupDefaultPower()
 {
+	UMobSurvivorInstance* GI = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (IsValid(GI))
+		DefaultPowerData = GI->GetEquippedPower();
+
 	Power = Cast<UPowerComponent>(AddComponentByClass(DefaultPowerData->GetComponent(), false, this->GetTransform(), false));
 	Power->Initialise(this);
+}
+
+void APlayerCharacter::SetupDefaultStatsUpgrades()
+{
+	StatsUpgrade->ApplyUpgrades();
 }
 
 void APlayerCharacter::BeginPlay()
@@ -126,6 +146,9 @@ void APlayerCharacter::BeginPlay()
 
 	//Setup Power
 	SetupDefaultPower();
+
+	//Apply Stats Upgrades
+	SetupDefaultStatsUpgrades();
 	
 	FActorSpawnParameters SpawnInfo;
 //	PowerInstance = GetWorld()->SpawnActor<APower>(Power->CurrentPower,UGameUtils::GetMainCharacter()->GetActorLocation(), UGameUtils::GetMainCharacter()->GetActorRotation(),SpawnInfo);
@@ -222,6 +245,7 @@ void APlayerCharacter::UsePower(const FInputActionValue& Value)
 		Power->Use();
 	}
 }
+
 
 void APlayerCharacter::AutoFire(const FInputActionValue& Value)
 {
