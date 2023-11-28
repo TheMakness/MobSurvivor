@@ -24,6 +24,11 @@ AUpgradesManager::AUpgradesManager()
 void AUpgradesManager::BeginPlay()
 {
 	Super::BeginPlay();
+	UMobSurvivorInstance* GI = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (IsValid(GI))
+	{
+		GI->OnLevelChange.AddDynamic(this, &AUpgradesManager::LoadInGameInstance);
+	}
 	
 }
 
@@ -38,6 +43,17 @@ const TArray<FPermanentUpgrade>& AUpgradesManager::GetAllUpgrades() const
 void AUpgradesManager::LoadDefaultUpgrades()
 {
 	Upgrades = DefaultsUpgrades->Upgrades;
+}
+
+void AUpgradesManager::LoadInGameInstance()
+{
+	UMobSurvivorInstance* GI = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if(IsValid(GI))
+	{
+		GI->SetEquipedWeapon(GetEquippedWeapon());
+		GI->SetEquippedPower(GetEquippedPower());
+		GI->SetEquippedStatsUpgrades(GetEquippedStatsUpgrades());
+	}
 }
 
 

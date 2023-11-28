@@ -59,4 +59,11 @@ void UGameUtils::DeleteSave()
 	UGameplayStatics::DeleteGameInSlot(TEXT("InstanceSave"), 0);
 }
 
+void UGameUtils::ChangeLevel(UObject* WorldContext, FName LevelName)
+{
+	FOnLevelChange Event = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(WorldContext))->OnLevelChange;
+	Event.Broadcast();
+	UGameplayStatics::OpenLevel(WorldContext, LevelName);
+}
+
 

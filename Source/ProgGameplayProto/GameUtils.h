@@ -7,6 +7,7 @@
 #include "GameUtils.generated.h"
 
 
+class FOnLevelChange;
 class APlayerCharacter;
 
 /**
@@ -29,6 +30,7 @@ public:
 	static  bool LoadGame(UObject* WorldContext);
 	UFUNCTION(BlueprintCallable)
 	static  void DeleteSave();
-
+	UFUNCTION(BlueprintCallable)
+	static void ChangeLevel(UObject* WorldContext, FName LevelName);
 	
 };

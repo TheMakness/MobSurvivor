@@ -51,8 +51,13 @@ public:
 
 	void LoadUpgradesFromSave(const TArray<FPermanentUpgrade>& Upgrades);
 
+
 private:
 	void LoadDefaultUpgrades();
+	//Save equiped Upgrade to pass true level
+
+	UFUNCTION()
+	void LoadInGameInstance();
 	
 private:
 	// List of all available upgrades in the game. This array MUST be automatically populated

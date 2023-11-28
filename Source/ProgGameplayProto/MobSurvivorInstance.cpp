@@ -15,6 +15,38 @@ void UMobSurvivorInstance::SwitchAreadyLoadState()
 	bHasAlreadyLoadSave = true;
 }
 
+TObjectPtr<UWeaponData> UMobSurvivorInstance::GetEquipedWeapon() const
+{
+	return EquippedWeapon;
+}
+
+TObjectPtr<UPowerPUData> UMobSurvivorInstance::GetEquippedPower() const
+{
+	return EquippedPower;
+}
+
+TArray<TObjectPtr<UPlayerStatsPUData>> UMobSurvivorInstance::GetEquippedStatsUpgrades() const
+{
+	return EquippedStatsUpgrades;
+}
+
+void UMobSurvivorInstance::SetEquipedWeapon(TObjectPtr<UWeaponData> Weapon)
+{
+	EquippedWeapon = Weapon;
+}
+
+void UMobSurvivorInstance::SetEquippedPower(TObjectPtr<UPowerPUData> Power)
+{
+	EquippedPower = Power;
+}
+
+void UMobSurvivorInstance::SetEquippedStatsUpgrades(TArray<TObjectPtr<UPlayerStatsPUData>> StatsUpgrades)
+{
+	EquippedStatsUpgrades = StatsUpgrades;
+}
+
+
+
 void UMobSurvivorInstance::RemoveGold()
 {
 	GoldAmount = 0;
