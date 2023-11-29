@@ -4,6 +4,7 @@
 
 #include "BonusManager.h"
 #include "EnemySpawnerManager.h"
+#include "GameLevelData.h"
 #include "MobSurvivorInstance.h"
 #include "ProgGameplayProtoGameState.h"
 #include "UpgradesManager.h"
@@ -13,10 +14,18 @@
 void AProgGameplayProtoGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	AProgGameplayProtoGameState* GM = GetGameState<AProgGameplayProtoGameState>();
-	if (IsValid(GM))
+	AProgGameplayProtoGameState* GS = GetGameState<AProgGameplayProtoGameState>();
+	if (IsValid(GS))
 	{
-		GM->OnTimerFinish.AddDynamic(this, &AProgGameplayProtoGameMode::Win);
+		GS->OnTimerFinish.AddDynamic(this, &AProgGameplayProtoGameMode::Win);
+	}
+
+	UMobSurvivorInstance* GI = GetGameInstance<UMobSurvivorInstance>();
+	if(IsValid(GI) && IsValid(GS))
+	{
+		GameLevelData = GI->DA_Level;
+		GS->SetGameDuration(GameLevelData->GameDuration);
+		GS->SetGoldBonus(GI->DA_Level->GoldBonus);
 	}
 }
 

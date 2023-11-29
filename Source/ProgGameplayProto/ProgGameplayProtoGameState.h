@@ -32,9 +32,16 @@ protected:
 	float BonusGold = 200;
 
 	bool bHasGameStarted = false;
+	bool bHasTimer = true;
 
 public:
 	virtual void Tick(float DeltaSeconds) override;
+
+	UFUNCTION()
+	void SetGameDuration(float Duration);
+
+	UFUNCTION()
+	void SetGoldBonus(const int Gold) { BonusGold = Gold; }
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetGameTime() const { return GameTime; }
@@ -42,7 +49,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetRemainingTime() const { return GameTargetDuration - GameTime; }
 
-	FORCEINLINE float GetBonusGold() const { return BonusGold; }
+	FORCEINLINE int GetBonusGold() const { return BonusGold; }
 
 	void SetGameStarted(bool HasGameStarted);
 };
