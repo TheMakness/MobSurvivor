@@ -46,8 +46,24 @@ protected:
 
 	
 public:
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
+	virtual bool IsPaused() const override { return bIsPaused; };
+
+	UFUNCTION(BlueprintCallable)
+	virtual bool IsGameOver() const { return bIsGameOver; };
+
+	UFUNCTION(BlueprintCallable)
+	virtual void SetGamePaused(bool bIsPaused);
+
+	UFUNCTION(BlueprintCallable)
 	virtual void GameOver();
+
+	UFUNCTION(BlueprintCallable)
+	virtual void Win();
+
 	UPROPERTY()
 		FOnBeforeGameOver OnBeforeGameOver;
+private:
+	bool bIsPaused;
+	bool bIsGameOver;
 };

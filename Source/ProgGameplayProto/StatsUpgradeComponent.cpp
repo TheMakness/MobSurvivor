@@ -30,7 +30,7 @@ void UStatsUpgradeComponent::ApplyUpgrades()
 
 	for (TObjectPtr<UPlayerStatsPUData> PlayerStatsPuData : StatsUpgrades)
 	{
-		Health->AddHealth(PlayerStatsPuData->Health);
+		Health->SetMaxHealth(Health->GetMaxHealth() + PlayerStatsPuData->Health);
 		CharacterMovement->MaxWalkSpeed += PlayerStatsPuData->MaxSpeed;
 	}
 	

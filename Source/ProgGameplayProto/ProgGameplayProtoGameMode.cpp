@@ -4,6 +4,7 @@
 
 #include "BonusManager.h"
 #include "EnemySpawnerManager.h"
+#include "MobSurvivorInstance.h"
 #include "ProgGameplayProtoGameState.h"
 #include "UpgradesManager.h"
 #include "Kismet/GameplayStatics.h"
@@ -12,6 +13,11 @@
 void AProgGameplayProtoGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	AProgGameplayProtoGameState* GM = GetGameState<AProgGameplayProtoGameState>();
+	if (IsValid(GM))
+	{
+		GM->OnTimerFinish.AddDynamic(this, &AProgGameplayProtoGameMode::Win);
+	}
 }
 
 AProgGameplayProtoGameMode::AProgGameplayProtoGameMode()
@@ -23,6 +29,9 @@ AProgGameplayProtoGameMode::AProgGameplayProtoGameMode()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
+
+
+	
 
 }
 
@@ -40,6 +49,17 @@ void AProgGameplayProtoGameMode::StartGame()
 	GetGameState<AProgGameplayProtoGameState>()->SetGameStarted(true);
 }
 
+void AProgGameplayProtoGameMode::SetGamePaused(bool Paused)
+{
+	APlayerController* const MyPlayer = Cast<APlayerController>(GEngine->GetFirstLocalPlayerController((GetWorld())));
+	if (IsValid(MyPlayer))
+	{
+		
+		MyPlayer->SetPause(Paused);
+		bIsPaused = Paused;
+	}
+}
+
 void AProgGameplayProtoGameMode::ReturnToMainMenu()
 {
 	UGameplayStatics::OpenLevel(GetWorld(), "MainLevel");
@@ -47,6 +67,14 @@ void AProgGameplayProtoGameMode::ReturnToMainMenu()
 
 void AProgGameplayProtoGameMode::GameOver()
 {
+
 	OnBeforeGameOver.Broadcast();
-	ReturnToMainMenu();
+	SetGamePaused(true);
+	bIsGameOver = true;
+}
+
+void AProgGameplayProtoGameMode::Win()
+{
+	SetGamePaused(true);
+	GetGameInstance<UMobSurvivorInstance>()->AddGold(GetGameState<AProgGameplayProtoGameState>()->GetBonusGold());
 }

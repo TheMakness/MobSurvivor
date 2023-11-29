@@ -197,6 +197,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &APlayerCharacter::Shoot);
 		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Completed, this, &APlayerCharacter::StopShoot);
 		EnhancedInputComponent->BindAction(AutoFireAction, ETriggerEvent::Started, this, &APlayerCharacter::AutoFire);
+
+		//Start
+		EnhancedInputComponent->BindAction(StartAction, ETriggerEvent::Started, this, &APlayerCharacter::Start);
 	}
 	else
 	{
@@ -244,6 +247,13 @@ void APlayerCharacter::UsePower(const FInputActionValue& Value)
 	{
 		Power->Use();
 	}
+}
+
+void APlayerCharacter::Start(const FInputActionValue& Value)
+{
+	AProgGameplayProtoGameMode* GM = Cast<AProgGameplayProtoGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (IsValid(GM))
+		GM->SetGamePaused(!GM->IsPaused());
 }
 
 

@@ -66,7 +66,7 @@ bool UGameUtils::LoadGame(UObject* WorldContext)
 								
 				UpgradesManager->LoadUpgradesFromSave(LoadedGame->PermanentUpgrades);
 
-				GameInstance->SwitchAreadyLoadState();
+				GameInstance->SwitchAlreadyLoadState();
 			}
 			
 		}

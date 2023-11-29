@@ -13,7 +13,7 @@ void UMobSurvivorInstance::AddGold(int NewGold)
 	OnGoldChange.Broadcast();
 }
 
-void UMobSurvivorInstance::SwitchAreadyLoadState()
+void UMobSurvivorInstance::SwitchAlreadyLoadState()
 {
 	bHasAlreadyLoadSave = true;
 }
