@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "MobSurvivorInstance.generated.h"
 
+struct FPermanentUpgrade;
 class UPlayerStatsPUData;
 class UWeaponData;
 class UPowerPUData;
@@ -35,11 +36,19 @@ public:
 	void AddGold(int NewGold);
 
 	//True if save has been already loaded in this session
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	void SwitchAreadyLoadState();
 
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE bool GetAlreadyLoad() const { return bHasAlreadyLoadSave; }
+	UFUNCTION()
+	void SwitchCanLoadState() { bCanLoad = !bCanLoad; }
+
+	void SetUpgrades(const TArray<FPermanentUpgrade>& Array);
+
+	UFUNCTION()
+	FORCEINLINE bool IsAlreadyLoaded() const { return bHasAlreadyLoadSave; }
+
+	UFUNCTION()
+	FORCEINLINE bool CanLoad() const { return bCanLoad; }
 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE int GetGoldAmount() const { return GoldAmount; }
@@ -47,24 +56,27 @@ public:
 	
 	TObjectPtr<UWeaponData> GetEquippedWeapon() const;
 	TObjectPtr<UPowerPUData> GetEquippedPower() const;
-	TArray<TObjectPtr<UPlayerStatsPUData>> GetEquippedStatsUpgrades() const;
+	const TArray<TObjectPtr<UPlayerStatsPUData>>& GetEquippedStatsUpgrades() const;
+	const TArray<FPermanentUpgrade>& GetUpgrades() const;
 		
-	void SetEquipedWeapon(TObjectPtr<UWeaponData> Weapon);
-	void SetEquippedPower(TObjectPtr<UPowerPUData> Power);
-	void SetEquippedStatsUpgrades(TArray<TObjectPtr<UPlayerStatsPUData>> StatsUpgrades);
+	void SetEquippedWeapon(const TObjectPtr<UWeaponData>& Weapon);
+	void SetEquippedPower(const TObjectPtr<UPowerPUData>& Power);
+	void SetEquippedStatsUpgrades(const TArray<TObjectPtr<UPlayerStatsPUData>>& StatsUpgrades);
 
 	UFUNCTION(BlueprintCallable)
 	void RemoveGold();
+	
+
 private:
 	int GoldAmount;
 
 	TArray<TObjectPtr<UPlayerStatsPUData>> EquippedStatsUpgrades;
-
 	TObjectPtr<UWeaponData> EquippedWeapon;
-
 	TObjectPtr<UPowerPUData> EquippedPower;
+	TArray<FPermanentUpgrade> Upgrades;
 
 	bool bHasAlreadyLoadSave = false;
+	bool bCanLoad = false;
 
 
 };

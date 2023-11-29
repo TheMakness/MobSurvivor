@@ -24,6 +24,8 @@ void UGameUtils::SaveGame(UObject* WorldContext)
 
 	if (IsValid(SaveGameInstance) && IsValid(PlayerState) && IsValid(GI))
 	{
+		PlayerState->GetUpgradesManager()->LoadInGameInstance();
+
 		SaveGameInstance->GoldAmount = GI->GetGoldAmount();
 		SaveGameInstance->PermanentUpgrades = PlayerState->GetUpgradesManager()->GetAllUpgrades();
 		SaveGameInstance->EquippedWeapon = GI->GetEquippedWeapon();
@@ -45,22 +47,32 @@ bool UGameUtils::LoadGame(UObject* WorldContext)
 		return false;
 
 
+
 	UMobSurvivorSaveGame* LoadedGame = Cast<UMobSurvivorSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("InstanceSave"), 0));
 	
 	if (IsValid(LoadedGame))
 	{
-		if (!GameInstance->GetAlreadyLoad())
+		if (!GameInstance->IsAlreadyLoaded())
 		{
 			GameInstance->AddGold(LoadedGame->GoldAmount);
-			GameInstance->SetEquipedWeapon(LoadedGame->EquippedWeapon);
-			GameInstance->SetEquippedPower(LoadedGame->EquippedPower);
-			GameInstance->SetEquippedStatsUpgrades(LoadedGame->EquippedStatsUpgrades);
-			GameInstance->SwitchAreadyLoadState();
 
-		}
+			AUpgradesManager* UpgradesManager = PlayerState->GetUpgradesManager();
+
+			if(UpgradesManager)
+			{
+				UpgradesManager->SetEquippedWeapon(LoadedGame->EquippedWeapon);
+				UpgradesManager->SetEquippedPower(LoadedGame->EquippedPower);
+				UpgradesManager->SetEquippedStatsUpgrades(LoadedGame->EquippedStatsUpgrades);
+								
+				UpgradesManager->LoadUpgradesFromSave(LoadedGame->PermanentUpgrades);
+
+				GameInstance->SwitchAreadyLoadState();
+			}
 			
-		PlayerState->GetUpgradesManager()->LoadUpgradesFromSave(LoadedGame->PermanentUpgrades);
+		}
+
 		
+
 		return true;
 	}
 		return false;

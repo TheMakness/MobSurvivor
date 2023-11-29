@@ -2,6 +2,9 @@
 
 
 #include "MobSurvivorInstance.h"
+#include "PermanentUpgrades/PermanentUpgrade.h"
+#include "PermanentUpgrades/PlayerStatsPUData.h"
+#include "PermanentUpgrades/PowerPUData.h"
 
 
 void UMobSurvivorInstance::AddGold(int NewGold)
@@ -15,6 +18,11 @@ void UMobSurvivorInstance::SwitchAreadyLoadState()
 	bHasAlreadyLoadSave = true;
 }
 
+void UMobSurvivorInstance::SetUpgrades(const TArray<FPermanentUpgrade>& Array)
+{
+	Upgrades = Array;
+}
+
 TObjectPtr<UWeaponData> UMobSurvivorInstance::GetEquippedWeapon() const
 {
 	return EquippedWeapon;
@@ -25,22 +33,27 @@ TObjectPtr<UPowerPUData> UMobSurvivorInstance::GetEquippedPower() const
 	return EquippedPower;
 }
 
-TArray<TObjectPtr<UPlayerStatsPUData>> UMobSurvivorInstance::GetEquippedStatsUpgrades() const
+const TArray<TObjectPtr<UPlayerStatsPUData>>& UMobSurvivorInstance::GetEquippedStatsUpgrades() const
 {
 	return EquippedStatsUpgrades;
 }
 
-void UMobSurvivorInstance::SetEquipedWeapon(TObjectPtr<UWeaponData> Weapon)
+const TArray<FPermanentUpgrade>& UMobSurvivorInstance::GetUpgrades() const
+{
+	return Upgrades;
+}
+
+void UMobSurvivorInstance::SetEquippedWeapon(const TObjectPtr<UWeaponData>& Weapon)
 {
 	EquippedWeapon = Weapon;
 }
 
-void UMobSurvivorInstance::SetEquippedPower(TObjectPtr<UPowerPUData> Power)
+void UMobSurvivorInstance::SetEquippedPower(const TObjectPtr<UPowerPUData>& Power)
 {
 	EquippedPower = Power;
 }
 
-void UMobSurvivorInstance::SetEquippedStatsUpgrades(TArray<TObjectPtr<UPlayerStatsPUData>> StatsUpgrades)
+void UMobSurvivorInstance::SetEquippedStatsUpgrades(const TArray<TObjectPtr<UPlayerStatsPUData>>& StatsUpgrades)
 {
 	EquippedStatsUpgrades = StatsUpgrades;
 }

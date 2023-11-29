@@ -18,7 +18,7 @@ AUpgradesManager::AUpgradesManager()
 	{
 		DefaultsUpgrades = PermanentUpgradeList.Object;
 	}
-	LoadDefaultUpgrades();
+	
 }
 
 void AUpgradesManager::BeginPlay()
@@ -27,7 +27,17 @@ void AUpgradesManager::BeginPlay()
 	UMobSurvivorInstance* GI = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	if (IsValid(GI))
 	{
+		
 		GI->OnLevelChange.AddDynamic(this, &AUpgradesManager::LoadInGameInstance);
+
+		if(!GI->IsAlreadyLoaded())
+			LoadDefaultUpgrades();
+
+		if(GI->CanLoad())
+		{
+			LoadFromGameInstance();
+			GI->SwitchCanLoadState();
+		}
 	}
 	
 }
@@ -51,7 +61,6 @@ void AUpgradesManager::LoadDefaultUpgrades()
 		{
 			Upgrade.bPurchased = true;
 			EquipUpgrade(Upgrade.Data);
-			LoadInGameInstance();
 		}
 	}
 
@@ -63,9 +72,12 @@ void AUpgradesManager::LoadInGameInstance()
 	UMobSurvivorInstance* GI = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	if(IsValid(GI))
 	{
-		GI->SetEquipedWeapon(GetEquippedWeapon());
+		GI->SetEquippedWeapon(GetEquippedWeapon());
 		GI->SetEquippedPower(GetEquippedPower());
 		GI->SetEquippedStatsUpgrades(GetEquippedStatsUpgrades());
+		GI->SetUpgrades(Upgrades);
+
+		GI->SwitchCanLoadState();
 	}
 }
 
@@ -74,14 +86,28 @@ void AUpgradesManager::LoadFromGameInstance()
 	UMobSurvivorInstance* GI = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	if (IsValid(GI))
 	{
-		if (GetEquippedWeapon() != nullptr)
 			EquippedWeapon = GI->GetEquippedWeapon();
-		if (GetEquippedPower() != nullptr)
 			EquippedPower = GI->GetEquippedPower();
-		if (!GetEquippedStatsUpgrades().IsEmpty())
 			EquippedStatsUpgrades = GI->GetEquippedStatsUpgrades();
+			Upgrades = GI->GetUpgrades();
+
 
 	}
+}
+
+void AUpgradesManager::SetEquippedWeapon(const TObjectPtr<UWeaponData>& Weapon)
+{
+	EquippedWeapon = Weapon;
+}
+
+void AUpgradesManager::SetEquippedPower(const TObjectPtr<UPowerPUData>& Power)
+{
+	EquippedPower = Power;
+}
+
+void AUpgradesManager::SetEquippedStatsUpgrades(const TArray<TObjectPtr<UPlayerStatsPUData>>& StatsUpgrades)
+{
+	EquippedStatsUpgrades = StatsUpgrades;
 }
 
 
@@ -100,6 +126,8 @@ void AUpgradesManager::LoadFromGameInstance()
 		if (FindUpgrade != nullptr)
 		{
 			FindUpgrade->bPurchased = LoadUpgrade.bPurchased;
+			if (FindUpgrade->Data->GetType() == EType::PlayerStats)
+				EquipUpgrade(FindUpgrade->Data);
 		}
 	}
 	
@@ -126,7 +154,7 @@ void AUpgradesManager::EquipUpgrade(UPermanentUpgradeData* UpgradeToEquip)
 		EquippedWeapon = Cast<UWeaponData>(UpgradeData);
 		break;
 	case PlayerStats:
-		EquippedStatsUpgrades.Add(Cast<UPlayerStatsPUData>(UpgradeData));
+		EquippedStatsUpgrades.AddUnique(Cast<UPlayerStatsPUData>(UpgradeData));
 	default:
 		break;
 	}

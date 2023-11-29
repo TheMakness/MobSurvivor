@@ -51,11 +51,16 @@ public:
 
 	void LoadUpgradesFromSave(const TArray<FPermanentUpgrade>& Upgrades);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	void LoadInGameInstance();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	void LoadFromGameInstance();
+
+
+	void SetEquippedWeapon(const TObjectPtr<UWeaponData>& Weapon);
+	void SetEquippedPower(const TObjectPtr<UPowerPUData>& Power);
+	void SetEquippedStatsUpgrades(const TArray<TObjectPtr<UPlayerStatsPUData>>& StatsUpgrades);
 
 private:
 	void LoadDefaultUpgrades();
