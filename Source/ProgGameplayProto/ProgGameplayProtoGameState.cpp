@@ -15,18 +15,16 @@ AProgGameplayProtoGameState::AProgGameplayProtoGameState()
 void AProgGameplayProtoGameState::BeginPlay()
 {
 	Super::BeginPlay();
-	UMobSurvivorInstance* GI = GetGameInstance<UMobSurvivorInstance>();
-	if (IsValid(GI))
-	{
-		GameTargetDuration = GI->GetGameDuration();
-	}
+	
+		
+	
 }
 
 void AProgGameplayProtoGameState::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (bHasGameStarted)
+	if (bHasGameStarted && bHasTimer)
 	{
 		GameTime += DeltaSeconds;
 		if (GetRemainingTime() <= 0 )
@@ -37,7 +35,15 @@ void AProgGameplayProtoGameState::Tick(float DeltaSeconds)
 		
 
 	//GEngine->AddOnScreenDebugMessage(-1, 0, FColor::Green, "Game Time: " + FString::SanitizeFloat(GameTime));
-	GEngine->AddOnScreenDebugMessage(-1, 0, FColor::Green, "Remaining Time: " + FString::SanitizeFloat(GetRemainingTime()));
+	if(bHasTimer)
+		GEngine->AddOnScreenDebugMessage(-1, 0, FColor::Green, "Remaining Time: " + FString::SanitizeFloat(GetRemainingTime()));
+}
+
+void AProgGameplayProtoGameState::SetGameDuration(float Duration)
+{
+	GameTargetDuration = Duration * 60;
+	if (GameTargetDuration <= 0)
+		bHasTimer = false;
 }
 
 void AProgGameplayProtoGameState::SetGameStarted(const bool HasGameStarted)

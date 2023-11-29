@@ -28,9 +28,7 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	TArray<UBonusData*> Bonuses;
 
-	// Time-limit duration of the level in minutes
-	UPROPERTY(EditAnywhere)
-	float Duration;
+	
 
     // God mode
 	UPROPERTY(EditAnywhere)
@@ -39,6 +37,14 @@ public:
     // The amount of experience given for each orb of experience
 	UPROPERTY(EditAnywhere)
 	int GainedExperiencePerOrb;
+
+	//Game Duration in minute - Endless mode if 0
+	UPROPERTY(EditAnywhere)
+	int GameDuration;
+
+	//The amount of gold win if player survive all game duration
+	UPROPERTY(EditAnywhere)
+	int GoldBonus;
 
 	// Enable the spawn of bosses during the game
 	UPROPERTY(EditAnywhere)

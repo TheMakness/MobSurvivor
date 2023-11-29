@@ -63,20 +63,14 @@ public:
 	void SetEquippedPower(const TObjectPtr<UPowerPUData>& Power);
 	void SetEquippedStatsUpgrades(const TArray<TObjectPtr<UPlayerStatsPUData>>& StatsUpgrades);
 
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetGameDuration(const float Duration) { GameDuration = Duration; }
-
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE float GetGameDuration() const { return GameDuration; }
-
+	
 	UFUNCTION(BlueprintCallable)
 	void RemoveGold();
 	
 
 private:
 	int GoldAmount;
-	float GameDuration;
-
+	
 	TArray<TObjectPtr<UPlayerStatsPUData>> EquippedStatsUpgrades;
 	TObjectPtr<UWeaponData> EquippedWeapon;
 	TObjectPtr<UPowerPUData> EquippedPower;
