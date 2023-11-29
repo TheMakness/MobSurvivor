@@ -41,9 +41,11 @@ public:
 	virtual void HitByAttack(float Damages, AActor* Attacker);
 	virtual void AddHealth(float Amount);
 	virtual void Die();
+	
 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE float GetCurrentHealth() { return CurrentHealth; }
+	FORCEINLINE float GetMaxHealth() { return MaxHealth; };
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	virtual float GetCurrentHealthPercentage();

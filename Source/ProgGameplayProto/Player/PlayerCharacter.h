@@ -62,6 +62,9 @@ class APlayerCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* AutoFireAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* StartAction;
+
 public:
 	APlayerCharacter();
 
@@ -123,6 +126,8 @@ protected:
 	void AutoFire(const FInputActionValue& Value);
 
 	void UsePower(const FInputActionValue& Value);
+
+	void Start(const FInputActionValue& Value);
 
 	UFUNCTION()
 	void Die();
