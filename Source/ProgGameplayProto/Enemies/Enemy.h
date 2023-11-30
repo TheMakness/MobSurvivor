@@ -10,7 +10,7 @@ class UEnemyDropperComponent;
 class UCapsuleComponent;
 class UHealth;
 
-UCLASS()
+UCLASS(Abstract)
 class PROGGAMEPLAYPROTO_API AEnemy : public APawn
 {
 	GENERATED_BODY()
