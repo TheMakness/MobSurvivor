@@ -7,6 +7,7 @@
 #include "Health.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthDie);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthChangedWithoutParameters);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, NewHealthValue);
 
 /**
@@ -35,6 +36,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnHealthChangedWithoutParameters OnHealthChangedWithoutParameters;
 
 	virtual void HitByProjectile(AWeaponProjectile* Projectile) override;
 	UFUNCTION(BlueprintCallable)

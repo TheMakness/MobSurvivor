@@ -34,6 +34,7 @@ void UHealth::AddHealth(float Amount)
 	CurrentHealth += Amount;
 
 	OnHealthChanged.Broadcast(CurrentHealth);
+	OnHealthChangedWithoutParameters.Broadcast();
 
 	if (CurrentHealth <= 0)
 		Die();

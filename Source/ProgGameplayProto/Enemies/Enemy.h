@@ -43,6 +43,8 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	virtual void Die();
 
+	
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -55,4 +57,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void Attack_BP(AActor* Target);
+
+	UFUNCTION()
+	
 };

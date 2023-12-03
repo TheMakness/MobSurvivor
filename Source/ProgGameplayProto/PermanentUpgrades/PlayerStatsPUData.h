@@ -6,6 +6,7 @@
 #include "PermanentUpgradeData.h"
 #include "PlayerStatsPUData.generated.h"
 
+class UPermanentUpgradeComponent_Base;
 /**
  * 
  */
@@ -23,12 +24,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Health = 0;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int DamageBonus = 0;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int LootMultiplier = 0;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int MaxSpeed = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<TSubclassOf<UPermanentUpgradeComponent_Base>> ActorComponent;
 
 private:
 	UPROPERTY(VisibleAnywhere)
