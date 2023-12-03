@@ -7,6 +7,7 @@
 #include "Logging/LogMacros.h"
 #include "PlayerCharacter.generated.h"
 
+class UKnockbackComponent;
 class UStatsUpgradeComponent;
 class UPowerPUData;
 class UGoldComponent;

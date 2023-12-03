@@ -58,6 +58,6 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void Attack_BP(AActor* Target);
 
-	UFUNCTION()
+	
 	
 };

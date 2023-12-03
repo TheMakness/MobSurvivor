@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS(Abstract)
+UCLASS(meta = (BlueprintSpawnableComponent))
 class PROGGAMEPLAYPROTO_API UKnockbackBlastComponent : public UPermanentUpgradeComponent_Base
 {
 	GENERATED_BODY()
