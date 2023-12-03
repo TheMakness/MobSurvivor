@@ -5,6 +5,7 @@
 
 #include "ProgGameplayProto/GameUtils.h"
 #include "ProgGameplayProto/Health.h"
+#include "ProgGameplayProto/KnockbackComponent.h"
 #include "ProgGameplayProto/Enemies/Enemy.h"
 #include "ProgGameplayProto/Player/PlayerCharacter.h"
 #define COLLISION_WEAPON ECC_GameTraceChannel2
@@ -33,7 +34,13 @@ void UKnockbackBlastComponent::CheckCollision()
 		AEnemy* Enemy = Cast<AEnemy>(OtherActor);
 		if (IsValid(Enemy))
 		{
-			Enemy->Knockback(Force,Enemy->GetActorLocation() - Owner->GetActorLocation());
+			UKnockbackComponent* KnockbackComponent = Enemy->GetComponentByClass<UKnockbackComponent>();
+			if(KnockbackComponent)
+			{
+				FVector Dir = Enemy->GetActorLocation() - Owner->GetActorLocation();
+				Dir.Normalize();
+				KnockbackComponent->Knockback(Force,Dir);
+			}
 		}
 		
 
