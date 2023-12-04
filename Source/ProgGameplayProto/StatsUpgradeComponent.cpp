@@ -9,6 +9,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "PermanentUpgrades/PlayerStatsPUData.h"
+#include "PermanentUpgrades/Components/PermanentUpgradeComponent_Base.h"
 #include "Player/PlayerCharacter.h"
 
 // Sets default values for this component's properties
@@ -32,6 +33,13 @@ void UStatsUpgradeComponent::ApplyUpgrades()
 	{
 		Health->SetMaxHealth(Health->GetMaxHealth() + PlayerStatsPuData->Health);
 		CharacterMovement->MaxWalkSpeed += PlayerStatsPuData->MaxSpeed;
+		if(PlayerStatsPuData->ActorComponent.Num() > 0)
+		{
+			for ( TSubclassOf<UActorComponent> Component : PlayerStatsPuData->ActorComponent)
+			{
+				Player->AddComponentByClass(Component,false,Player->GetTransform(),false);
+			}
+		}
 	}
 	
 }
