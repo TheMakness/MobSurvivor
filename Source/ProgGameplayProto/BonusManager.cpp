@@ -4,7 +4,7 @@
 #include "BonusManager.h"
 
 #include "GameLevelData.h"
-#include "ProgGameplayProtoGameMode.h"
+#include "LevelGameMode.h"
 #include "Bonuses/BonusData.h"
 #include "Engine/AssetManager.h"
 #include "Engine/ObjectLibrary.h"
@@ -19,7 +19,7 @@ void ABonusManager::BeginPlay()
 
 void ABonusManager::LoadBonuses()
 {
-	AProgGameplayProtoGameMode* gameMode = Cast<AProgGameplayProtoGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	ALevelGameMode* gameMode = Cast<ALevelGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
 	UGameLevelData* gameLevelData = gameMode->GameLevelData;
 

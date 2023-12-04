@@ -4,7 +4,7 @@
 #include "GoldComponent.h"
 
 #include "MobSurvivorInstance.h"
-#include "ProgGameplayProtoGameMode.h"
+#include "LevelGameMode.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
@@ -29,7 +29,7 @@ void UGoldComponent::AddGold(int GoldValue)
 void UGoldComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	Cast<AProgGameplayProtoGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->OnBeforeGameOver.AddDynamic(this,&UGoldComponent::SaveGold);
+	Cast<ALevelGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->OnBeforeGameOver.AddDynamic(this,&UGoldComponent::SaveGold);
 	// ...
 	
 }

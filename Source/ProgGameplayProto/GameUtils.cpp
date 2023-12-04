@@ -5,7 +5,7 @@
 
 #include "MainMenuPlayerState.h"
 #include "MobSurvivorInstance.h"
-#include "ProgGameplayMenuGameMode.h"
+#include "MainMenuGameMode.h"
 #include "UpgradesManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/PlayerCharacter.h"

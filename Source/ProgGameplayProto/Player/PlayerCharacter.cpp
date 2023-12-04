@@ -26,7 +26,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "ProgGameplayProto/GoldComponent.h"
 #include "ProgGameplayProto/MobSurvivorInstance.h"
-#include "ProgGameplayProto/ProgGameplayProtoGameMode.h"
+#include "ProgGameplayProto/LevelGameMode.h"
 #include "ProgGameplayProto/StatsUpgradeComponent.h"
 #include "ProgGameplayProto/PermanentUpgrades/PowerPUData.h"
 
@@ -251,7 +251,7 @@ void APlayerCharacter::UsePower(const FInputActionValue& Value)
 
 void APlayerCharacter::Start(const FInputActionValue& Value)
 {
-	AProgGameplayProtoGameMode* GM = Cast<AProgGameplayProtoGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	ALevelGameMode* GM = Cast<ALevelGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (IsValid(GM))
 		GM->SetGamePaused(!GM->IsPaused());
 }
@@ -264,5 +264,5 @@ void APlayerCharacter::AutoFire(const FInputActionValue& Value)
 
 void APlayerCharacter::Die()
 {
-	Cast<AProgGameplayProtoGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->GameOver();
+	Cast<ALevelGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->GameOver();
 }
