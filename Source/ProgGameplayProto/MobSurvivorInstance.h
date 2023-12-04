@@ -10,28 +10,29 @@ struct FPermanentUpgrade;
 class UPlayerStatsPUData;
 class UWeaponData;
 class UPowerPUData;
+class UGameLevelData;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGoldChange);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLevelChange);
 
-class UGameLevelData;
 /**
  * 
  */
 UCLASS()
-class PROGGAMEPLAYPROTO_API UMobSurvivorInstance : public 	UGameInstance
+class PROGGAMEPLAYPROTO_API UMobSurvivorInstance : public UGameInstance
 {
 	GENERATED_BODY()
 
 public:
 	UPROPERTY(BlueprintReadWrite)
-	UGameLevelData* DA_Level;
+	UGameLevelData* GameLevelData;
+
 	UPROPERTY(BlueprintAssignable)
 	FOnGoldChange OnGoldChange;
+
 	UPROPERTY(BlueprintAssignable)
 	FOnLevelChange OnLevelChange;
-	
 
-public:
 	UFUNCTION(BlueprintCallable)
 	void AddGold(int NewGold);
 

@@ -23,10 +23,12 @@ void ALevelGameMode::BeginPlay()
 	UMobSurvivorInstance* GI = GetGameInstance<UMobSurvivorInstance>();
 	if(IsValid(GI) && IsValid(GS))
 	{
-		GameLevelData = GI->DA_Level;
+		GameLevelData = GI->GameLevelData;
 		GS->SetGameDuration(GameLevelData->GameDuration);
-		GS->SetGoldBonus(GI->DA_Level->GoldBonus);
+		GS->SetGoldBonus(GI->GameLevelData->GoldBonus);
 	}
+
+	StartGame();
 }
 
 ALevelGameMode::ALevelGameMode()
@@ -38,10 +40,6 @@ ALevelGameMode::ALevelGameMode()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
-
-
-	
-
 }
 
 void ALevelGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
