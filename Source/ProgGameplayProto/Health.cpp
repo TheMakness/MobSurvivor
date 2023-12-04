@@ -31,6 +31,8 @@ void UHealth::HitByAttack(float Damages, AActor* Attacker)
 
 void UHealth::AddHealth(float Amount)
 {
+	if (!bCanTakeDamage) return;
+
 	CurrentHealth += Amount;
 
 	OnHealthChanged.Broadcast(CurrentHealth);

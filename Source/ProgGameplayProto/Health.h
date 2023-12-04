@@ -28,6 +28,9 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UPROPERTY(BlueprintReadWrite)
+	bool bCanTakeDamage = true;
+
 	UPROPERTY()
 	FOnHealthDie OnBeforeHealthDie;
 
