@@ -27,6 +27,7 @@ void AExplosiveEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
+	
 	ExplosionCollider->OnComponentBeginOverlap.AddDynamic(this, &AExplosiveEnemy::MakeDamage);
 }
 

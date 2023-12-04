@@ -7,7 +7,7 @@
 #include "EnemySpawnerManager.generated.h"
 
 class AEnemy;
-class AProgGameplayProtoGameMode;
+class ALevelGameMode;
 struct FPunctualEnemySpawnRule;
 struct FRangeEnemySpawnRule;
 /**
@@ -23,7 +23,7 @@ public:
 
 protected:
 	UPROPERTY()
-	AProgGameplayProtoGameMode* GameMode;
+	ALevelGameMode* GameMode;
 
 	UPROPERTY()
 	TArray<FPunctualEnemySpawnRule> PunctualEnemySpawnRules;

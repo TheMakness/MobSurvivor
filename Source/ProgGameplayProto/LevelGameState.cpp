@@ -1,18 +1,18 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ProgGameplayProtoGameState.h"
+#include "LevelGameState.h"
 
 #include "MobSurvivorInstance.h"
 
-AProgGameplayProtoGameState::AProgGameplayProtoGameState()
+ALevelGameState::ALevelGameState()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	
 	
 }
 
-void AProgGameplayProtoGameState::BeginPlay()
+void ALevelGameState::BeginPlay()
 {
 	Super::BeginPlay();
 	
@@ -20,7 +20,7 @@ void AProgGameplayProtoGameState::BeginPlay()
 	
 }
 
-void AProgGameplayProtoGameState::Tick(float DeltaSeconds)
+void ALevelGameState::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
@@ -39,14 +39,14 @@ void AProgGameplayProtoGameState::Tick(float DeltaSeconds)
 		GEngine->AddOnScreenDebugMessage(-1, 0, FColor::Green, "Remaining Time: " + FString::SanitizeFloat(GetRemainingTime()));
 }
 
-void AProgGameplayProtoGameState::SetGameDuration(float Duration)
+void ALevelGameState::SetGameDuration(float Duration)
 {
 	GameTargetDuration = Duration * 60;
 	if (GameTargetDuration <= 0)
 		bHasTimer = false;
 }
 
-void AProgGameplayProtoGameState::SetGameStarted(const bool HasGameStarted)
+void ALevelGameState::SetGameStarted(const bool HasGameStarted)
 {
 	bHasGameStarted = HasGameStarted;
 }

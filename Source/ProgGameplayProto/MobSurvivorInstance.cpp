@@ -2,10 +2,10 @@
 
 
 #include "MobSurvivorInstance.h"
+
 #include "PermanentUpgrades/PermanentUpgrade.h"
 #include "PermanentUpgrades/PlayerStatsPUData.h"
 #include "PermanentUpgrades/PowerPUData.h"
-
 
 void UMobSurvivorInstance::AddGold(int NewGold)
 {

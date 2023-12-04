@@ -7,8 +7,8 @@
 #include "GameLevelData.h"
 #include "GameUtils.h"
 #include "Player/PlayerCharacter.h"
-#include "ProgGameplayProtoGameMode.h"
-#include "ProgGameplayProtoGameState.h"
+#include "LevelGameMode.h"
+#include "LevelGameState.h"
 #include "Kismet/GameplayStatics.h"
 
 AEnemySpawnerManager::AEnemySpawnerManager()
@@ -34,7 +34,7 @@ void AEnemySpawnerManager::BeginPlay()
 
 void AEnemySpawnerManager::LoadSpawnRules()
 {
-	GameMode = Cast<AProgGameplayProtoGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	GameMode = Cast<ALevelGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
 	UGameLevelData* gameLevelData = GameMode->GameLevelData;
 
@@ -57,7 +57,7 @@ void AEnemySpawnerManager::EvaluatePunctualRules()
 
 bool AEnemySpawnerManager::EvaluatePunctualRule(FPunctualEnemySpawnRule Rule)
 {
-	AProgGameplayProtoGameState* gameState = GameMode->GetGameState<AProgGameplayProtoGameState>();
+	ALevelGameState* gameState = GameMode->GetGameState<ALevelGameState>();
 
 	if (gameState->GetGameTime() >= Rule.Time)
 	{
@@ -85,7 +85,7 @@ void AEnemySpawnerManager::EvaluateRangeRules(float DeltaTime)
 
 bool AEnemySpawnerManager::EvaluateRangeRule(float DeltaTime, FRangeEnemySpawnRule& Rule)
 {
-	AProgGameplayProtoGameState* gameState = GameMode->GetGameState<AProgGameplayProtoGameState>();
+	ALevelGameState* gameState = GameMode->GetGameState<ALevelGameState>();
 
 	float minTime = 0;
 	float maxTime = 0;

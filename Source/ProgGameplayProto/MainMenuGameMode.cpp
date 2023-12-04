@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ProgGameplayMenuGameMode.h"
+#include "MainMenuGameMode.h"
 
 #include "MainMenuPlayerState.h"
 
-AProgGameplayMenuGameMode::AProgGameplayMenuGameMode()
+AMainMenuGameMode::AMainMenuGameMode()
 {
 	// set default game state class
 	PlayerStateClass = AMainMenuPlayerState::StaticClass();

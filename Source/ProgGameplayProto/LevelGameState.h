@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameStateBase.h"
-#include "ProgGameplayProtoGameState.generated.h"
+#include "LevelGameState.generated.h"
 
 /**
  *
@@ -13,12 +13,12 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTimerFinish);
 
 UCLASS()
-class PROGGAMEPLAYPROTO_API AProgGameplayProtoGameState : public AGameStateBase
+class PROGGAMEPLAYPROTO_API ALevelGameState : public AGameStateBase
 {
 	GENERATED_BODY()
 
 public:
-	AProgGameplayProtoGameState();
+	ALevelGameState();
 
 	UPROPERTY()
 	FOnTimerFinish OnTimerFinish;

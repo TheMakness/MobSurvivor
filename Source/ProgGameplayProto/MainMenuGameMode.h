@@ -4,15 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "ProgGameplayMenuGameMode.generated.h"
+#include "MainMenuGameMode.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROGGAMEPLAYPROTO_API AProgGameplayMenuGameMode : public AGameModeBase
+class PROGGAMEPLAYPROTO_API AMainMenuGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-	AProgGameplayMenuGameMode();
+	AMainMenuGameMode();
 	
 };

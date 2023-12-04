@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "ProgGameplayProtoGameMode.generated.h"
+#include "LevelGameMode.generated.h"
 
 class AUpgradesManager;
 class ABonusManager;
@@ -14,13 +14,13 @@ class UGameLevelData;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBeforeGameOver);
 
 UCLASS(minimalapi)
-class AProgGameplayProtoGameMode : public AGameModeBase
+class ALevelGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
 public:
 	virtual void BeginPlay() override;
-	AProgGameplayProtoGameMode();
+	ALevelGameMode();
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -62,7 +62,8 @@ public:
 	virtual void Win();
 
 	UPROPERTY()
-		FOnBeforeGameOver OnBeforeGameOver;
+	FOnBeforeGameOver OnBeforeGameOver;
+
 private:
 	bool bIsPaused;
 	bool bIsGameOver;
