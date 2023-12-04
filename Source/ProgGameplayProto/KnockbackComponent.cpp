@@ -20,9 +20,12 @@ void UKnockbackComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	Owner = GetOwner();
+	PlayRate = 1 / Duration;
 	// ...
 	
 }
+
+
 
 
 // Called every frame
@@ -30,13 +33,47 @@ void UKnockbackComponent::TickComponent(float DeltaTime, ELevelTick TickType,
                                         FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if (!bIsStart) return;
+
+	if(Lerp < 1)
+	{
+		Lerp += DeltaTime * PlayRate;
+		KnockbackLerp(Lerp);
+	}
+	else
+	{
+		bIsStart = false;
+		Lerp = 0;
+		Owner->SetActorLocation(EndLerpLocation);
+		Owner->SetActorEnableCollision(true);
+	}
+
 	
+
 	// ...
 }
 
-void UKnockbackComponent::Knockback(float Force, FVector Direction)
+void UKnockbackComponent::Knockback(const float force, const FVector& direction)
 {
-	Owner->AddActorWorldOffset(Direction * Force);
+	if(bIsStart) return;
+
+	Owner->SetActorEnableCollision(false);
+
+	bIsStart = true;
+	Force = force;
+	Direction = direction;
+	StartLerpLocation = Owner->GetActorLocation();
+	EndLerpLocation = StartLerpLocation + (Direction * Force);
+
+	DrawDebugSphere(GetWorld(), EndLerpLocation, 1, 16, FColor::Red, false, 5);
+	DrawDebugSphere(GetWorld(), StartLerpLocation, 1, 16, FColor::Green, false, 5);
+}
+
+void UKnockbackComponent::KnockbackLerp(float alpha) const
+{
+	const FVector NewLocation = FMath::LerpStable(StartLerpLocation, EndLerpLocation, Lerp);
+	Owner->SetActorLocation(NewLocation);
 }
 
 

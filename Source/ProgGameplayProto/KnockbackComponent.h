@@ -17,13 +17,16 @@ public:
 	UKnockbackComponent();
 	UPROPERTY(BlueprintReadWrite,EditAnywhere)
 	FFloatCurve Curve;
-	void Knockback(float Force, FVector Direction);
+	void Knockback(float Force, const FVector& Direction);
+
+	UPROPERTY(EditAnywhere)
+	float Duration;
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+	void KnockbackLerp(float alpha) const;
 	
-
 public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
@@ -31,6 +34,15 @@ public:
 
 private:
 	AActor* Owner;
+
+	float Lerp;
+	float PlayRate;
+	bool bIsStart;
+
+	float Force;
+	FVector Direction;
+	FVector StartLerpLocation;
+	FVector EndLerpLocation;
 
 	
 };

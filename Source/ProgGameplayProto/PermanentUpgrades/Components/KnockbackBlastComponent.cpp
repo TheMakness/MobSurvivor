@@ -38,6 +38,7 @@ void UKnockbackBlastComponent::CheckCollision()
 			if(KnockbackComponent)
 			{
 				FVector Dir = Enemy->GetActorLocation() - Owner->GetActorLocation();
+				Dir.Z = 0;
 				Dir.Normalize();
 				KnockbackComponent->Knockback(Force,Dir);
 			}
