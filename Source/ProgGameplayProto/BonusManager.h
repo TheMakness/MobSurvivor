@@ -8,23 +8,21 @@
 
 class UObjectLibrary;
 class UBonusData;
-/**
- *
- */
+
 UCLASS()
 class PROGGAMEPLAYPROTO_API ABonusManager : public AInfo
 {
 	GENERATED_BODY()
 
 	UPROPERTY()
-	TArray<UBonusData*> AllBonuses;
+	TArray<TObjectPtr<UBonusData>> AllBonuses;
 
 	UPROPERTY()
-	TArray<UBonusData*> AvailableBonuses;
+	TArray<TObjectPtr<UBonusData>> AvailableBonuses;
 
 protected:
 	virtual void BeginPlay() override;
-
+	
 	virtual void LoadBonuses();
 
 	UFUNCTION(BlueprintCallable)

@@ -14,7 +14,7 @@
 #include "../Health.h"
 #include "../GameUtils.h"
 #include "InputActionValue.h"
-#include "../Bonuses/BonusData.h"
+#include "../Bonuses/WeaponBonusData.h"
 #include "Components/SphereComponent.h"
 #include "../Drops/Drop.h"
 #include "../Weapons/WeaponComponent.h"

@@ -5,9 +5,6 @@
 
 #include "GameLevelData.h"
 #include "LevelGameMode.h"
-#include "Bonuses/BonusData.h"
-#include "Engine/AssetManager.h"
-#include "Engine/ObjectLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
 void ABonusManager::BeginPlay()
@@ -19,13 +16,13 @@ void ABonusManager::BeginPlay()
 
 void ABonusManager::LoadBonuses()
 {
-	ALevelGameMode* gameMode = Cast<ALevelGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	const ALevelGameMode* GameMode = Cast<ALevelGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
-	UGameLevelData* gameLevelData = gameMode->GameLevelData;
+	const UGameLevelData* GameLevelData = GameMode->GameLevelData;
 
-	if (!IsValid(gameLevelData)) return;
+	if (!IsValid(GameLevelData)) return;
 
-	AllBonuses = gameLevelData->Bonuses;
+	AllBonuses = GameLevelData->Bonuses;
 	AvailableBonuses = AllBonuses;
 }
 
@@ -36,8 +33,8 @@ UBonusData* ABonusManager::GetRandomBonus()
 		AvailableBonuses = AllBonuses;
 	}
 
-	UBonusData* output = AvailableBonuses[FMath::RandRange(0, AvailableBonuses.Num() - 1)];
-	AvailableBonuses.Remove(output);
+	UBonusData* Output = AvailableBonuses[FMath::RandRange(0, AvailableBonuses.Num() - 1)];
+	AvailableBonuses.Remove(Output);
 
-	return output;
+	return Output;
 }

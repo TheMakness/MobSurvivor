@@ -16,7 +16,7 @@ class UExperienceComponent;
 class UHealth;
 class UPowerComponent;
 class APower;
-class UBonusData;
+class UWeaponBonusData;
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
@@ -98,7 +98,7 @@ protected:
 	UPowerPUData* DefaultPowerData;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = WeaponData)
-	TArray<UBonusData*> DefaultBonuses;
+	TArray<UWeaponBonusData*> DefaultBonuses;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UWeaponComponent* Weapon;

@@ -6,12 +6,12 @@
 #include "Engine/DataAsset.h"
 #include "GameLevelData.generated.h"
 
-class UBonusData;
 struct FRangeEnemySpawnRule;
 struct FPunctualEnemySpawnRule;
+class UBonusData;
 
 /**
- *
+ * Store rules and references to other assets that are required to start a level
  */
 UCLASS(BlueprintType)
 class PROGGAMEPLAYPROTO_API UGameLevelData : public UDataAsset
@@ -26,13 +26,7 @@ public:
 	TArray<FRangeEnemySpawnRule> RangeSpawnRules;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	TArray<UBonusData*> Bonuses;
-
-	
-
-    // God mode
-	UPROPERTY(EditAnywhere)
-	bool Invincible = false;
+	TArray<TObjectPtr<UBonusData>> Bonuses;
 
     // The amount of experience given for each orb of experience
 	UPROPERTY(EditAnywhere)
@@ -45,8 +39,4 @@ public:
 	//The amount of gold win if player survive all game duration
 	UPROPERTY(EditAnywhere)
 	int GoldBonus;
-
-	// Enable the spawn of bosses during the game
-	UPROPERTY(EditAnywhere)
-	bool SpawnBosses = false;
 };

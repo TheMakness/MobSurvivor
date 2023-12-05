@@ -3,15 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BonusData.h"
+#include "WeaponBonusData.h"
 #include "BounceBonusData.generated.h"
 
+class UWeaponComponent;
+class APlayerCharacter;
 class UBounceEffect;
+
 /**
  *
  */
 UCLASS()
-class PROGGAMEPLAYPROTO_API UBounceBonusData : public UBonusData
+class PROGGAMEPLAYPROTO_API UBounceBonusData : public UWeaponBonusData
 {
 	GENERATED_BODY()
 

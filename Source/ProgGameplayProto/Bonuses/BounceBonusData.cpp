@@ -2,6 +2,7 @@
 
 
 #include "BounceBonusData.h"
+
 #include "ProgGameplayProto/Effects/BounceEffect.h"
 #include "ProgGameplayProto/Weapons/WeaponComponent.h"
 
