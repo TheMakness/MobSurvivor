@@ -9,6 +9,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthDie);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthChangedWithoutParameters);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, NewHealthValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMaxHealthChange);
 
 /**
  *
@@ -39,6 +40,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnMaxHealthChange OnMaxHealthChange;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChangedWithoutParameters OnHealthChangedWithoutParameters;
