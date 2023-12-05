@@ -8,6 +8,7 @@
 #include "ProgGameplayProto/Health.h"
 #include "ProgGameplayProto/Player/PlayerCharacter.h"
 #include "ProgGameplayProto/Drops/EnemyDropperComponent.h"
+#include <Kismet/KismetMathLibrary.h>
 
 // Sets default values
 AEnemy::AEnemy()
@@ -44,6 +45,9 @@ void AEnemy::MoveTowardPlayer(float DeltaTime)
 
 	FVector movement = direction * MoveSpeed * DeltaTime;
 
+	FRotator rotation = UKismetMathLibrary::FindLookAtRotation(player->GetActorLocation(), GetActorLocation());
+
+	SetActorRotation(rotation);
 	AddActorWorldOffset(movement);
 }
 
