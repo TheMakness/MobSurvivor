@@ -15,6 +15,23 @@ class PROGGAMEPLAYPROTO_API UPowerComponent : public USceneComponent
 {
 	GENERATED_BODY()
 
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float Countdown;
+	
+	UPROPERTY(BlueprintReadOnly)
+	bool bHasCountdownStarted;
+	
+private:
+	// Reference to the Power Data Asset class
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UPowerPUData> PowerData;
+	
+	UPROPERTY(VisibleAnywhere)
+	float CountdownStartValue;
+	
+	TObjectPtr<APlayerCharacter> PlayerOwner;
+	
 public:	
 	// Sets default values for this component's properties
 	UPowerComponent();
@@ -35,7 +52,10 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	void Use();
+	
 	virtual void SetData(UPowerPUData* Data) { PowerData = Data; }
+
+	virtual EDataValidationResult IsDataValid(FDataValidationContext& Context) const override;
 
 protected:
 	/**
@@ -43,22 +63,7 @@ protected:
 	 */
 	UFUNCTION(BlueprintNativeEvent)
 	void UseBehaviour();
-	
-	// Reference to the Power Data Asset class
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TObjectPtr<UPowerPUData> PowerData;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	float Countdown;
-	
-	UPROPERTY(BlueprintReadOnly)
-	bool bHasCountdownStarted;
 
 private:
 	void Cooldown(float DeltaTime);
-
-	UPROPERTY(VisibleAnywhere)
-	float CountdownStartValue;
-
-	TObjectPtr<APlayerCharacter> PlayerOwner;
 };

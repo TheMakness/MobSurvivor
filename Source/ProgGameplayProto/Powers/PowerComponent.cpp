@@ -3,6 +3,7 @@
 
 #include "PowerComponent.h"
 
+#include "Misc/DataValidation.h"
 #include "ProgGameplayProto/PermanentUpgrades/PowerPUData.h"
 
 // Sets default values for this component's properties
@@ -27,11 +28,12 @@ void UPowerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (ensureAlwaysMsgf(PowerData != nullptr, TEXT("The DataAsset linked to this PowerComponent has not been set.")))
-	{
-		CountdownStartValue = PowerData->CooldownTime;
-		Countdown = CountdownStartValue;
-	}
+	// PowerData can't be null because it is being checked in IsDataValid.
+	// The Assertion is here in case there is an issue during the Data Validation check
+	checkf(IsValid(PowerData), TEXT("Power Data must be set in the Details panel."));
+	
+	CountdownStartValue = PowerData->CooldownTime;
+	Countdown = CountdownStartValue;
 }
 
 
@@ -51,6 +53,16 @@ void UPowerComponent::Use()
 	bHasCountdownStarted = true;
 
 	UseBehaviour();
+}
+EDataValidationResult UPowerComponent::IsDataValid(FDataValidationContext& Context) const
+{
+	
+	if (!IsValid(PowerData))
+	{
+		Context.AddError(FText::FromString("Power Data must be set in the Details panel."));
+	}
+	
+	return Super::IsDataValid(Context);
 }
 
 void UPowerComponent::UseBehaviour_Implementation()
