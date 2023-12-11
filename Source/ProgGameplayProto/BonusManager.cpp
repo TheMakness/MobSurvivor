@@ -5,7 +5,12 @@
 
 #include "GameLevelData.h"
 #include "LevelGameMode.h"
+#include "MobSurvivorInstance.h"
+#include "Bonuses/BonusData.h"
 #include "Kismet/GameplayStatics.h"
+#include "PermanentUpgrades/PlayerStatsPUData.h"
+#include "PermanentUpgrades/PowerPUData.h"
+#include "Weapons/WeaponData.h"
 
 void ABonusManager::BeginPlay()
 {
@@ -23,6 +28,26 @@ void ABonusManager::LoadBonuses()
 	if (!IsValid(GameLevelData)) return;
 
 	AllBonuses = GameLevelData->Bonuses;
+	
+	const UMobSurvivorInstance* GameInstance = GetGameInstance<UMobSurvivorInstance>();
+	
+	if (GameInstance->GetEquippedPower() != nullptr)
+	{
+		AllBonuses.Append(GameInstance->GetEquippedPower()->LinkedBonuses);
+	}
+
+	if (GameInstance->GetEquippedWeapon() != nullptr)
+	{
+		AllBonuses.Append(GameInstance->GetEquippedWeapon()->LinkedBonuses);
+	}
+
+	if (!GameInstance->GetEquippedStatsUpgrades().IsEmpty())
+	{
+		for (const auto StatsUpgrades : GameInstance->GetEquippedStatsUpgrades())
+		{
+			AllBonuses.Append(StatsUpgrades->LinkedBonuses);
+		}
+	}
 	AvailableBonuses = AllBonuses;
 }
 

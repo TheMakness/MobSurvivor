@@ -48,6 +48,9 @@ public:
 	// If this upgrade is purchased by default when starting a new game (which means that it is a default upgrade)
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Metadata")
 	bool bIsDefaultPurchased = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Metadata")
+	TArray<TObjectPtr<UBonusData>> LinkedBonuses;
 	
 private:
 	friend bool operator==(const UPermanentUpgradeData& Lhs, const UPermanentUpgradeData& RHS)
@@ -55,7 +58,8 @@ private:
 		return Lhs.Name == RHS.Name
 			&& Lhs.Description == RHS.Description
 			&& Lhs.Image == RHS.Image
-			&& Lhs.Cost == RHS.Cost;
+			&& Lhs.Cost == RHS.Cost
+			&& Lhs.LinkedBonuses == RHS.LinkedBonuses;
 	}
 
 	friend bool operator!=(const UPermanentUpgradeData& Lhs, const UPermanentUpgradeData& RHS)

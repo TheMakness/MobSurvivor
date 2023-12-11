@@ -6,6 +6,7 @@
 #include "Engine/DataAsset.h"
 #include "BonusData.generated.h"
 
+class UPermanentUpgradeData;
 /**
  * 
  */
