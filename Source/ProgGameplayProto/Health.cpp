@@ -60,7 +60,7 @@ float UHealth::GetCurrentHealthPercentage()
 
 void UHealth::SetMaxHealth(const float NewMaxHealth)
 {
-	OnMaxHealthChange.Broadcast();
+	
 	if (CurrentHealth >= MaxHealth)
 	{
 		MaxHealth = NewMaxHealth;
@@ -70,4 +70,5 @@ void UHealth::SetMaxHealth(const float NewMaxHealth)
 	{
 		MaxHealth = NewMaxHealth;
 	}
+	OnMaxHealthChange.Broadcast();
 }
