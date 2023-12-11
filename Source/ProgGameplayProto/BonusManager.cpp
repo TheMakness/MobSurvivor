@@ -6,7 +6,6 @@
 #include "GameLevelData.h"
 #include "LevelGameMode.h"
 #include "MobSurvivorInstance.h"
-#include "Bonuses/BonusData.h"
 #include "Kismet/GameplayStatics.h"
 #include "PermanentUpgrades/PlayerStatsPUData.h"
 #include "PermanentUpgrades/PowerPUData.h"
@@ -29,8 +28,27 @@ void ABonusManager::LoadBonuses()
 
 	AllBonuses = GameLevelData->Bonuses;
 	
-	const UMobSurvivorInstance* GameInstance = GetGameInstance<UMobSurvivorInstance>();
+	LoadBonusesFromUpgrades();
 	
+	AvailableBonuses = AllBonuses;
+}
+
+UBonusData* ABonusManager::GetRandomBonus()
+{
+	if (AvailableBonuses.Num() < 1)
+	{
+		AvailableBonuses = AllBonuses;
+	}
+
+	UBonusData* Output = AvailableBonuses[FMath::RandRange(0, AvailableBonuses.Num() - 1)];
+	AvailableBonuses.Remove(Output);
+
+	return Output;
+}
+void ABonusManager::LoadBonusesFromUpgrades()
+{
+	const UMobSurvivorInstance* GameInstance = GetGameInstance<UMobSurvivorInstance>();
+
 	if (GameInstance->GetEquippedPower() != nullptr)
 	{
 		AllBonuses.Append(GameInstance->GetEquippedPower()->LinkedBonuses);
@@ -48,18 +66,4 @@ void ABonusManager::LoadBonuses()
 			AllBonuses.Append(StatsUpgrades->LinkedBonuses);
 		}
 	}
-	AvailableBonuses = AllBonuses;
-}
-
-UBonusData* ABonusManager::GetRandomBonus()
-{
-	if (AvailableBonuses.Num() < 1)
-	{
-		AvailableBonuses = AllBonuses;
-	}
-
-	UBonusData* Output = AvailableBonuses[FMath::RandRange(0, AvailableBonuses.Num() - 1)];
-	AvailableBonuses.Remove(Output);
-
-	return Output;
 }

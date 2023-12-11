@@ -27,4 +27,7 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	UBonusData* GetRandomBonus();
+
+private:
+	void LoadBonusesFromUpgrades();
 };

@@ -6,6 +6,7 @@
 #include "Engine/DataAsset.h"
 #include "PermanentUpgradeData.generated.h"
 
+class UBonusData;
 UENUM(BlueprintType)
 enum EType
 {
