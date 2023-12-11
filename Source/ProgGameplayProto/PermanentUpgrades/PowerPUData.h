@@ -24,8 +24,8 @@ public:
 	const TSubclassOf<UPowerComponent>& GetComponent() const;
 
 	// Cooldown timer in seconds, that prevent the Use of the Power while it's running. Put 0 to deactivate the cooldown
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(Units=Seconds))
-	int CooldownTime = 10;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TMap<int,float> CooldownTime = { {1,10} };
 	
 protected:
 	// Component holding the Game Logic of the power. The component has a reference to this Data Asset

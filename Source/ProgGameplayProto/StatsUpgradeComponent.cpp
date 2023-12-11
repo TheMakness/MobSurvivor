@@ -12,6 +12,8 @@
 #include "PermanentUpgrades/Components/PermanentUpgradeComponent_Base.h"
 #include "Player/PlayerCharacter.h"
 
+#define GET_LEVEL FPermanentUpgrade::GetStatLevel
+
 // Sets default values for this component's properties
 UStatsUpgradeComponent::UStatsUpgradeComponent()
 {
@@ -29,10 +31,29 @@ void UStatsUpgradeComponent::ApplyUpgrades()
 	UCharacterMovementComponent* CharacterMovement = Player->GetCharacterMovement();
 	TArray<TObjectPtr<UPlayerStatsPUData>> StatsUpgrades = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(GetWorld()))->GetEquippedStatsUpgrades();
 
+	UMobSurvivorInstance* GI = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	
+
+
 	for (TObjectPtr<UPlayerStatsPUData> PlayerStatsPuData : StatsUpgrades)
 	{
-		Health->SetMaxHealth(Health->GetMaxHealth() + PlayerStatsPuData->Health);
-		CharacterMovement->MaxWalkSpeed += PlayerStatsPuData->MaxSpeed;
+		if (IsValid(GI))
+		{
+			TArray<FPermanentUpgrade> Upgrades = GI->GetUpgrades();
+			UPermanentUpgradeData* UpgradeData = Cast<UPermanentUpgradeData>(PlayerStatsPuData);
+
+			FPermanentUpgrade* FoundUpgrade = Upgrades.FindByPredicate([UpgradeData](const FPermanentUpgrade& Item) -> bool
+				{
+					return Item.Data == UpgradeData;
+				});
+
+			CurrentUpgradeLevel = FoundUpgrade->CurrentLevel;
+
+		}
+
+		Health->SetMaxHealth(Health->GetMaxHealth() + PlayerStatsPuData->Health[GET_LEVEL(PlayerStatsPuData->Health,CurrentUpgradeLevel)]);
+		CharacterMovement->MaxWalkSpeed += PlayerStatsPuData->MaxSpeed[GET_LEVEL(PlayerStatsPuData->MaxSpeed,CurrentUpgradeLevel)];
 		if(PlayerStatsPuData->ActorComponent.Num() > 0)
 		{
 			for ( TSubclassOf<UActorComponent> Component : PlayerStatsPuData->ActorComponent)
@@ -61,4 +82,6 @@ void UStatsUpgradeComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 	// ...
 }
+
+
 

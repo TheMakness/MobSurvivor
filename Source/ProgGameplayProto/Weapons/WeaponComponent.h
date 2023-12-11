@@ -24,6 +24,9 @@ protected:
 	TObjectPtr<UWeaponData> WeaponData;
 
 	UPROPERTY()
+	int CurrentWeaponLevel = 1;
+
+	UPROPERTY()
 	TObjectPtr<APlayerCharacter> Character;
 
 	UPROPERTY()
@@ -62,7 +65,7 @@ public:
 
 	virtual void TryShooting(float DeltaTime);
 
-	virtual void SetData(UWeaponData* Data) { WeaponData = Data; }
+	virtual void SetData(UWeaponData* Data);
 
 	virtual void AddEffect(UProjectileEffect* Effect);
 
@@ -88,4 +91,5 @@ public:
 	float BonusCriticalHitChance = 0;
 	float BonusCriticalHitChanceMultiplier = 0;
 	float BonusCriticalHitDamageMultiplier = 0;
+
 };

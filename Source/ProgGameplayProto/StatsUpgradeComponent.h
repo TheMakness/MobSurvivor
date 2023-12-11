@@ -17,13 +17,19 @@ public:
 	UStatsUpgradeComponent();
 	void ApplyUpgrades();
 
+
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
+	UPROPERTY()
+	int CurrentUpgradeLevel = 1;
 
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+private:
+
 };

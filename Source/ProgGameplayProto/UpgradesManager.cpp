@@ -126,6 +126,7 @@ void AUpgradesManager::SetEquippedStatsUpgrades(const TArray<TObjectPtr<UPlayerS
 		if (FindUpgrade != nullptr)
 		{
 			FindUpgrade->bPurchased = LoadUpgrade.bPurchased;
+			FindUpgrade->CurrentLevel = LoadUpgrade.CurrentLevel;
 			if (FindUpgrade->Data->GetType() == EType::PlayerStats)
 				EquipUpgrade(FindUpgrade->Data);
 		}
@@ -135,29 +136,29 @@ void AUpgradesManager::SetEquippedStatsUpgrades(const TArray<TObjectPtr<UPlayerS
 
 void AUpgradesManager::EquipUpgrade(UPermanentUpgradeData* UpgradeToEquip)
 {
-	//const FPermanentUpgrade* FoundUpgrade = Upgrades.FindByPredicate([&UpgradeToEquip](const FPermanentUpgrade& Item) -> bool
-	//{
-	//	return Item.Data == UpgradeToEquip;
-	//});
-	//
-	//// Cannot equip an upgrade not purchased
-	//if (!FoundUpgrade->bPurchased) return;
-	//
-	//UPermanentUpgradeData* UpgradeData = FoundUpgrade->Data;
+	const FPermanentUpgrade* FoundUpgrade = Upgrades.FindByPredicate([&UpgradeToEquip](const FPermanentUpgrade& Item) -> bool
+	{
+		return Item.Data == UpgradeToEquip;
+	});
+	
+	// Cannot equip an upgrade not purchased
+	if (!FoundUpgrade->bPurchased) return;
+	
+	UPermanentUpgradeData* UpgradeData = FoundUpgrade->Data;
 
-	//switch (UpgradeData->GetType())
-	//{
-	//case Power:
-	//	EquippedPower = Cast<UPowerPUData>(UpgradeData);
-	//	break;
-	//case Weapon:
-	//	EquippedWeapon = Cast<UWeaponData>(UpgradeData);
-	//	break;
-	//case PlayerStats:
-	//	EquippedStatsUpgrades.AddUnique(Cast<UPlayerStatsPUData>(UpgradeData));
-	//default:
-	//	break;
-	//}
+	switch (UpgradeData->GetType())
+	{
+	case Power:
+		EquippedPower = Cast<UPowerPUData>(UpgradeData);
+		break;
+	case Weapon:
+		EquippedWeapon = Cast<UWeaponData>(UpgradeData);
+		break;
+	case PlayerStats:
+		EquippedStatsUpgrades.AddUnique(Cast<UPlayerStatsPUData>(UpgradeData));
+	default:
+		break;
+	}
 }
 
 bool AUpgradesManager::IsWeaponEquipped(UWeaponData* UpgradeToCheck)
@@ -201,10 +202,27 @@ void AUpgradesManager::BuyUpgrade(UPermanentUpgradeData* UpgradeToBuy)
 
 	UMobSurvivorInstance* GI = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
-	if(IsValid(GI) && GI->GetGoldAmount() > UpgradeToBuy->Cost)
+	if(IsValid(GI) && GI->GetGoldAmount() >= UpgradeToBuy->Cost[FoundUpgrade->CurrentLevel])
 	{
-		GI->AddGold(-UpgradeToBuy->Cost);
+		GI->AddGold(-UpgradeToBuy->Cost[FoundUpgrade->CurrentLevel]);
 		FoundUpgrade->bPurchased = true;
 	}
 		
+}
+
+void AUpgradesManager::LevelUpUpgrade(UPermanentUpgradeData* UpgradeToLevelUp)
+{
+	FPermanentUpgrade* FoundUpgrade = Upgrades.FindByPredicate([UpgradeToLevelUp](const FPermanentUpgrade& Item) -> bool
+		{
+			return Item.Data == UpgradeToLevelUp;
+		});
+
+	UMobSurvivorInstance* GI = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	if (IsValid(GI) && GI->GetGoldAmount() >= UpgradeToLevelUp->Cost[FoundUpgrade->CurrentLevel])
+	{
+		GI->AddGold(-UpgradeToLevelUp->Cost[FoundUpgrade->CurrentLevel]);
+		FoundUpgrade->CurrentLevel++;
+	}
+
 }

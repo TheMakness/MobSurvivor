@@ -6,7 +6,11 @@
 #include "ProgGameplayProto/Player/PlayerCharacter.h"
 #include "ProgGameplayProto/Weapons/WeaponProjectile.h"
 #include "Kismet/GameplayStatics.h"
+#include "ProgGameplayProto/MobSurvivorInstance.h"
 #include "ProgGameplayProto/Effects/ProjectileEffect.h"
+#include "ProgGameplayProto/PermanentUpgrades/PermanentUpgrade.h"
+
+#define GET_LEVEL FPermanentUpgrade::GetStatLevel
 
 // Sets default values for this component's properties
 UWeaponComponent::UWeaponComponent()
@@ -24,6 +28,10 @@ void UWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	
+
+
+	
 	// ...
 
 }
@@ -56,10 +64,32 @@ void UWeaponComponent::TryShooting(float DeltaTime)
 	}
 }
 
+void UWeaponComponent::SetData(UWeaponData* Data)
+{
+	WeaponData = Data;
+
+	UMobSurvivorInstance* GI = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	if (IsValid(GI))
+	{
+		TArray<FPermanentUpgrade> Upgrades = GI->GetUpgrades();
+		UPermanentUpgradeData* UpgradeData = Cast<UPermanentUpgradeData>(WeaponData);
+
+		FPermanentUpgrade* FoundUpgrade = Upgrades.FindByPredicate([UpgradeData](const FPermanentUpgrade& Item) -> bool
+			{
+				return Item.Data == UpgradeData;
+			});
+
+		CurrentWeaponLevel = FoundUpgrade->CurrentLevel;
+
+	}
+}
+
 void UWeaponComponent::AddEffect(UProjectileEffect* Effect)
 {
 	Effects.Add(Effect);
 }
+
 
 void UWeaponComponent::Shoot()
 {
@@ -158,7 +188,11 @@ int32 UWeaponComponent::GetNumberOfProjectiles()
 {
 	if (!IsValid(WeaponData)) return int32();
 
-	int32 output = static_cast<int32>(WeaponData->NumberOfShots + BonusNumberOfShots) * (WeaponData->NumberOfShotsMultiplier + BonusNumberOfShotsMultiplier);
+	const int StatLevel = GET_LEVEL(WeaponData->NumberOfShots,CurrentWeaponLevel);
+
+	
+
+	int32 output = static_cast<int32>(WeaponData->NumberOfShots[StatLevel] + BonusNumberOfShots) * (WeaponData->NumberOfShotsMultiplier[StatLevel] + BonusNumberOfShotsMultiplier);
 	output = FMath::Max(0, output);
 
 	return output;
@@ -168,8 +202,10 @@ float UWeaponComponent::GetShootDelay()
 {
 	if (!IsValid(WeaponData)) return 0.0f;
 
-	float value = FMath::Max(0.1f, (WeaponData->FireRate + BonusFireRate));
-	float multiplier = FMath::Max(0.1f, WeaponData->FireRateMultiplier + BonusFireRateMultiplier);
+	
+
+	float value = FMath::Max(0.1f, (WeaponData->FireRate[GET_LEVEL(WeaponData->FireRate, CurrentWeaponLevel)] + BonusFireRate));
+	float multiplier = FMath::Max(0.1f, WeaponData->FireRateMultiplier[GET_LEVEL(WeaponData->FireRateMultiplier, CurrentWeaponLevel)] + BonusFireRateMultiplier);
 
 	return 1 / (value * multiplier);
 }
@@ -178,8 +214,10 @@ float UWeaponComponent::GetProjectileSize()
 {
 	if (!IsValid(WeaponData)) return 0.0f;
 
-	float value = FMath::Max(0.1f, WeaponData->ProjectileSize + BonusProjectileSize);
-	float multiplier = FMath::Max(0.1f, WeaponData->ProjectileSizeMultiplier + BonusProjectileSizeMultiplier);
+
+
+	float value = FMath::Max(0.1f, WeaponData->ProjectileSize[GET_LEVEL(WeaponData->ProjectileSize, CurrentWeaponLevel)] + BonusProjectileSize);
+	float multiplier = FMath::Max(0.1f, WeaponData->ProjectileSizeMultiplier[GET_LEVEL(WeaponData->ProjectileSizeMultiplier, CurrentWeaponLevel)] + BonusProjectileSizeMultiplier);
 
 	return value * multiplier;
 }
@@ -188,8 +226,10 @@ float UWeaponComponent::GetProjectileRange()
 {
 	if (!IsValid(WeaponData)) return 0.0f;
 
-	float value = FMath::Max(100, WeaponData->Range + BonusRange);
-	float multiplier = FMath::Max(0.1f, WeaponData->RangeMultiplier + BonusRangeMultiplier);
+
+
+	float value = FMath::Max(100, WeaponData->Range[GET_LEVEL(WeaponData->Range, CurrentWeaponLevel)] + BonusRange);
+	float multiplier = FMath::Max(0.1f, WeaponData->RangeMultiplier[GET_LEVEL(WeaponData->RangeMultiplier, CurrentWeaponLevel)] + BonusRangeMultiplier);
 
 	float output = FMath::Max(100, value * multiplier);
 
@@ -200,8 +240,10 @@ float UWeaponComponent::GetProjectileSpeed()
 {
 	if (!IsValid(WeaponData)) return 0.0f;
 
-	float value = FMath::Max(50, WeaponData->ProjectileSpeed + BonusProjectileSpeed);
-	float multiplier = FMath::Max(0.1f, WeaponData->ProjectileSpeedMultiplier + BonusProjectileSpeedMultiplier);
+
+
+	float value = FMath::Max(50, WeaponData->ProjectileSpeed[GET_LEVEL(WeaponData->ProjectileSpeed, CurrentWeaponLevel)] + BonusProjectileSpeed);
+	float multiplier = FMath::Max(0.1f, WeaponData->ProjectileSpeedMultiplier[GET_LEVEL(WeaponData->ProjectileSpeedMultiplier, CurrentWeaponLevel)] + BonusProjectileSpeedMultiplier);
 
 	float output = FMath::Max(50, value * multiplier);
 
@@ -212,8 +254,10 @@ float UWeaponComponent::GetProjectileStunTime()
 {
 	if (!IsValid(WeaponData)) return 0.0f;
 
-	float value = WeaponData->ProjectileStunTime + BonusProjectileStunTime;
-	float multiplier = FMath::Max(0.1f, WeaponData->ProjectileSpeedMultiplier + BonusProjectileStunTimeMultiplier);
+
+
+	float value = WeaponData->ProjectileStunTime[GET_LEVEL(WeaponData->ProjectileStunTime, CurrentWeaponLevel)] + BonusProjectileStunTime;
+	float multiplier = FMath::Max(0.1f, WeaponData->ProjectileStunTimeMultiplier[GET_LEVEL(WeaponData->ProjectileStunTimeMultiplier, CurrentWeaponLevel)] + BonusProjectileStunTimeMultiplier);
 	float output = value * multiplier;
 
 	return output;
@@ -223,14 +267,17 @@ float UWeaponComponent::GetSpread()
 {
 	if (!IsValid(WeaponData)) return 0.0f;
 
-	return (WeaponData->Spread + BonusSpread) * (WeaponData->SpreadMultiplier + BonusSpreadMultiplier);
+
+
+	return (WeaponData->Spread[GET_LEVEL(WeaponData->Spread, CurrentWeaponLevel)] + BonusSpread) * (WeaponData->SpreadMultiplier[GET_LEVEL(WeaponData->SpreadMultiplier, CurrentWeaponLevel)] + BonusSpreadMultiplier);
 }
 
 float UWeaponComponent::GetPrecisionRandomAngle()
 {
 	if (!IsValid(WeaponData)) return 0.0f;
 
-	const float totalPrecision = (WeaponData->Precision + BonusPrecision) * (WeaponData->PrecisionMultiplier + BonusPrecisionMultiplier);
+
+	const float totalPrecision = (WeaponData->Precision[GET_LEVEL(WeaponData->Precision, CurrentWeaponLevel)] + BonusPrecision) * (WeaponData->PrecisionMultiplier[GET_LEVEL(WeaponData->PrecisionMultiplier, CurrentWeaponLevel)] + BonusPrecisionMultiplier);
 
 	const float precisionFactor = FMath::Clamp((1 - totalPrecision), 0, 1);
 	const float angleLimit = 30 * precisionFactor;
@@ -244,7 +291,9 @@ float UWeaponComponent::GetDamages()
 {
 	if (!IsValid(WeaponData)) return 0.0f;
 
-	float output = (WeaponData->Damages + BonusDamages) * (WeaponData->DamagesMultiplier + BonusDamagesMultiplier);
+	
+
+	float output = (WeaponData->Damages[GET_LEVEL(WeaponData->Damages, CurrentWeaponLevel)] + BonusDamages) * (WeaponData->DamagesMultiplier[GET_LEVEL(WeaponData->DamagesMultiplier, CurrentWeaponLevel)] + BonusDamagesMultiplier);
 	output = FMath::Max(0.1f, output);
 
 	return output;
@@ -254,16 +303,22 @@ float UWeaponComponent::GetCriticalHitChance()
 {
 	if (!IsValid(WeaponData)) return 0.0f;
 
-	return (WeaponData->CriticalHitChance + BonusCriticalHitChance) * (WeaponData->CriticalHitChanceMultiplier + BonusCriticalHitChanceMultiplier);
+	
+
+	return (WeaponData->CriticalHitChance[GET_LEVEL(WeaponData->CriticalHitChance,CurrentWeaponLevel)] + BonusCriticalHitChance) * (WeaponData->CriticalHitChanceMultiplier[GET_LEVEL(WeaponData->CriticalHitChanceMultiplier,CurrentWeaponLevel)] + BonusCriticalHitChanceMultiplier);
 }
 
 float UWeaponComponent::GetCriticalHitDamagesMultiplier()
 {
 	if (!IsValid(WeaponData)) return 0.0f;
 
-	float output = WeaponData->CriticalHitDamageMultiplier + BonusCriticalHitDamageMultiplier;
+	
+
+	float output = WeaponData->CriticalHitDamageMultiplier[GET_LEVEL(WeaponData->CriticalHitDamageMultiplier,CurrentWeaponLevel)] + BonusCriticalHitDamageMultiplier;
 	output = FMath::Max(1, output);
 
 	return output;
 }
+
+
 

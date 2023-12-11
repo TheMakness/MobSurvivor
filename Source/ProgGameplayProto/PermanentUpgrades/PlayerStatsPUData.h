@@ -22,16 +22,16 @@ public:
 	}
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int Health = 0;
+	TMap<int, int> Health {{1, 0}};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int DamageBonus = 0;
+	TMap<int, int> DamageBonus = { {1,0} };
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int LootMultiplier = 0;
+	TMap<int, int> LootMultiplier = { {1,0} };
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int MaxSpeed = 0;
+	TMap<int, int> MaxSpeed = { {1,0} };
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<TSubclassOf<UPermanentUpgradeComponent_Base>> ActorComponent;
@@ -44,8 +44,8 @@ private:
 	friend bool operator==(const UPlayerStatsPUData& Lhs, const UPlayerStatsPUData& RHS)
 	{
 		return static_cast<const UPermanentUpgradeData&>(Lhs) == static_cast<const UPermanentUpgradeData&>(RHS)
-			&& Lhs.Health == RHS.Health
-			&& Lhs.MaxSpeed == RHS.MaxSpeed;
+			&& Lhs.Health[1] == RHS.Health[1]
+			&& Lhs.MaxSpeed[1] == RHS.MaxSpeed[1];
 	}
 
 	friend bool operator!=(const UPlayerStatsPUData& Lhs, const UPlayerStatsPUData& RHS)

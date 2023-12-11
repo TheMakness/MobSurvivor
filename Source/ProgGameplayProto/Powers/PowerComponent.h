@@ -64,6 +64,9 @@ protected:
 	UFUNCTION(BlueprintNativeEvent)
 	void UseBehaviour();
 
+	UPROPERTY()
+	int CurrentPowerLevel = 1;
+
 private:
 	void Cooldown(float DeltaTime);
 };

@@ -4,7 +4,12 @@
 #include "PowerComponent.h"
 
 #include "Misc/DataValidation.h"
+#include "Kismet/GameplayStatics.h"
+#include "ProgGameplayProto/MobSurvivorInstance.h"
+#include "ProgGameplayProto/PermanentUpgrades/PermanentUpgrade.h"
 #include "ProgGameplayProto/PermanentUpgrades/PowerPUData.h"
+
+#define GET_LEVEL FPermanentUpgrade::GetStatLevel
 
 // Sets default values for this component's properties
 UPowerComponent::UPowerComponent() : Countdown(CountdownStartValue), bHasCountdownStarted(false), CountdownStartValue(0)
@@ -34,6 +39,27 @@ void UPowerComponent::BeginPlay()
 	
 	CountdownStartValue = PowerData->CooldownTime;
 	Countdown = CountdownStartValue;
+	if (ensureAlwaysMsgf(PowerData != nullptr, TEXT("The DataAsset linked to this PowerComponent has not been set.")))
+	{
+		UMobSurvivorInstance* GI = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+		if (IsValid(GI))
+		{
+			TArray<FPermanentUpgrade> Upgrades = GI->GetUpgrades();
+			UPermanentUpgradeData* UpgradeData = Cast<UPermanentUpgradeData>(PowerData);
+
+			FPermanentUpgrade* FoundUpgrade = Upgrades.FindByPredicate([UpgradeData](const FPermanentUpgrade& Item) -> bool
+				{
+					return Item.Data == UpgradeData;
+				});
+
+			CurrentPowerLevel = FoundUpgrade->CurrentLevel;
+
+		}
+
+		CountdownStartValue = PowerData->CooldownTime[GET_LEVEL(PowerData->CooldownTime,CurrentPowerLevel)];
+		Countdown = CountdownStartValue;
+	}
 }
 
 

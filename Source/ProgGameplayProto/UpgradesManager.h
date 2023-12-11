@@ -30,6 +30,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void BuyUpgrade(UPermanentUpgradeData* UpgradeToBuy);
+	UFUNCTION(BlueprintCallable)
+	void LevelUpUpgrade(UPermanentUpgradeData* UpgradeToLevelUp);
 
 	UFUNCTION(BlueprintCallable)
 	void EquipUpgrade(UPermanentUpgradeData* UpgradeToEquip);

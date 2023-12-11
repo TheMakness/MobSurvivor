@@ -89,8 +89,8 @@ float UWeaponComponentEnemy::GetShootDelay()
 {
 	if (!IsValid(WeaponDataEnemy)) return 0.0f;
 
-	float value = FMath::Max(0.1f, (WeaponDataEnemy->FireRate + BonusFireRate));
-	float multiplier = FMath::Max(0.1f, WeaponDataEnemy->FireRateMultiplier + BonusFireRateMultiplier);
+	float value = FMath::Max(0.1f, (WeaponDataEnemy->FireRate[1] + BonusFireRate));
+	float multiplier = FMath::Max(0.1f, WeaponDataEnemy->FireRateMultiplier[1] + BonusFireRateMultiplier);
 
 	return 1 / (value * multiplier);
 }
@@ -99,7 +99,7 @@ int32 UWeaponComponentEnemy::GetNumberOfProjectiles()
 {
 	if (!IsValid(WeaponDataEnemy)) return int32();
 
-	int32 output = static_cast<int32>(WeaponDataEnemy->NumberOfShots + BonusNumberOfShots) * (WeaponDataEnemy->NumberOfShotsMultiplier + BonusNumberOfShotsMultiplier);
+	int32 output = static_cast<int32>(WeaponDataEnemy->NumberOfShots[1] + BonusNumberOfShots) * (WeaponDataEnemy->NumberOfShotsMultiplier[1] + BonusNumberOfShotsMultiplier);
 	output = FMath::Max(0, output);
 
 	return output;
@@ -109,8 +109,8 @@ float UWeaponComponentEnemy::GetProjectileSize()
 {
 	if (!IsValid(WeaponDataEnemy)) return 0.0f;
 
-	float value = FMath::Max(0.1f, WeaponDataEnemy->ProjectileSize + BonusProjectileSize);
-	float multiplier = FMath::Max(0.1f, WeaponDataEnemy->ProjectileSizeMultiplier + BonusProjectileSizeMultiplier);
+	float value = FMath::Max(0.1f, WeaponDataEnemy->ProjectileSize[1] + BonusProjectileSize);
+	float multiplier = FMath::Max(0.1f, WeaponDataEnemy->ProjectileSizeMultiplier[1] + BonusProjectileSizeMultiplier);
 
 	return value * multiplier;
 }
@@ -119,8 +119,8 @@ float UWeaponComponentEnemy::GetProjectileRange()
 {
 	if (!IsValid(WeaponDataEnemy)) return 0.0f;
 
-	float value = FMath::Max(100, WeaponDataEnemy->Range + BonusRange);
-	float multiplier = FMath::Max(0.1f, WeaponDataEnemy->RangeMultiplier + BonusRangeMultiplier);
+	float value = FMath::Max(100, WeaponDataEnemy->Range[1] + BonusRange);
+	float multiplier = FMath::Max(0.1f, WeaponDataEnemy->RangeMultiplier[1] + BonusRangeMultiplier);
 
 	float output = FMath::Max(100, value * multiplier);
 
@@ -132,8 +132,8 @@ float UWeaponComponentEnemy::GetProjectileSpeed()
 {
 	if (!IsValid(WeaponDataEnemy)) return 0.0f;
 
-	float value = FMath::Max(50, WeaponDataEnemy->ProjectileSpeed + BonusProjectileSpeed);
-	float multiplier = FMath::Max(0.1f, WeaponDataEnemy->ProjectileSpeedMultiplier + BonusProjectileSpeedMultiplier);
+	float value = FMath::Max(50, WeaponDataEnemy->ProjectileSpeed[1] + BonusProjectileSpeed);
+	float multiplier = FMath::Max(0.1f, WeaponDataEnemy->ProjectileSpeedMultiplier[1] + BonusProjectileSpeedMultiplier);
 
 	float output = FMath::Max(50, value * multiplier);
 
@@ -144,14 +144,14 @@ float UWeaponComponentEnemy::GetSpread()
 {
 	if (!IsValid(WeaponDataEnemy)) return 0.0f;
 
-	return (WeaponDataEnemy->Spread + BonusSpread) * (WeaponDataEnemy->SpreadMultiplier + BonusSpreadMultiplier);
+	return (WeaponDataEnemy->Spread[1] + BonusSpread) * (WeaponDataEnemy->SpreadMultiplier[1] + BonusSpreadMultiplier);
 }
 
 float UWeaponComponentEnemy::GetPrecisionRandomAngle()
 {
 	if (!IsValid(WeaponDataEnemy)) return 0.0f;
 
-	const float totalPrecision = (WeaponDataEnemy->Precision + BonusPrecision) * (WeaponDataEnemy->PrecisionMultiplier + BonusPrecisionMultiplier);
+	const float totalPrecision = (WeaponDataEnemy->Precision[1] + BonusPrecision) * (WeaponDataEnemy->PrecisionMultiplier[1] + BonusPrecisionMultiplier);
 
 	const float precisionFactor = FMath::Clamp((1 - totalPrecision), 0, 1);
 	const float angleLimit = 30 * precisionFactor;
@@ -165,7 +165,7 @@ float UWeaponComponentEnemy::GetDamages()
 {
 	if (!IsValid(WeaponDataEnemy)) return 0.0f;
 
-	float output = (WeaponDataEnemy->Damages + BonusDamages) * (WeaponDataEnemy->DamagesMultiplier + BonusDamagesMultiplier);
+	float output = (WeaponDataEnemy->Damages[1] + BonusDamages) * (WeaponDataEnemy->DamagesMultiplier[1] + BonusDamagesMultiplier);
 	output = FMath::Max(0.1f, output);
 
 	return output;
@@ -185,14 +185,14 @@ float UWeaponComponentEnemy::GetCriticalHitChance()
 {
 	if (!IsValid(WeaponDataEnemy)) return 0.0f;
 
-	return (WeaponDataEnemy->CriticalHitChance + BonusCriticalHitChance) * (WeaponDataEnemy->CriticalHitChanceMultiplier + BonusCriticalHitChanceMultiplier);
+	return (WeaponDataEnemy->CriticalHitChance[1] + BonusCriticalHitChance) * (WeaponDataEnemy->CriticalHitChanceMultiplier[1] + BonusCriticalHitChanceMultiplier);
 }
 
 float UWeaponComponentEnemy::GetCriticalHitDamagesMultiplier()
 {
 	if (!IsValid(WeaponDataEnemy)) return 0.0f;
 
-	float output = WeaponDataEnemy->CriticalHitDamageMultiplier + BonusCriticalHitDamageMultiplier;
+	float output = WeaponDataEnemy->CriticalHitDamageMultiplier[1] + BonusCriticalHitDamageMultiplier;
 	output = FMath::Max(1, output);
 
 	return output;
