@@ -28,6 +28,8 @@ public:
 	// Sets default values for this actor's properties
 	AWeaponProjectile();
 	ProjectileOwner Owner;
+	
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USphereComponent* Collision;
@@ -43,6 +45,7 @@ protected:
 	float Size;
 	float Range;
 	float Speed;
+	float StunTime;
 	float BaseDamages;
 	float CriticalHitChance;
 	float CriticalHitMultiplier;
@@ -71,7 +74,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void SetParameters(ProjectileOwner NewOwner, float NewSize, float NewRange, float NewSpeed, float NewBaseDamages, float NewCriticalHitChance, float NewCriticalHitMultiplier);
+	virtual void SetParameters(ProjectileOwner NewOwner, float NewSize, float NewRange, float NewSpeed,float NewStunTime, float NewBaseDamages, float NewCriticalHitChance, float NewCriticalHitMultiplier);
 
 	virtual void MoveProjectile(float DeltaTime);
 
@@ -84,6 +87,8 @@ public:
 	virtual void DestroyProjectile();
 
 	virtual float GetDamages();
+
+	virtual float GetStunTime();
 
 public:
 	FORCEINLINE virtual void SetDirection(FVector NewDirection) { Direction = NewDirection; }

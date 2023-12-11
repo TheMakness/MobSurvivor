@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
+#include "PermanentUpgrades/PermanentUpgrade.h"
 #include "MobSurvivorInstance.generated.h"
 
-struct FPermanentUpgrade;
+
 class UPlayerStatsPUData;
 class UWeaponData;
 class UPowerPUData;

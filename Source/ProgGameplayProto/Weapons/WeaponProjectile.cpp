@@ -37,12 +37,13 @@ void AWeaponProjectile::Tick(float DeltaTime)
 	MoveProjectile(DeltaTime);
 }
 
-void AWeaponProjectile::SetParameters(ProjectileOwner NewOwner,float NewSize, float NewRange, float NewSpeed, float NewBaseDamages, float NewCriticalHitChance, float NewCriticalHitMultiplier)
+void AWeaponProjectile::SetParameters(ProjectileOwner NewOwner,float NewSize, float NewRange, float NewSpeed,float NewStunTime, float NewBaseDamages, float NewCriticalHitChance, float NewCriticalHitMultiplier)
 {
 	Owner = NewOwner;
 	Size = NewSize;
 	Range = NewRange;
 	Speed = NewSpeed;
+	StunTime = NewStunTime;
 	BaseDamages = NewBaseDamages;
 	CriticalHitChance = NewCriticalHitChance;
 	CriticalHitMultiplier = NewCriticalHitMultiplier;
@@ -143,4 +144,9 @@ float AWeaponProjectile::GetDamages()
 	const float output = bIsCritical ? BaseDamages * CriticalHitMultiplier : BaseDamages;
 
 	return output;
+}
+
+float AWeaponProjectile::GetStunTime()
+{
+	return StunTime;
 }

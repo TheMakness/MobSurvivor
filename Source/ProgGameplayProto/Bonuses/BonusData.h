@@ -74,6 +74,12 @@ public:
 	float BonusProjectileSpeedMultiplier = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float BonusProjectileStunTime = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float BonusProjectileStunTimeMultiplier = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float BonusCriticalHitChance = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

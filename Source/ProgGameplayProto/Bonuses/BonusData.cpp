@@ -39,6 +39,8 @@ void UBonusData::Apply(APlayerCharacter* Character, UWeaponComponent* Weapon)
 	Weapon->BonusRangeMultiplier += BonusRangeMultiplier;
 	Weapon->BonusProjectileSpeed += BonusProjectileSpeed;
 	Weapon->BonusProjectileSpeedMultiplier += BonusProjectileSpeedMultiplier;
+	Weapon->BonusProjectileStunTime += BonusProjectileStunTime;
+	Weapon->BonusProjectileStunTimeMultiplier += BonusProjectileStunTimeMultiplier;
 	Weapon->BonusCriticalHitChance += BonusCriticalHitChance;
 	Weapon->BonusCriticalHitChanceMultiplier += BonusCriticalHitChanceMultiplier;
 	Weapon->BonusCriticalHitDamageMultiplier += BonusCriticalHitDamageMultiplier;

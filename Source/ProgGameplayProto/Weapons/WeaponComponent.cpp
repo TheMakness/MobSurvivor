@@ -83,7 +83,7 @@ void UWeaponComponent::SpawnProjectile(FVector Direction)
 
 	AWeaponProjectile* projectile = Character->GetWorld()->SpawnActor<AWeaponProjectile>(Character->WeaponProjectileToSpawn, spawnLocation, spawnRotation);
 
-	projectile->SetParameters(ProjectileOwner::Player, GetProjectileSize(), GetProjectileRange(), GetProjectileSpeed(), GetDamages(), GetCriticalHitChance(), GetCriticalHitDamagesMultiplier());
+	projectile->SetParameters(ProjectileOwner::Player, GetProjectileSize(), GetProjectileRange(), GetProjectileSpeed(),GetProjectileStunTime(), GetDamages(), GetCriticalHitChance(), GetCriticalHitDamagesMultiplier());
 
 	if (Direction == FVector::ZeroVector)
 		Direction = Character->GetActorForwardVector();
@@ -204,6 +204,17 @@ float UWeaponComponent::GetProjectileSpeed()
 	float multiplier = FMath::Max(0.1f, WeaponData->ProjectileSpeedMultiplier + BonusProjectileSpeedMultiplier);
 
 	float output = FMath::Max(50, value * multiplier);
+
+	return output;
+}
+
+float UWeaponComponent::GetProjectileStunTime()
+{
+	if (!IsValid(WeaponData)) return 0.0f;
+
+	float value = WeaponData->ProjectileStunTime + BonusProjectileStunTime;
+	float multiplier = FMath::Max(0.1f, WeaponData->ProjectileSpeedMultiplier + BonusProjectileStunTimeMultiplier);
+	float output = value * multiplier;
 
 	return output;
 }

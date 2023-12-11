@@ -47,6 +47,7 @@ protected:
 	virtual float GetProjectileSize();
 	virtual float GetProjectileRange();
 	virtual float GetProjectileSpeed();
+	virtual float GetProjectileStunTime();
 	virtual float GetSpread();
 	virtual float GetPrecisionRandomAngle();
 	virtual float GetDamages();
@@ -82,6 +83,8 @@ public:
 	float BonusRangeMultiplier = 0;
 	float BonusProjectileSpeed = 0;
 	float BonusProjectileSpeedMultiplier = 0;
+	float BonusProjectileStunTime = 0;
+	float BonusProjectileStunTimeMultiplier = 0;
 	float BonusCriticalHitChance = 0;
 	float BonusCriticalHitChanceMultiplier = 0;
 	float BonusCriticalHitDamageMultiplier = 0;

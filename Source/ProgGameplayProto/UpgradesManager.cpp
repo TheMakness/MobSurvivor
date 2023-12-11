@@ -135,29 +135,29 @@ void AUpgradesManager::SetEquippedStatsUpgrades(const TArray<TObjectPtr<UPlayerS
 
 void AUpgradesManager::EquipUpgrade(UPermanentUpgradeData* UpgradeToEquip)
 {
-	const FPermanentUpgrade* FoundUpgrade = Upgrades.FindByPredicate([&UpgradeToEquip](const FPermanentUpgrade& Item) -> bool
-	{
-		return Item.Data == UpgradeToEquip;
-	});
-	
-	// Cannot equip an upgrade not purchased
-	if (!FoundUpgrade->bPurchased) return;
-	
-	UPermanentUpgradeData* UpgradeData = FoundUpgrade->Data;
+	//const FPermanentUpgrade* FoundUpgrade = Upgrades.FindByPredicate([&UpgradeToEquip](const FPermanentUpgrade& Item) -> bool
+	//{
+	//	return Item.Data == UpgradeToEquip;
+	//});
+	//
+	//// Cannot equip an upgrade not purchased
+	//if (!FoundUpgrade->bPurchased) return;
+	//
+	//UPermanentUpgradeData* UpgradeData = FoundUpgrade->Data;
 
-	switch (UpgradeData->GetType())
-	{
-	case Power:
-		EquippedPower = Cast<UPowerPUData>(UpgradeData);
-		break;
-	case Weapon:
-		EquippedWeapon = Cast<UWeaponData>(UpgradeData);
-		break;
-	case PlayerStats:
-		EquippedStatsUpgrades.AddUnique(Cast<UPlayerStatsPUData>(UpgradeData));
-	default:
-		break;
-	}
+	//switch (UpgradeData->GetType())
+	//{
+	//case Power:
+	//	EquippedPower = Cast<UPowerPUData>(UpgradeData);
+	//	break;
+	//case Weapon:
+	//	EquippedWeapon = Cast<UWeaponData>(UpgradeData);
+	//	break;
+	//case PlayerStats:
+	//	EquippedStatsUpgrades.AddUnique(Cast<UPlayerStatsPUData>(UpgradeData));
+	//default:
+	//	break;
+	//}
 }
 
 bool AUpgradesManager::IsWeaponEquipped(UWeaponData* UpgradeToCheck)

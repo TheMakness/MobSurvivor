@@ -48,7 +48,7 @@ void UWeaponComponentEnemy::SpawnProjectile(FVector Direction)
 	const FRotator spawnRotation = FRotator::ZeroRotator;
 	AWeaponProjectile* projectile = Enemy->GetWorld()->SpawnActor<AWeaponProjectile>(WeaponProjectileToSpawn,spawnLocation, spawnRotation);
 
-	projectile->SetParameters(ProjectileOwner::Enemy,GetProjectileSize(), GetProjectileRange(), GetProjectileSpeed(), GetDamages(), GetCriticalHitChance(), GetCriticalHitDamagesMultiplier());
+	projectile->SetParameters(ProjectileOwner::Enemy,GetProjectileSize(), GetProjectileRange(), GetProjectileSpeed(),0, GetDamages(), GetCriticalHitChance(), GetCriticalHitDamagesMultiplier());
 	projectile->SetDirection(Direction);
 
 }

@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "Enemy.generated.h"
 
+class AWeaponProjectile;
 class UEnemyDropperComponent;
 class UCapsuleComponent;
 class UHealth;
@@ -43,7 +44,8 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	virtual void Die();
 
-	
+	UFUNCTION()
+	virtual void CancelVelocity(AWeaponProjectile* Projectile);
 
 public:
 	// Called every frame
@@ -57,6 +59,12 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void Attack_BP(AActor* Target);
+
+private:
+	bool bCanMove;
+	FTimerHandle CanMoveTimerHandle;
+
+	void SwitchCanMove();
 
 	
 	

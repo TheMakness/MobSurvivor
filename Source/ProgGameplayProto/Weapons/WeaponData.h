@@ -75,6 +75,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon Data|Projectile")
 	float ProjectileSpeedMultiplier = 1;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon Data|Projectile")
+	float ProjectileStunTime = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon Data|Projectile")
+	float ProjectileStunTimeMultiplier = 1;
+
 	//0 is 0%, 1 is 100%
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon Data|Criticals")
 	float CriticalHitChance = 0.025f;
