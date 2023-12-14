@@ -5,7 +5,9 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "ProgGameplayProto/PermanentUpgrades/PermanentUpgradeData.h"
+#include "ProgGameplayProto/PermanentUpgrades/UUpgradesUtils.h"
 #include "WeaponData.generated.h"
+
 
 class UPermanentUpgradeData;
 
@@ -21,6 +23,89 @@ public:
 	FORCEINLINE virtual EType GetType() const override
 	{
 		return Type;
+	}
+
+	virtual TArray<FString> GetStatsStrings(int CurrentLevel) override
+	{
+		TArray<FString> output;
+
+		FString Value0 = TEXT("Firerate : " + FString::SanitizeFloat(FireRate[UUpgradesUtils::GetStatLevel(FireRate,CurrentLevel)]));
+		FString Value1 = TEXT("Number of Shots : " + FString::SanitizeFloat(NumberOfShots[UUpgradesUtils::GetStatLevel(NumberOfShots, CurrentLevel)]));
+		FString Value2 = TEXT("Precision : " + FString::SanitizeFloat(Precision[UUpgradesUtils::GetStatLevel(Precision, CurrentLevel)]));
+		FString Value3 = TEXT("Spread : " + FString::SanitizeFloat(Spread[UUpgradesUtils::GetStatLevel(Spread, CurrentLevel)]));
+		FString Value4 = TEXT("Damages : " + FString::SanitizeFloat(Damages[UUpgradesUtils::GetStatLevel(Damages, CurrentLevel)]));
+		FString Value5 = TEXT("ProjectileStunTime : " + FString::SanitizeFloat(ProjectileStunTime[UUpgradesUtils::GetStatLevel(ProjectileStunTime, CurrentLevel)]));
+		FString Value6 = TEXT("CriticalHitChance : " + FString::SanitizeFloat(CriticalHitChance[UUpgradesUtils::GetStatLevel(CriticalHitChance, CurrentLevel)]));
+		
+		output.Add(Value0);
+		output.Add(Value1);
+		output.Add(Value2);
+		output.Add(Value3);
+		output.Add(Value4);
+		output.Add(Value5);
+		output.Add(Value6);
+
+		return output;
+	}
+
+	virtual TArray<FStatsResult> GetUpdatedStatsStrings(int CurrentLevel) override
+	{
+		
+		TArray<FStatsResult> output;
+		int StatLevel;
+
+		FString Value0 = TEXT("Firerate : " + FString::SanitizeFloat(FireRate[UUpgradesUtils::GetStatLevel(FireRate, CurrentLevel)]));
+		FString Value0_Updated = "";
+		StatLevel = UUpgradesUtils::GetLevelUPStatLevel(FireRate, CurrentLevel);
+		if (StatLevel > CurrentLevel)
+			Value0_Updated = (TEXT(" -> " + FString::SanitizeFloat(FireRate[StatLevel])));
+
+		FString Value1 = TEXT("Number of Shots : " + FString::SanitizeFloat(NumberOfShots[UUpgradesUtils::GetStatLevel(NumberOfShots, CurrentLevel)]));
+		FString Value1_Updated = "";
+		StatLevel = UUpgradesUtils::GetLevelUPStatLevel(NumberOfShots, CurrentLevel);
+		if (StatLevel > CurrentLevel)
+			Value1_Updated = (TEXT(" -> " + FString::SanitizeFloat(NumberOfShots[StatLevel])));
+
+		FString Value2 = TEXT("Precision : " + FString::SanitizeFloat(Precision[UUpgradesUtils::GetStatLevel(Precision, CurrentLevel)]));
+		FString Value2_Updated = "";
+		StatLevel = UUpgradesUtils::GetLevelUPStatLevel(Precision, CurrentLevel);
+		if (StatLevel > CurrentLevel)
+			Value2_Updated = (TEXT(" -> " + FString::SanitizeFloat(Precision[StatLevel])));
+
+		FString Value3 = TEXT("Spread : " + FString::SanitizeFloat(Spread[UUpgradesUtils::GetStatLevel(Spread, CurrentLevel)]));
+		FString Value3_Updated = "";
+		StatLevel = UUpgradesUtils::GetLevelUPStatLevel(Spread, CurrentLevel);
+		if (StatLevel > CurrentLevel)
+			Value3_Updated = (TEXT(" -> " + FString::SanitizeFloat(Spread[StatLevel])));
+
+		FString Value4 = TEXT("Damages : " + FString::SanitizeFloat(Damages[UUpgradesUtils::GetStatLevel(Damages, CurrentLevel)]));
+		FString Value4_Updated = "";
+		StatLevel = UUpgradesUtils::GetLevelUPStatLevel(Damages, CurrentLevel);
+		if (StatLevel > CurrentLevel)
+			Value4_Updated = (TEXT(" -> " + FString::SanitizeFloat(Damages[StatLevel])));
+
+		FString Value5 = TEXT("ProjectileStunTime : " + FString::SanitizeFloat(ProjectileStunTime[UUpgradesUtils::GetStatLevel(ProjectileStunTime, CurrentLevel)]));
+		FString Value5_Updated = "";
+		StatLevel = UUpgradesUtils::GetLevelUPStatLevel(ProjectileStunTime, CurrentLevel);
+		if (StatLevel > CurrentLevel)
+			Value5_Updated = (TEXT(" -> " + FString::SanitizeFloat(ProjectileStunTime[StatLevel])));
+
+		FString Value6 = TEXT("CriticalHitChance : " + FString::SanitizeFloat(CriticalHitChance[UUpgradesUtils::GetStatLevel(CriticalHitChance, CurrentLevel)]));
+		FString Value6_Updated = "";
+		StatLevel = UUpgradesUtils::GetLevelUPStatLevel(CriticalHitChance, CurrentLevel);
+		if (StatLevel > CurrentLevel)
+			Value6_Updated = (TEXT(  " -> " + FString::SanitizeFloat(CriticalHitChance[StatLevel])));
+
+		output.Emplace(Value0,Value0_Updated);
+		output.Emplace(Value1,Value1_Updated);
+		output.Emplace(Value2,Value2_Updated);
+		output.Emplace(Value3,Value3_Updated);
+		output.Emplace(Value4,Value4_Updated);
+		output.Emplace(Value5,Value5_Updated);
+		output.Emplace(Value6,Value6_Updated);
+
+
+		return output;
 	}
 	
 	//number of shots / seconds
@@ -123,4 +208,7 @@ private:
 	{
 		return !(Lhs == RHS);
 	}
+
+	
+
 };

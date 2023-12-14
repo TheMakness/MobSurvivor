@@ -11,8 +11,8 @@
 #include "PermanentUpgrades/PlayerStatsPUData.h"
 #include "PermanentUpgrades/Components/PermanentUpgradeComponent_Base.h"
 #include "Player/PlayerCharacter.h"
+#include <ProgGameplayProto/PermanentUpgrades/UUpgradesUtils.h>
 
-#define GET_LEVEL FPermanentUpgrade::GetStatLevel
 
 // Sets default values for this component's properties
 UStatsUpgradeComponent::UStatsUpgradeComponent()
@@ -52,8 +52,8 @@ void UStatsUpgradeComponent::ApplyUpgrades()
 
 		}
 
-		Health->SetMaxHealth(Health->GetMaxHealth() + PlayerStatsPuData->Health[GET_LEVEL(PlayerStatsPuData->Health,CurrentUpgradeLevel)]);
-		CharacterMovement->MaxWalkSpeed += PlayerStatsPuData->MaxSpeed[GET_LEVEL(PlayerStatsPuData->MaxSpeed,CurrentUpgradeLevel)];
+		Health->SetMaxHealth(Health->GetMaxHealth() + PlayerStatsPuData->Health[UUpgradesUtils::GetStatLevel(PlayerStatsPuData->Health,CurrentUpgradeLevel)]);
+		CharacterMovement->MaxWalkSpeed += PlayerStatsPuData->MaxSpeed[UUpgradesUtils::GetStatLevel(PlayerStatsPuData->MaxSpeed,CurrentUpgradeLevel)];
 		if(PlayerStatsPuData->ActorComponent.Num() > 0)
 		{
 			for ( TSubclassOf<UActorComponent> Component : PlayerStatsPuData->ActorComponent)

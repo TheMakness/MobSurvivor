@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "StatsResult.h"
 #include "Engine/DataAsset.h"
 #include "PermanentUpgradeData.generated.h"
 
@@ -30,6 +31,11 @@ public:
 	{
 		return EType::Base;
 	}
+
+	UFUNCTION(BlueprintCallable)
+		virtual TArray<FString> GetStatsStrings(int CurrentLevel) { return TArray<FString>(); };
+	UFUNCTION(BlueprintCallable)
+		virtual TArray<FStatsResult> GetUpdatedStatsStrings(int CurrentLevel) { return TArray<FStatsResult>(); }; ;
 	
 	// Display name of the permanent upgrade, displayed in the shop menu
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Metadata")

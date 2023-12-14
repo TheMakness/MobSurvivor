@@ -4,12 +4,12 @@
 #include "PowerComponent.h"
 
 #include "Misc/DataValidation.h"
+#include <ProgGameplayProto/PermanentUpgrades/UUpgradesUtils.h>
+
 #include "Kismet/GameplayStatics.h"
 #include "ProgGameplayProto/MobSurvivorInstance.h"
 #include "ProgGameplayProto/PermanentUpgrades/PermanentUpgrade.h"
 #include "ProgGameplayProto/PermanentUpgrades/PowerPUData.h"
-
-#define GET_LEVEL FPermanentUpgrade::GetStatLevel
 
 // Sets default values for this component's properties
 UPowerComponent::UPowerComponent() : Countdown(CountdownStartValue), bHasCountdownStarted(false), CountdownStartValue(0)
@@ -57,7 +57,7 @@ void UPowerComponent::BeginPlay()
 
 		}
 
-		CountdownStartValue = PowerData->CooldownTime[GET_LEVEL(PowerData->CooldownTime,CurrentPowerLevel)];
+		CountdownStartValue = PowerData->CooldownTime[UUpgradesUtils::GetStatLevel(PowerData->CooldownTime,CurrentPowerLevel)];
 		Countdown = CountdownStartValue;
 	}
 }
