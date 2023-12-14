@@ -3,8 +3,4 @@
 
 #include "BonusData.h"
 
-void UBonusData::ApplyOnMainCharacter()
-{
-	// No default implementation
-	PURE_VIRTUAL()
-}
+

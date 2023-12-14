@@ -32,5 +32,5 @@ public:
 	 * Apply bonus on the player character
 	 */
 	UFUNCTION(BlueprintCallable)
-	virtual void ApplyOnMainCharacter();
+	virtual void ApplyOnMainCharacter() PURE_VIRTUAL(UBonusData::ApplyOnMainCharacter,);
 };
