@@ -7,18 +7,19 @@
 #include "HttpModule.h"
 #include "Interfaces/IHttpRequest.h"
 #include "Interfaces/IHttpResponse.h"
+#include "HttpRequestManager.generated.h"
 
-
-class PROGGAMEPLAYPROTO_API HttpRequestManager
+UCLASS(Blueprintable)
+class PROGGAMEPLAYPROTO_API AHttpRequestManager : public AInfo
 {
-	
+	GENERATED_BODY()
 public:	
 	// Sets default values for this actor's properties
-	HttpRequestManager();
+	AHttpRequestManager();
 
-public:	
-	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> CreateRequest();
-	
-	void SendRequest(TSharedRef<IHttpRequest, ESPMode::ThreadSafe> pRequest);
+	UFUNCTION(BlueprintCallable)
+		void SendScore();
+
+	void MakeRequest();
 
 };
