@@ -45,6 +45,7 @@ UBonusData* ABonusManager::GetRandomBonus()
 
 	return Output;
 }
+
 void ABonusManager::LoadBonusesFromUpgrades()
 {
 	const UMobSurvivorInstance* GameInstance = GetGameInstance<UMobSurvivorInstance>();

@@ -39,9 +39,10 @@ protected:
 public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
+	
 	virtual void AddExperience(float Amount);
 
+	UFUNCTION(BlueprintCallable)
 	virtual void LevelUp();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
