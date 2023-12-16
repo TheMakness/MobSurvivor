@@ -16,6 +16,13 @@ void AMainMenuPlayerState::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	GetPlayerController()->SetShowMouseCursor(true);
+	
+	auto InputMode = FInputModeGameAndUI();
+	InputMode.SetHideCursorDuringCapture(false);
+
+	GetPlayerController()->SetInputMode(InputMode);
+	
 	UpgradesManager = GetWorld()->SpawnActor<AUpgradesManager>();
 	UGameUtils::LoadGame(GetWorld());
 }
