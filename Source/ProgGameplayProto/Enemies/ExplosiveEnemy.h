@@ -31,6 +31,7 @@ private:
 	// Calculated radius depending on Explosion Speed over Time
 	float LerpAlpha;
 
+
 public:
 	// Sets default values for this pawn's properties
 	AExplosiveEnemy();

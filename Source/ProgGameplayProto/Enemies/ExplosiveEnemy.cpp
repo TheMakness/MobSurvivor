@@ -3,6 +3,7 @@
 
 #include "ExplosiveEnemy.h"
 
+#include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "ProgGameplayProto/GameUtils.h"
 #include "ProgGameplayProto/Health.h"
@@ -10,6 +11,8 @@
 
 // Sets default values
 AExplosiveEnemy::AExplosiveEnemy():
+
+
 	ExplosionSquaredDistance(0),
 	MaxExplosionRadius(0),
 	DetonationSpeed(0),
@@ -18,7 +21,7 @@ AExplosiveEnemy::AExplosiveEnemy():
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	ExplosionCollider->SetupAttachment(Collision);
 	ExplosionCollider->SetSphereRadius(0);
 }
 
