@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "PermanentUpgradeData.h"
+#include "UUpgradesUtils.h"
 #include "ProgGameplayProto/Powers/PowerComponent.h"
 #include "PowerPUData.generated.h"
 
@@ -19,6 +20,23 @@ public:
 	FORCEINLINE virtual EType GetType() const override
 	{
 		return Type;
+	}
+
+	virtual TArray<FStatsResult> GetUpdatedStatsStrings(int CurrentLevel) override
+	{
+
+		TArray<FStatsResult> output;
+		int StatLevel;
+
+		FString Value0 = TEXT("Cooldown : " + FString::SanitizeFloat(CooldownTime[UUpgradesUtils::GetStatLevel(CooldownTime, CurrentLevel)] / 2));
+		FString Value0_Updated = "";
+		StatLevel = UUpgradesUtils::GetLevelUPStatLevel(CooldownTime, CurrentLevel);
+		if (StatLevel > CurrentLevel)
+			Value0_Updated = (TEXT(" -> " + FString::SanitizeFloat(CooldownTime[StatLevel] / 2)));
+
+		output.Emplace(Value0, Value0_Updated);
+		
+		return output;
 	}
 	
 	const TSubclassOf<UPowerComponent>& GetComponent() const;

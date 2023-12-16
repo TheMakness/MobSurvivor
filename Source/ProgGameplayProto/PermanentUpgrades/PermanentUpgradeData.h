@@ -58,6 +58,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Metadata")
 	TArray<TObjectPtr<UBonusData>> LinkedBonuses;
+	bool bIsHide = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Metadata")
 	int MaxLevel = 1;
 	
 private:
