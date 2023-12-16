@@ -37,7 +37,7 @@ void UPowerComponent::BeginPlay()
 	// The Assertion is here in case there is an issue during the Data Validation check
 	checkf(IsValid(PowerData), TEXT("Power Data must be set in the Details panel."));
 	
-	CountdownStartValue = PowerData->CooldownTime;
+	CountdownStartValue = PowerData->CooldownTime[UUpgradesUtils::GetStatLevel(PowerData->CooldownTime, CurrentPowerLevel)];
 	Countdown = CountdownStartValue;
 	if (ensureAlwaysMsgf(PowerData != nullptr, TEXT("The DataAsset linked to this PowerComponent has not been set.")))
 	{
@@ -57,8 +57,7 @@ void UPowerComponent::BeginPlay()
 
 		}
 
-		CountdownStartValue = PowerData->CooldownTime[UUpgradesUtils::GetStatLevel(PowerData->CooldownTime,CurrentPowerLevel)];
-		Countdown = CountdownStartValue;
+		
 	}
 }
 

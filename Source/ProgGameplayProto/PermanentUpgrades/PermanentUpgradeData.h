@@ -69,7 +69,7 @@ private:
 		return Lhs.Name == RHS.Name
 			&& Lhs.Description == RHS.Description
 			&& Lhs.Image == RHS.Image
-			&& Lhs.LinkedBonuses == RHS.LinkedBonuses;
+			&& Lhs.LinkedBonuses == RHS.LinkedBonuses
 			&& Lhs.Cost[1] == RHS.Cost[1];
 	}
 
