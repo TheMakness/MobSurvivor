@@ -13,7 +13,7 @@
 AExplosiveEnemy::AExplosiveEnemy():
 
 
-	ExplosionSquaredDistance(0),
+	ExplosionTriggerDistance(0),
 	MaxExplosionRadius(0),
 	DetonationSpeed(0),
 	ExplosionCollider(CreateDefaultSubobject<USphereComponent>("Explosion Collider")),
@@ -30,7 +30,7 @@ void AExplosiveEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
+
 	ExplosionCollider->OnComponentBeginOverlap.AddDynamic(this, &AExplosiveEnemy::MakeDamage);
 }
 
@@ -39,15 +39,23 @@ void AExplosiveEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	const auto Player = UGameUtils::GetMainCharacter();
+	if (!bIsInitiatingExplosion)
+	{
+		const auto Player = UGameUtils::GetMainCharacter();
 
-	if (!IsValid(Player)) return;
+		if (!IsValid(Player)) return;
 
-	const auto PlayerLocation = Player->GetTransform().GetLocation();
+		const auto PlayerLocation = Player->GetTransform().GetLocation();
 
-	const float DistanceFromPlayer = FVector::Distance(GetTransform().GetLocation(), PlayerLocation);
+		const float DistanceFromPlayer = FVector::Distance(GetTransform().GetLocation(), PlayerLocation);
 
-	if (DistanceFromPlayer < ExplosionSquaredDistance)
+		if (DistanceFromPlayer < ExplosionTriggerDistance)
+		{
+			InitiateExplosion();
+		}
+	}
+
+	if (bExplode)
 	{
 		SelfExplodes(DeltaTime);
 	}
@@ -66,11 +74,24 @@ float AExplosiveEnemy::CalculateExplosionRadius(float DeltaTime)
 	return Radius;
 }
 
+void AExplosiveEnemy::InitiateExplosion()
+{
+	bCanMove = false;
+	bIsInitiatingExplosion = true;
+
+	ReceiveOnInitiateExplosion();
+
+	GetWorld()->GetTimerManager().SetTimer(InitiatingExplosionTimer, [&]()
+	{
+		bExplode = true;
+	}, InitiateExplosionDelay, false);
+}
+
 void AExplosiveEnemy::SelfExplodes(const float DeltaTime)
 {
 	const auto Radius = CalculateExplosionRadius(DeltaTime);
 	ExplosionCollider->SetSphereRadius(Radius);
-	
+
 	// When explosion finished, we can kill it
 	if (Radius >= MaxExplosionRadius)
 	{
@@ -85,7 +106,8 @@ void AExplosiveEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 }
 
 void AExplosiveEnemy::MakeDamage(UPrimitiveComponent* PrimitiveComponent, AActor* Actor,
-                                 UPrimitiveComponent* PrimitiveComponent1, int I, bool bArg, const FHitResult& HitResult)
+                                 UPrimitiveComponent* PrimitiveComponent1, int I, bool bArg,
+                                 const FHitResult& HitResult)
 {
 	const auto HealthComponent = Actor->GetComponentByClass<UHealth>();
 

@@ -16,13 +16,16 @@ class PROGGAMEPLAYPROTO_API AExplosiveEnemy : public AEnemy
 
 protected:
 	UPROPERTY(EditAnywhere, Category = EnemyParameters)
-	float ExplosionSquaredDistance;
+	float ExplosionTriggerDistance;
 
 	UPROPERTY(EditAnywhere, Category = EnemyParameters)
 	float MaxExplosionRadius;
 
 	UPROPERTY(EditAnywhere, Category = EnemyParameters)
 	float DetonationSpeed;
+
+	UPROPERTY(EditAnywhere, Category = EnemyParameters)
+	float InitiateExplosionDelay;
 
 private:
 	UPROPERTY(VisibleAnywhere, Export)
@@ -31,6 +34,11 @@ private:
 	// Calculated radius depending on Explosion Speed over Time
 	float LerpAlpha;
 
+	bool bIsInitiatingExplosion = false;
+	
+	bool bExplode = false;
+	
+	FTimerHandle InitiatingExplosionTimer;
 
 public:
 	// Sets default values for this pawn's properties
@@ -52,6 +60,11 @@ public:
 	float CalculateExplosionRadius(float DeltaTime);
 
 	/**
+	 * Prepare explosion
+	 */
+	void InitiateExplosion();
+
+	/**
 	 * Explodes the enemy by changing explosion collider radius, enemy is killed itself at the end.
 	 * @param DeltaTime Tick
 	 */
@@ -60,6 +73,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
+protected:
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnInitiateExplosion"))
+	void ReceiveOnInitiateExplosion();
+	
 private:
 	UFUNCTION()
 	void MakeDamage(UPrimitiveComponent* PrimitiveComponent, AActor* Actor, UPrimitiveComponent* PrimitiveComponent1, int I, bool bArg, const FHitResult& HitResult);
