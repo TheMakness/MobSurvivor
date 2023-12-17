@@ -5,13 +5,15 @@
 
 
 // Sets default values for this component's properties
-UKnockbackComponent::UKnockbackComponent()
+UKnockbackComponent::UKnockbackComponent():
+	Duration(0),
+	Owner(nullptr),
+	Lerp(0),
+	PlayRate(0),
+	bIsStart(false),
+	Force(0)
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-	
-	// ...
 }
 
 
@@ -21,11 +23,7 @@ void UKnockbackComponent::BeginPlay()
 	Super::BeginPlay();
 	Owner = GetOwner();
 	PlayRate = 1 / Duration;
-	// ...
-	
 }
-
-
 
 
 // Called every frame
@@ -36,7 +34,7 @@ void UKnockbackComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 	if (!bIsStart) return;
 
-	if(Lerp < 1)
+	if (Lerp < 1)
 	{
 		Lerp += DeltaTime * PlayRate;
 		KnockbackLerp(Lerp);
@@ -48,15 +46,11 @@ void UKnockbackComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 		Owner->SetActorLocation(EndLerpLocation);
 		Owner->SetActorEnableCollision(true);
 	}
-
-	
-
-	// ...
 }
 
 void UKnockbackComponent::Knockback(const float force, const FVector& direction)
 {
-	if(bIsStart) return;
+	if (bIsStart) return;
 
 	Owner->SetActorEnableCollision(false);
 
@@ -70,10 +64,8 @@ void UKnockbackComponent::Knockback(const float force, const FVector& direction)
 	DrawDebugSphere(GetWorld(), StartLerpLocation, 1, 16, FColor::Green, false, 5);
 }
 
-void UKnockbackComponent::KnockbackLerp(float alpha) const
+void UKnockbackComponent::KnockbackLerp(float Alpha) const
 {
 	const FVector NewLocation = FMath::LerpStable(StartLerpLocation, EndLerpLocation, Lerp);
 	Owner->SetActorLocation(NewLocation);
 }
-
-

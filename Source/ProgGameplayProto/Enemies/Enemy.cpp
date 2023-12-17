@@ -4,11 +4,13 @@
 #include "Enemy.h"
 
 #include "Components/CapsuleComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "ProgGameplayProto/GameUtils.h"
 #include "ProgGameplayProto/Health.h"
 #include "ProgGameplayProto/Player/PlayerCharacter.h"
 #include "ProgGameplayProto/Drops/EnemyDropperComponent.h"
 #include "ProgGameplayProto/Weapons/WeaponProjectile.h"
+#include "ProgGameplayProto/KnockbackComponent.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -34,6 +36,7 @@ void AEnemy::BeginPlay()
 	Health->OnHealthDie.AddDynamic(this, &AEnemy::Die);
 
 	Health->OnHitByProjectile.AddDynamic(this, &AEnemy::CancelVelocity);
+	Health->OnHitByProjectile.AddDynamic(this, &AEnemy::HitByProjectile);
 }
 
 void AEnemy::MoveTowardPlayer(float DeltaTime)
@@ -50,6 +53,9 @@ void AEnemy::MoveTowardPlayer(float DeltaTime)
 
 	FVector movement = direction * MoveSpeed * DeltaTime;
 
+	const FRotator Rotation = UKismetMathLibrary::FindLookAtRotation(player->GetActorLocation(), GetActorLocation());
+
+	SetActorRotation(Rotation);
 	AddActorWorldOffset(movement);
 }
 
@@ -58,17 +64,56 @@ void AEnemy::Die()
 	Destroy();
 }
 
+void AEnemy::Knockback(AWeaponProjectile* Projectile)
+{
+	const auto KnockbackComponent = this->GetComponentByClass<UKnockbackComponent>();
+	if (IsValid(KnockbackComponent))
+	{
+		FVector Direction = GetActorForwardVector();
+		Direction.Z = 0;
+		Direction.Normalize();
+
+		KnockbackComponent->Knockback(Projectile->GetKnockbackForce(), Direction);
+	}
+}
+
+void AEnemy::HitByProjectile(AWeaponProjectile* Projectile)
+{
+	if (Projectile->GetKnockbackForce() > 0)
+	{
+		Knockback(Projectile);
+
+		if (Projectile->GetStunTime() > 0)
+		{
+			const auto KnockbackComponent = this->GetComponentByClass<UKnockbackComponent>();
+			if (IsValid(KnockbackComponent))
+			{
+				FTimerDelegate Delegate;
+				Delegate.BindUObject(this, &AEnemy::CancelVelocity, Projectile);
+
+				GetWorld()->GetTimerManager().SetTimer(KnockbackTimer, Delegate, KnockbackComponent->Duration, false);
+			}
+		}
+	}
+	else
+	{
+		if (Projectile->GetStunTime() > 0)
+		{
+			CancelVelocity(Projectile);
+		}
+	}
+}
+
 
 void AEnemy::CancelVelocity(AWeaponProjectile* Projectile)
 {
-	if(Projectile->GetStunTime() <= 0) return;
+	if (Projectile->GetStunTime() <= 0) return;
 
 	bCanMove = false;
-	GetWorld()->GetTimerManager().SetTimer(CanMoveTimerHandle, [&]()->void
-		{
-			bCanMove = true;
-		}, Projectile->GetStunTime(), false);
-	
+	GetWorld()->GetTimerManager().SetTimer(CanMoveTimerHandle, [&]()-> void
+	{
+		bCanMove = true;
+	}, Projectile->GetStunTime(), false);
 }
 
 // Called every frame
@@ -83,7 +128,6 @@ void AEnemy::Tick(float DeltaTime)
 void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 void AEnemy::TryAttacking(AActor* Target)
@@ -103,5 +147,3 @@ void AEnemy::SwitchCanMove()
 {
 	bCanMove = !bCanMove;
 }
-
-

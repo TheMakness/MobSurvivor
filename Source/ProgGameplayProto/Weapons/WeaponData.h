@@ -176,6 +176,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon Data|Criticals")
 	TMap<int, float> CriticalHitDamageMultiplier = { {1,2} };
 
+	TMap<int, float> KnockbackForce = {{1, 0}};
+	
 private:
 	UPROPERTY(VisibleAnywhere)
 	TEnumAsByte<EType> Type = EType::Weapon;

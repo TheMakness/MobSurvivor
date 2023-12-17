@@ -43,7 +43,11 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	virtual void Die();
+	void Knockback(AWeaponProjectile* Projectile);
 
+	UFUNCTION()
+	void HitByProjectile(AWeaponProjectile* Projectile);
+	
 	UFUNCTION()
 	virtual void CancelVelocity(AWeaponProjectile* Projectile);
 
@@ -64,6 +68,8 @@ private:
 	bool bCanMove;
 	FTimerHandle CanMoveTimerHandle;
 
+	FTimerHandle KnockbackTimer;
+	
 	void SwitchCanMove();
 
 	

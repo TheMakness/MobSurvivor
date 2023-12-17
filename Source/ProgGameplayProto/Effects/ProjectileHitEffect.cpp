@@ -14,7 +14,7 @@ void UProjectileHitEffect::RegisterProjectile(AWeaponProjectile* Projectile)
 
 void UProjectileHitEffect::OnProjectileHit(AWeaponProjectile* Projectile, FVector HitLocation, FVector OriginLocation)
 {
-
+	
 }
 
 void UProjectileHitEffect::OnProjectileDestroy(AWeaponProjectile* Projectile)

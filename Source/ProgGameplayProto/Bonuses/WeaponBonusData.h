@@ -81,8 +81,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	float BonusCriticalHitDamageMultiplier = 0;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
+	float BonusKnockbackForce = 0;
+
 	virtual void ApplyOnMainCharacter() override;
-	
+
 	virtual void Apply(APlayerCharacter* Character, UWeaponComponent* Weapon);
 
 	virtual void ApplyEffects(APlayerCharacter* Character, UWeaponComponent* Weapon);

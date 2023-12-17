@@ -26,7 +26,6 @@ void UWeaponComponentEnemy::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
 }
 
 void UWeaponComponentEnemy::Shoot()
@@ -46,11 +45,12 @@ void UWeaponComponentEnemy::SpawnProjectile(FVector Direction)
 {
 	const FVector spawnLocation = Enemy->GetActorLocation();
 	const FRotator spawnRotation = FRotator::ZeroRotator;
-	AWeaponProjectile* projectile = Enemy->GetWorld()->SpawnActor<AWeaponProjectile>(WeaponProjectileToSpawn,spawnLocation, spawnRotation);
+	AWeaponProjectile* projectile = Enemy->GetWorld()->SpawnActor<AWeaponProjectile>(
+		WeaponProjectileToSpawn, spawnLocation, spawnRotation);
 
-	projectile->SetParameters(ProjectileOwner::Enemy,GetProjectileSize(), GetProjectileRange(), GetProjectileSpeed(),0, GetDamages(), GetCriticalHitChance(), GetCriticalHitDamagesMultiplier());
+	projectile->SetParameters(ProjectileOwner::Enemy, GetProjectileSize(), GetProjectileRange(), GetProjectileSpeed(),
+	                          0, GetDamages(), GetCriticalHitChance(), GetCriticalHitDamagesMultiplier(), 0);
 	projectile->SetDirection(Direction);
-
 }
 
 TArray<FVector> UWeaponComponentEnemy::ComputeSpreadDirections()
@@ -99,7 +99,8 @@ int32 UWeaponComponentEnemy::GetNumberOfProjectiles()
 {
 	if (!IsValid(WeaponDataEnemy)) return int32();
 
-	int32 output = static_cast<int32>(WeaponDataEnemy->NumberOfShots[1] + BonusNumberOfShots) * (WeaponDataEnemy->NumberOfShotsMultiplier[1] + BonusNumberOfShotsMultiplier);
+	int32 output = static_cast<int32>(WeaponDataEnemy->NumberOfShots[1] + BonusNumberOfShots) * (WeaponDataEnemy->
+		NumberOfShotsMultiplier[1] + BonusNumberOfShotsMultiplier);
 	output = FMath::Max(0, output);
 
 	return output;
@@ -151,7 +152,8 @@ float UWeaponComponentEnemy::GetPrecisionRandomAngle()
 {
 	if (!IsValid(WeaponDataEnemy)) return 0.0f;
 
-	const float totalPrecision = (WeaponDataEnemy->Precision[1] + BonusPrecision) * (WeaponDataEnemy->PrecisionMultiplier[1] + BonusPrecisionMultiplier);
+	const float totalPrecision = (WeaponDataEnemy->Precision[1] + BonusPrecision) * (WeaponDataEnemy->
+		PrecisionMultiplier[1] + BonusPrecisionMultiplier);
 
 	const float precisionFactor = FMath::Clamp((1 - totalPrecision), 0, 1);
 	const float angleLimit = 30 * precisionFactor;
@@ -165,7 +167,8 @@ float UWeaponComponentEnemy::GetDamages()
 {
 	if (!IsValid(WeaponDataEnemy)) return 0.0f;
 
-	float output = (WeaponDataEnemy->Damages[1] + BonusDamages) * (WeaponDataEnemy->DamagesMultiplier[1] + BonusDamagesMultiplier);
+	float output = (WeaponDataEnemy->Damages[1] + BonusDamages) * (WeaponDataEnemy->DamagesMultiplier[1] +
+		BonusDamagesMultiplier);
 	output = FMath::Max(0.1f, output);
 
 	return output;
@@ -178,14 +181,16 @@ float UWeaponComponentEnemy::GetPlayerDistanceSquared()
 
 bool UWeaponComponentEnemy::CheckDistance()
 {
-	return GetPlayerDistanceSquared() < (WeaponDataEnemy->MaxShootDistance) * (WeaponDataEnemy->MaxShootDistance) - GetRandomDistanceOffset() * GetRandomDistanceOffset();
+	return GetPlayerDistanceSquared() < (WeaponDataEnemy->MaxShootDistance) * (WeaponDataEnemy->MaxShootDistance) -
+		GetRandomDistanceOffset() * GetRandomDistanceOffset();
 }
 
 float UWeaponComponentEnemy::GetCriticalHitChance()
 {
 	if (!IsValid(WeaponDataEnemy)) return 0.0f;
 
-	return (WeaponDataEnemy->CriticalHitChance[1] + BonusCriticalHitChance) * (WeaponDataEnemy->CriticalHitChanceMultiplier[1] + BonusCriticalHitChanceMultiplier);
+	return (WeaponDataEnemy->CriticalHitChance[1] + BonusCriticalHitChance) * (WeaponDataEnemy->
+		CriticalHitChanceMultiplier[1] + BonusCriticalHitChanceMultiplier);
 }
 
 float UWeaponComponentEnemy::GetCriticalHitDamagesMultiplier()
@@ -209,10 +214,9 @@ float UWeaponComponentEnemy::GetRandomDistanceOffset()
 }
 
 
-
-
 // Called every frame
-void UWeaponComponentEnemy::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UWeaponComponentEnemy::TickComponent(float DeltaTime, ELevelTick TickType,
+                                          FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	TryShooting(DeltaTime);
@@ -227,12 +231,10 @@ void UWeaponComponentEnemy::InitializeWeapon(AEnemy* NewEnemy)
 void UWeaponComponentEnemy::TryShooting(float DeltaTime)
 {
 	TimeElapsedSinceLastShoot += DeltaTime;
-	if(!WeaponDataEnemy) return;
-	if(!CheckDistance()) return;
+	if (!WeaponDataEnemy) return;
+	if (!CheckDistance()) return;
 	if (TimeElapsedSinceLastShoot >= GetShootDelay() + GetRandomShootDelay())
 	{
 		Shoot();
 	}
-
 }
-

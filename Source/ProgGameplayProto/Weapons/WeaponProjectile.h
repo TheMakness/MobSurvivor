@@ -16,7 +16,9 @@ enum ProjectileOwner
 	Player,
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FProjectileHitDelegate, AWeaponProjectile*, Projectile, FVector, HitLocation, FVector, OriginLocation);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FProjectileHitDelegate, AWeaponProjectile*, Projectile, FVector,
+                                               HitLocation, FVector, OriginLocation);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FProjectileDestroyDelegate, AWeaponProjectile*, Projectile);
 
 UCLASS(Abstract)
@@ -28,7 +30,6 @@ public:
 	// Sets default values for this actor's properties
 	AWeaponProjectile();
 	ProjectileOwner Owner;
-	
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -36,10 +37,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* Mesh;
-
+	
 	UPROPERTY()
 	AActor* LastActorHit;
-
+	
 	FVector Direction;
 
 	float Size;
@@ -49,6 +50,7 @@ protected:
 	float BaseDamages;
 	float CriticalHitChance;
 	float CriticalHitMultiplier;
+	float KnockbackForce;
 
 	bool bCanPierce;
 
@@ -74,7 +76,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void SetParameters(ProjectileOwner NewOwner, float NewSize, float NewRange, float NewSpeed,float NewStunTime, float NewBaseDamages, float NewCriticalHitChance, float NewCriticalHitMultiplier);
+	virtual void SetParameters(ProjectileOwner NewOwner, float NewSize, float NewRange, float NewSpeed,
+	                           float NewStunTime, float NewBaseDamages, float NewCriticalHitChance,
+	                           float NewCriticalHitMultiplier, float NewKnockbackForce);
 
 	virtual void MoveProjectile(float DeltaTime);
 
@@ -89,6 +93,8 @@ public:
 	virtual float GetDamages();
 
 	virtual float GetStunTime();
+
+	virtual float GetKnockbackForce();
 
 public:
 	FORCEINLINE virtual void SetDirection(FVector NewDirection) { Direction = NewDirection; }

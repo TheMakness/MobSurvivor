@@ -3,11 +3,11 @@
 
 #include "KnockbackBlastComponent.h"
 
-#include "ProgGameplayProto/GameUtils.h"
 #include "ProgGameplayProto/Health.h"
 #include "ProgGameplayProto/KnockbackComponent.h"
 #include "ProgGameplayProto/Enemies/Enemy.h"
 #include "ProgGameplayProto/Player/PlayerCharacter.h"
+
 #define COLLISION_WEAPON ECC_GameTraceChannel2
 
 void UKnockbackBlastComponent::BeginPlay()

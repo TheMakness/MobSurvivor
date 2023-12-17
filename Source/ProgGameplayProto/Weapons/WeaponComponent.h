@@ -14,61 +14,7 @@ UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PROGGAMEPLAYPROTO_API UWeaponComponent : public UActorComponent
 {
 	GENERATED_BODY()
-
-public:
-	// Sets default values for this component's properties
-	UWeaponComponent();
-
-protected:
-	UPROPERTY()
-	TObjectPtr<UWeaponData> WeaponData;
-
-	UPROPERTY()
-	int CurrentWeaponLevel = 1;
-
-	UPROPERTY()
-	TObjectPtr<APlayerCharacter> Character;
-
-	UPROPERTY()
-	TArray<UProjectileEffect*> Effects;
-
-	float TimeElapsedSinceLastShoot = 0;
-
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-	virtual void Shoot();
-
-	virtual void SpawnProjectile(FVector Direction);
-
-	virtual FVector GetMouseDirection();
-	virtual TArray<FVector> ComputeSpreadDirections();
-
-	virtual float GetShootDelay();
-	virtual int32 GetNumberOfProjectiles();
-	virtual float GetProjectileSize();
-	virtual float GetProjectileRange();
-	virtual float GetProjectileSpeed();
-	virtual float GetProjectileStunTime();
-	virtual float GetSpread();
-	virtual float GetPrecisionRandomAngle();
-	virtual float GetDamages();
-	virtual float GetCriticalHitChance();
-	virtual float GetCriticalHitDamagesMultiplier();
-
-public:
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-	virtual void InitializeWeapon(APlayerCharacter* NewCharacter);
-
-	virtual void TryShooting(float DeltaTime);
-
-	virtual void SetData(UWeaponData* Data);
-
-	virtual void AddEffect(UProjectileEffect* Effect);
-
+	
 public:
 	float BonusFireRate = 0;
 	float BonusFireRateMultiplier = 0;
@@ -91,5 +37,61 @@ public:
 	float BonusCriticalHitChance = 0;
 	float BonusCriticalHitChanceMultiplier = 0;
 	float BonusCriticalHitDamageMultiplier = 0;
+	
+	float BonusKnockbackForce = 0;
 
+protected:
+	UPROPERTY()
+	TObjectPtr<UWeaponData> WeaponData;
+
+	UPROPERTY()
+	int CurrentWeaponLevel = 1;
+
+	UPROPERTY()
+	TObjectPtr<APlayerCharacter> Character;
+
+	UPROPERTY()
+	TArray<UProjectileEffect*> Effects;
+
+	float TimeElapsedSinceLastShoot = 0;
+
+public:
+	UWeaponComponent();
+
+protected:
+	virtual void BeginPlay() override;
+
+	virtual void Shoot();
+
+	virtual void SpawnProjectile(FVector Direction);
+
+	virtual FVector GetMouseDirection();
+
+	virtual TArray<FVector> ComputeSpreadDirections();
+
+	virtual float GetShootDelay();
+	virtual int32 GetNumberOfProjectiles();
+	virtual float GetProjectileSize();
+	virtual float GetProjectileRange();
+	virtual float GetProjectileSpeed();
+	virtual float GetProjectileStunTime();
+	virtual float GetSpread();
+	virtual float GetPrecisionRandomAngle();
+	virtual float GetDamages();
+	virtual float GetCriticalHitChance();
+	virtual float GetCriticalHitDamagesMultiplier();
+
+	virtual float GetKnockbackForce();
+	
+public:
+	// Called every frame
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	virtual void InitializeWeapon(APlayerCharacter* NewCharacter);
+
+	virtual void TryShooting(float DeltaTime);
+
+	virtual void SetData(UWeaponData* Data);
+
+	virtual void AddEffect(UProjectileEffect* Effect);
 };

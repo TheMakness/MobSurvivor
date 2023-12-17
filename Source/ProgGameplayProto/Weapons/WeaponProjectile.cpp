@@ -37,7 +37,9 @@ void AWeaponProjectile::Tick(float DeltaTime)
 	MoveProjectile(DeltaTime);
 }
 
-void AWeaponProjectile::SetParameters(ProjectileOwner NewOwner,float NewSize, float NewRange, float NewSpeed,float NewStunTime, float NewBaseDamages, float NewCriticalHitChance, float NewCriticalHitMultiplier)
+void AWeaponProjectile::SetParameters(ProjectileOwner NewOwner, float NewSize, float NewRange, float NewSpeed,
+                                      float NewStunTime, float NewBaseDamages, float NewCriticalHitChance,
+                                      float NewCriticalHitMultiplier, float NewKnockbackForce)
 {
 	Owner = NewOwner;
 	Size = NewSize;
@@ -47,6 +49,7 @@ void AWeaponProjectile::SetParameters(ProjectileOwner NewOwner,float NewSize, fl
 	BaseDamages = NewBaseDamages;
 	CriticalHitChance = NewCriticalHitChance;
 	CriticalHitMultiplier = NewCriticalHitMultiplier;
+	KnockbackForce = NewKnockbackForce;
 }
 
 void AWeaponProjectile::MoveProjectile(float DeltaTime)
@@ -74,15 +77,15 @@ void AWeaponProjectile::CheckForCollisionsAfterMovement(const FVector OriginLoca
 	const FCollisionShape shape = FCollisionShape::MakeSphere(Collision->GetScaledSphereRadius());
 	FCollisionQueryParams params;
 	params.AddIgnoredActor(this);
-	
-	GetWorld()->SweepMultiByChannel(outHits, OriginLocation, GetActorLocation(), FQuat::Identity, COLLISION_WEAPON, shape, params);
+
+	GetWorld()->SweepMultiByChannel(outHits, OriginLocation, GetActorLocation(), FQuat::Identity, COLLISION_WEAPON,
+	                                shape, params);
 
 	for (int i = 0; i < outHits.Num(); i++)
 	{
 		if (IsValid(LastActorHit))
 		{
 			if (LastActorHit == outHits[i].GetActor()) continue;
-
 		}
 
 		switch (Owner)
@@ -93,7 +96,7 @@ void AWeaponProjectile::CheckForCollisionsAfterMovement(const FVector OriginLoca
 		case Player:
 			if (Cast<ACharacter>(outHits[i].GetActor())) continue;
 			break;
-		default:;
+		default: ;
 		}
 
 		HitSomething(outHits[i].GetActor(), outHits[i].Location, OriginLocation);
@@ -149,4 +152,9 @@ float AWeaponProjectile::GetDamages()
 float AWeaponProjectile::GetStunTime()
 {
 	return StunTime;
+}
+
+float AWeaponProjectile::GetKnockbackForce()
+{
+	return KnockbackForce;
 }

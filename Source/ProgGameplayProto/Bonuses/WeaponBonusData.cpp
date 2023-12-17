@@ -42,6 +42,7 @@ void UWeaponBonusData::Apply(APlayerCharacter* Character, UWeaponComponent* Weap
 	Weapon->BonusCriticalHitChance += BonusCriticalHitChance;
 	Weapon->BonusCriticalHitChanceMultiplier += BonusCriticalHitChanceMultiplier;
 	Weapon->BonusCriticalHitDamageMultiplier += BonusCriticalHitDamageMultiplier;
+	Weapon->BonusKnockbackForce += BonusKnockbackForce;
 }
 
 void UWeaponBonusData::ApplyEffects(APlayerCharacter* Character, UWeaponComponent* Weapon)

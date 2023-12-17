@@ -13,26 +13,14 @@ class PROGGAMEPLAYPROTO_API UKnockbackComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this component's properties
-	UKnockbackComponent();
-	UPROPERTY(BlueprintReadWrite,EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FFloatCurve Curve;
-	void Knockback(float Force, const FVector& Direction);
-
+	
 	UPROPERTY(EditAnywhere)
 	float Duration;
 
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-	void KnockbackLerp(float alpha) const;
-	
-public:
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
-	FActorComponentTickFunction* ThisTickFunction) override;
-
 private:
+	UPROPERTY()
 	AActor* Owner;
 
 	float Lerp;
@@ -44,5 +32,17 @@ private:
 	FVector StartLerpLocation;
 	FVector EndLerpLocation;
 
-	
+public:
+	UKnockbackComponent();
+
+	void Knockback(float Force, const FVector& Direction);
+
+protected:
+	virtual void BeginPlay() override;
+
+	void KnockbackLerp(float Alpha) const;
+
+public:
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
+	                           FActorComponentTickFunction* ThisTickFunction) override;
 };
