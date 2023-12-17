@@ -79,6 +79,8 @@ void AEnemy::Knockback(AWeaponProjectile* Projectile)
 
 void AEnemy::HitByProjectile(AWeaponProjectile* Projectile)
 {
+	ReceiveOnHitByProjectile(Projectile);
+	
 	if (Projectile->GetKnockbackForce() > 0)
 	{
 		Knockback(Projectile);

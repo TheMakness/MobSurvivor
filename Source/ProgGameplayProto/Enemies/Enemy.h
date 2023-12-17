@@ -36,6 +36,14 @@ public:
 	float Damages;
 
 protected:
+	bool bCanMove;
+
+private:
+	FTimerHandle CanMoveTimerHandle;
+
+	FTimerHandle KnockbackTimer;
+
+protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -43,10 +51,14 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	virtual void Die();
+	
 	void Knockback(AWeaponProjectile* Projectile);
 
 	UFUNCTION()
 	void HitByProjectile(AWeaponProjectile* Projectile);
+	
+	UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName="OnHitByProjectile"))
+	void ReceiveOnHitByProjectile(AWeaponProjectile* Projectile);
 	
 	UFUNCTION()
 	virtual void CancelVelocity(AWeaponProjectile* Projectile);
@@ -64,14 +76,5 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void Attack_BP(AActor* Target);
 
-private:
-	bool bCanMove;
-	FTimerHandle CanMoveTimerHandle;
-
-	FTimerHandle KnockbackTimer;
-	
 	void SwitchCanMove();
-
-	
-	
 };
