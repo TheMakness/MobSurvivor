@@ -176,11 +176,10 @@ int32 UWeaponComponent::GetNumberOfProjectiles()
 {
 	if (!IsValid(WeaponData)) return int32();
 
-	const int StatLevel = UUpgradesUtils::GetStatLevel(WeaponData->NumberOfShots, CurrentWeaponLevel);
+	
 
 
-	int32 output = static_cast<int32>(WeaponData->NumberOfShots[StatLevel] + BonusNumberOfShots) * (WeaponData->
-		NumberOfShotsMultiplier[StatLevel] + BonusNumberOfShotsMultiplier);
+	int32 output = static_cast<int32>(WeaponData->NumberOfShots[UUpgradesUtils::GetStatLevel(WeaponData->NumberOfShots, CurrentWeaponLevel)] + BonusNumberOfShots) * (WeaponData->NumberOfShotsMultiplier[UUpgradesUtils::GetStatLevel(WeaponData->NumberOfShotsMultiplier, CurrentWeaponLevel)] + BonusNumberOfShotsMultiplier);
 	output = FMath::Max(0, output);
 
 	return output;

@@ -219,9 +219,9 @@ void AUpgradesManager::LevelUpUpgrade(UPermanentUpgradeData* UpgradeToLevelUp)
 
 	UMobSurvivorInstance* GI = Cast<UMobSurvivorInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
-	if (IsValid(GI) && GI->GetGoldAmount() >= UpgradeToLevelUp->Cost[FoundUpgrade->CurrentLevel])
+	if (IsValid(GI) && GI->GetGoldAmount() >= UpgradeToLevelUp->Cost[FoundUpgrade->CurrentLevel + 1])
 	{
-		GI->AddGold(-UpgradeToLevelUp->Cost[FoundUpgrade->CurrentLevel]);
+		GI->AddGold(-UpgradeToLevelUp->Cost[FoundUpgrade->CurrentLevel + 1]);
 		FoundUpgrade->CurrentLevel++;
 	}
 
