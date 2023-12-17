@@ -35,7 +35,6 @@ void AEnemy::BeginPlay()
 
 	Health->OnHealthDie.AddDynamic(this, &AEnemy::Die);
 
-	Health->OnHitByProjectile.AddDynamic(this, &AEnemy::CancelVelocity);
 	Health->OnHitByProjectile.AddDynamic(this, &AEnemy::HitByProjectile);
 }
 
@@ -91,7 +90,7 @@ void AEnemy::HitByProjectile(AWeaponProjectile* Projectile)
 			if (IsValid(KnockbackComponent))
 			{
 				FTimerDelegate Delegate;
-				Delegate.BindUObject(this, &AEnemy::CancelVelocity, Projectile);
+				Delegate.BindUObject(this, &AEnemy::CancelVelocity, Projectile->GetStunTime());
 
 				GetWorld()->GetTimerManager().SetTimer(KnockbackTimer, Delegate, KnockbackComponent->Duration, false);
 			}
@@ -101,21 +100,22 @@ void AEnemy::HitByProjectile(AWeaponProjectile* Projectile)
 	{
 		if (Projectile->GetStunTime() > 0)
 		{
-			CancelVelocity(Projectile);
+			CancelVelocity(Projectile->GetStunTime());
 		}
 	}
 }
 
 
-void AEnemy::CancelVelocity(AWeaponProjectile* Projectile)
+void AEnemy::CancelVelocity(float StunTime)
 {
-	if (Projectile->GetStunTime() <= 0) return;
+	
+	if (StunTime <= 0) return;
 
 	bCanMove = false;
 	GetWorld()->GetTimerManager().SetTimer(CanMoveTimerHandle, [&]()-> void
 	{
 		bCanMove = true;
-	}, Projectile->GetStunTime(), false);
+	}, StunTime, false);
 }
 
 // Called every frame

@@ -55,7 +55,7 @@ public:
 	
 	virtual void SetData(UPowerPUData* Data) { PowerData = Data; }
 
-	virtual EDataValidationResult IsDataValid(FDataValidationContext& Context) const override;
+	//virtual EDataValidationResult IsDataValid(FDataValidationContext& Context) const override;
 
 protected:
 	/**

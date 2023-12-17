@@ -79,16 +79,16 @@ void UPowerComponent::Use()
 
 	UseBehaviour();
 }
-EDataValidationResult UPowerComponent::IsDataValid(FDataValidationContext& Context) const
-{
-	
-	if (!IsValid(PowerData))
-	{
-		Context.AddError(FText::FromString("Power Data must be set in the Details panel."));
-	}
-	
-	return Super::IsDataValid(Context);
-}
+//EDataValidationResult UPowerComponent::IsDataValid(FDataValidationContext& Context) const
+//{
+//	
+//	if (!IsValid(PowerData))
+//	{
+//		Context.AddError(FText::FromString("Power Data must be set in the Details panel."));
+//	}
+//	
+//	return Super::IsDataValid(Context);
+//}
 
 void UPowerComponent::UseBehaviour_Implementation()
 {

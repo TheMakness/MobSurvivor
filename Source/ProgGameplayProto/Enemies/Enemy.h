@@ -61,7 +61,7 @@ protected:
 	void ReceiveOnHitByProjectile(AWeaponProjectile* Projectile);
 	
 	UFUNCTION()
-	virtual void CancelVelocity(AWeaponProjectile* Projectile);
+	virtual void CancelVelocity(float StunTime);
 
 public:
 	// Called every frame
