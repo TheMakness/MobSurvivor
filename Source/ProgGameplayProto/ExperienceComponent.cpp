@@ -33,9 +33,9 @@ void UExperienceComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	// ...
 }
 
-void UExperienceComponent::AddExperience(float Amount)
+void UExperienceComponent::AddExperience(const float Amount)
 {
-	CurrentExperience += Amount;
+	CurrentExperience += Amount * BonusExperienceMultiplier;
 
 	if (CurrentExperience >= CurrentLevelExperienceTarget)
 	{
@@ -66,4 +66,8 @@ float UExperienceComponent::GetCurrentExperiencePercentage()
 	output = FMath::Clamp(output, 0, 1);
 
 	return output;
+}
+void UExperienceComponent::IncrementExperienceMultiplier(const float IncrementValue)
+{
+	BonusExperienceMultiplier += IncrementValue;
 }

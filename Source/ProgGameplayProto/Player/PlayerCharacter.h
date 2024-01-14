@@ -96,7 +96,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = WeaponData)
 	UPowerPUData* DefaultPowerData;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = WeaponData)
 	TArray<UWeaponBonusData*> DefaultBonuses;
 
@@ -105,7 +105,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly)
 	UPowerComponent* Power;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UGoldComponent* Gold;
 
@@ -116,7 +116,6 @@ protected:
 	bool bIsAutoFire = false;
 
 protected:
-
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
 
@@ -159,4 +158,3 @@ public:
 	FORCEINLINE UHealth* GetHealth() const { return Health; }
 	FORCEINLINE UGoldComponent* GetGold() const { return Gold; }
 };
-

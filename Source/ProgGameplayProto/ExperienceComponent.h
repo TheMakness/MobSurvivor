@@ -32,6 +32,9 @@ protected:
 	float CurrentLevelExperienceTarget = 0;
 	int32 CurrentLevel = 0;
 
+private:
+	float BonusExperienceMultiplier = 1;
+	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -47,4 +50,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	virtual float GetCurrentExperiencePercentage();
+
+	void IncrementExperienceMultiplier(const float IncrementValue);
 };

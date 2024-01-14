@@ -10,17 +10,13 @@
 // Sets default values for this component's properties
 UGoldComponent::UGoldComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-	GoldAmount = 0;
-	// ...
 }
 
 
-void UGoldComponent::AddGold(int GoldValue)
+void UGoldComponent::AddGold(const int GoldValue)
 {
-	GoldAmount += GoldValue;
+	GoldAmount += GoldValue * BonusGoldMultiplier;
 	OnGoldChanged.Broadcast(GoldAmount);
 }
 
@@ -29,20 +25,17 @@ void UGoldComponent::AddGold(int GoldValue)
 void UGoldComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	Cast<ALevelGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->OnBeforeGameOver.AddDynamic(this,&UGoldComponent::SaveGold);
+	Cast<ALevelGameMode>(UGameplayStatics::GetGameMode(GetWorld()))->OnBeforeGameOver.AddDynamic(this, &UGoldComponent::SaveGold);
 	// ...
-	
 }
 
 void UGoldComponent::SaveGold()
 {
-
 	UGameInstance* GI = UGameplayStatics::GetGameInstance(GetWorld());
 	if (IsValid(GI))
 	{
 		Cast<UMobSurvivorInstance>(GI)->AddGold(GoldAmount);
 	}
-	
 }
 
 
@@ -53,4 +46,7 @@ void UGoldComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 
 	// ...
 }
-
+void UGoldComponent::IncrementGoldMultiplier(const float IncrementValue)
+{
+	BonusGoldMultiplier += IncrementValue;
+}

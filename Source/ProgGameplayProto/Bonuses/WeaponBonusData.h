@@ -12,9 +12,8 @@ class APlayerCharacter;
 class UWeaponComponent;
 
 /**
- *
+ * 
  */
-
 UCLASS()
 class PROGGAMEPLAYPROTO_API UWeaponBonusData : public UBonusData
 {

@@ -18,8 +18,16 @@ class PROGGAMEPLAYPROTO_API UCharacterBonusData : public UBonusData
 
 public:
 	// One-shot heal bonus
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Health Bonus")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Bonus")
 	int HealAmount = 0;
+
+	// Multiply the experience gain of the character for each orb collected (this increment the multiplier of the experience component, be careful not to put something too big!)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Bonus")
+	float ExperienceMultiplierIncrement = 0;
+
+	// Multiply the gold gain of the character (this increment the multiplier of the gold component, be careful not to put something too big!)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Bonus")
+	float GoldMultiplierIncrement = 0;
 
 	virtual void ApplyOnMainCharacter() override;
 

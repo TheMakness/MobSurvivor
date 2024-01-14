@@ -105,7 +105,9 @@ void UWeaponComponent::SpawnProjectile(FVector Direction)
 
 	if (Direction == FVector::ZeroVector)
 		Direction = Character->GetActorForwardVector();
+	
 	projectile->SetDirection(Direction);
+	projectile->SetActorRotation(FRotator(0, Direction.Rotation().Yaw, 0));
 
 	for (int i = 0; i < Effects.Num(); i++)
 	{

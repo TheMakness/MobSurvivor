@@ -27,7 +27,7 @@ public:
 	// Image displayed in the UI
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="General")
 	TObjectPtr<UTexture2D> Image;
-
+	
 	/**
 	 * Apply bonus on the player character
 	 */
