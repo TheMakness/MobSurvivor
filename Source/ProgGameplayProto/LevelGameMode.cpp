@@ -8,6 +8,7 @@
 #include "MobSurvivorInstance.h"
 #include "LevelGameState.h"
 #include "UpgradesManager.h"
+#include "HTTP/UHttpRequestSubsystem.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -45,6 +46,7 @@ ALevelGameMode::ALevelGameMode()
 void ALevelGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
 {
 	Super::InitGame(MapName, Options, ErrorMessage);
+
 }
 
 
@@ -69,6 +71,23 @@ void ALevelGameMode::SetGamePaused(bool Paused)
 
 void ALevelGameMode::ReturnToMainMenu()
 {
+	UHttpRequestSubsystem* HTTP = GetGameInstance()->GetSubsystem<UHttpRequestSubsystem>();
+	if (IsValid(HTTP))
+	{
+		if (HTTP->IsLoggedIn())
+		{
+			const float GameTime = GetGameState<ALevelGameState>()->GetGameTime();
+			const int KilledEnemies = GetGameState<ALevelGameState>()->GetNumKilledEnemies();
+			int GameType = 0;
+			if (GetGameState<ALevelGameState>()->GetGameDuration() > 300)
+			{
+				GameType = 1;
+			}
+			
+			HTTP->PostScore(FAPIScore(GameType, "", KilledEnemies, GameTime));
+		}
+	}
+	
 	UGameplayStatics::OpenLevel(GetWorld(), "MainLevel");
 }
 

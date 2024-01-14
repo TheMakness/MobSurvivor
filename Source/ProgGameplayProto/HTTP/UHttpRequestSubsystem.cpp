@@ -6,9 +6,8 @@
 #include "APIScore.h"
 #include "JsonObjectConverter.h"
 #include "APIUser.h"
+#include "Http.h"
 #include "Interfaces/IHttpResponse.h"
-
-DEFINE_LOG_CATEGORY(LogHttp);
 
 UHttpRequestSubsystem::UHttpRequestSubsystem() :
 	Http(&FHttpModule::Get()),
@@ -92,6 +91,7 @@ void UHttpRequestSubsystem::PostScore(const FAPIScore Score)
 	Request->SetURL(RequestEndpoint);
 	Request->SetVerb("POST");
 	Request->SetContentAsString(RequestBody);
+	Request->SetHeader("Authorization", "Bearer " + JwtToken);
 
 	Request->OnProcessRequestComplete().BindLambda(
 		[&](const FHttpRequestPtr& Req, const FHttpResponsePtr& Res, const bool bConnectedSuccessfully) mutable
@@ -136,6 +136,63 @@ void UHttpRequestSubsystem::PostScore(const FAPIScore Score)
 	Request->ProcessRequest();
 }
 
+void UHttpRequestSubsystem::GetScores()
+{
+	RequestEndpoint = API_URL + "/scores";
+
+	const FHttpRequestPtr Request = Http->CreateRequest();
+	Request->SetURL(RequestEndpoint);
+	Request->SetVerb("GET");
+
+	Request->OnProcessRequestComplete().BindLambda(
+		[&](const FHttpRequestPtr& Req, const FHttpResponsePtr& Res, const bool bConnectedSuccessfully) mutable
+		{
+			if (bConnectedSuccessfully)
+			{
+				TSharedPtr<FJsonValue> JsonParsed;
+				const auto JsonReader = TJsonReaderFactory<>::Create(Res->GetContentAsString());
+	
+				if (FJsonSerializer::Deserialize(JsonReader, JsonParsed))
+				{
+					if (Req->GetResponse()->GetResponseCode() >= 200 && Req->GetResponse()->GetResponseCode() < 300)
+					{
+						UE_LOG(LogHttp, Display, TEXT("[%s] Request succeeded."), *RequestEndpoint);
+					
+						auto Json = JsonParsed->AsArray();
+						
+						TArray<FAPIScore> Scores;
+						FJsonObjectConverter::JsonArrayToUStruct<FAPIScore>(Json, &Scores);
+						
+						GetScoreRequestComplete.Broadcast(ERequestCompleteStatus::Success, Scores);
+						return;
+					}
+					else if (Req->GetResponse()->GetResponseCode() >= 400 && Req->GetResponse()->GetResponseCode() < 500)
+					{
+						UE_LOG(LogHttp, Error, TEXT("[%s] %d"), *RequestEndpoint, Req->GetResponse()->GetResponseCode());
+					}
+					else
+					{
+						UE_LOG(LogHttp, Error, TEXT("[%s] Request failed due to server error."), *RequestEndpoint);
+					}
+				}
+				else
+				{
+					UE_LOG(LogHttp, Error, TEXT("[%s] Cannot parse JSON."), *RequestEndpoint);
+				}
+			}
+			else
+			{
+				HandleRequestErrors(Req->GetStatus());
+			}
+			
+			TArray<FAPIScore> Scores;
+			GetScoreRequestComplete.Broadcast(ERequestCompleteStatus::Failed, Scores);
+		}
+	);
+
+	Request->ProcessRequest();
+}
+
 void UHttpRequestSubsystem::SignOut()
 {
 	bSignedIn = false;
@@ -148,6 +205,10 @@ void UHttpRequestSubsystem::SignOut()
 FAPIUser UHttpRequestSubsystem::GetSignedInUser() const
 {
 	return SignedInUser ? *SignedInUser : FAPIUser("Guest");
+}
+bool UHttpRequestSubsystem::IsLoggedIn() const
+{
+	return bSignedIn;
 }
 
 void UHttpRequestSubsystem::HandleRequestErrors(const EHttpRequestStatus::Type ErrorStatus) const

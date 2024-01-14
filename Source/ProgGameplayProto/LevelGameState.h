@@ -40,6 +40,8 @@ public:
 	UFUNCTION()
 	void SetGameDuration(float Duration);
 
+	FORCEINLINE float GetGameDuration() const { return GameTargetDuration; }
+
 	UFUNCTION()
 	void SetGoldBonus(const int Gold) { BonusGold = Gold; }
 
@@ -52,4 +54,10 @@ public:
 	FORCEINLINE int GetBonusGold() const { return BonusGold; }
 
 	void SetGameStarted(bool HasGameStarted);
+	
+	FORCEINLINE void AddKilledEnemy() { NumKilledEnemies++; }
+
+	FORCEINLINE int GetNumKilledEnemies() const { return NumKilledEnemies; }
+
+	int NumKilledEnemies = 0;
 };

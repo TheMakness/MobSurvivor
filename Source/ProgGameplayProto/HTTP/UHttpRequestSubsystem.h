@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "APIScore.h"
 #include "GameFramework/Actor.h"
 #include "HttpModule.h"
 
@@ -11,7 +12,6 @@
 struct FAPIScore;
 struct FAPIUser;
 
-DECLARE_LOG_CATEGORY_EXTERN(LogHttp, Log, All);
 
 UENUM(BlueprintType)
 enum class ERequestCompleteStatus : uint8
@@ -23,6 +23,7 @@ enum class ERequestCompleteStatus : uint8
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSignInRequestCompleteDelegate, ERequestCompleteStatus, Status);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPostScoreRequestCompleteDelegate, ERequestCompleteStatus, Status);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSignOutRequestCompleteDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FGetScoreRequestCompleteDelegate, ERequestCompleteStatus, Status, const TArray<FAPIScore>&, Scores);
 
 UCLASS()
 class PROGGAMEPLAYPROTO_API UHttpRequestSubsystem : public UGameInstanceSubsystem
@@ -37,6 +38,7 @@ private:
 	// Store the current request endpoint.
 	FString RequestEndpoint;
 
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess=true))
 	bool bSignedIn;
 	
 	TObjectPtr<FAPIUser> SignedInUser;
@@ -52,6 +54,9 @@ private:
 
 	UPROPERTY(BlueprintAssignable)
 	FSignOutRequestCompleteDelegate SignOutRequestComplete;
+
+	UPROPERTY(BlueprintAssignable)
+	FGetScoreRequestCompleteDelegate GetScoreRequestComplete;
 	
 public:
 	
@@ -64,10 +69,15 @@ public:
 	void PostScore(const FAPIScore Score);
 
 	UFUNCTION(BlueprintCallable)
+	void GetScores();
+
+	UFUNCTION(BlueprintCallable)
 	void SignOut();
 
 	UFUNCTION(BlueprintCallable)
 	FAPIUser GetSignedInUser() const;
+
+	bool IsLoggedIn() const;
 
 private:
 	void HandleRequestErrors(EHttpRequestStatus::Type ErrorStatus) const;

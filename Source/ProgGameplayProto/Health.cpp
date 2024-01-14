@@ -3,6 +3,9 @@
 
 #include "Health.h"
 
+#include "GameUtils.h"
+#include "Kismet/GameplayStatics.h"
+#include "LevelGameState.h"
 #include "Weapons/WeaponProjectile.h"
 
 void UHealth::BeginPlay()
@@ -47,6 +50,8 @@ void UHealth::Die()
 	OnBeforeHealthDie.Broadcast();
 
 	OnHealthDie.Broadcast();
+	ALevelGameState* GameState = Cast<ALevelGameState>(UGameplayStatics::GetGameState(GetWorld()));
+	GameState->AddKilledEnemy();
 }
 
 float UHealth::GetCurrentHealthPercentage()
